@@ -281,19 +281,20 @@
                                             <td>1</td>
                                             <td><b><%=catData[i].categoryName%></b></td>
                                             <td><%=catData[i].description%></td>
-                                            <td>/men</td>
+                                            <%if(catData[i].is_active){%>
+                                            <td><span class="badge rounded-pill alert-success">Active</span></td>
+                                            <%}else{%>
+                                                <td><span class="badge rounded-pill alert-danger">inactive</span></td>
+                                                <%}%>
+
                                             <!-- <td>1</td> -->
                                             <td class="text-end">
-                                                <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown"
-                                                        class="btn btn-light rounded btn-sm font-sm"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
-                                                    <div class="dropdown-menu">
-                                                        <a class="dropdown-item" href="#">View detail</a>
-                                                        <a class="dropdown-item" href="#">Edit info</a>
-                                                        <a class="dropdown-item text-danger" href="#">Delete</a>
-                                                    </div>
-                                                </div> <!-- dropdown //end -->
+                                                <%if(catData[i].is_active){%>
+                                                    <a href="/admin/blockCategory?catId=<%=catData[i]._id%>" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
+                                                   <%}else{%>
+                                                    <a href="/admin/unblockCategory?catId=<%=catData[i]._id%>" class="btn btn-sm btn-brand rounded font-sm mt-15">unBlock</a>
+                                                    <%}%>
+                                             
                                             </td>
                                         </tr>
                                         <%}%>

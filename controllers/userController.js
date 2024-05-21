@@ -1,7 +1,9 @@
 const User = require("../models/userModels");
 const bcrypt = require('bcrypt');
 const helper = require('../helpers/helperFunction')
+const Swal = require('sweetalert2');
 const nodemailer = require('nodemailer');
+
 const securePassword = async (password) => {
     try {
         const passwordHash = await bcrypt.hash(password, 10);
@@ -84,23 +86,17 @@ const insertUser = async (req, res) => {
     try {
         const spassword = await securePassword(req.body.password)
         if (req.body.password === req.body.cpassword) {
-            const user = new User({
+            req.session.user = {
                 name: req.body.name,
                 email: req.body.email,
                 mobile: req.body.mobile,
                 password: spassword,
                 is_admin: false
 
-            })
-            req.session.registerData = user
-            // const userData = await user.save();
-            res.redirect('/sendOtp') ;
+            }
 
-            // if (userData) {
-            //     res.render('registration', { message: "registration is sucessfull" });
-            // } else {
-            //     res.render('registration', { message1: "your registration has been failed" });
-            // }
+            res.redirect('/sendOtp');
+
 
         } else {
             res.render('registration', { message1: "your registration has been failed" });
@@ -121,20 +117,20 @@ const sendOtp = async (req, res) => {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'ng.anjith444@gmail.com', // amal jospeht email
-                pass: "vqcm bgdj rmkp wfia",// amal joseph passkey
+                user: 'ng.anjith444@gmail.com',
+                pass: "vqcm bgdj rmkp wfia",
 
             },
         });
 
         const otp = helper.generateOTP();
+        req.session.otptime = new Date()
+        console.log('cheking otp time', req.session.otptime)
         req.session.otp = otp
-        // clearRegistrationOtp(req)
-        // const otp = 123456
         console.log("sendmail - generatd-otp:", otp)
         const mailOptions = {
             from: 'ng.anjith444@gmail.com',
-            to: 'amaljoseph408@gmail.com', // users email
+            to: req.session.user.email,//users email
             subject: 'Verification Mail',
             html: `
                 <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -157,15 +153,51 @@ const sendOtp = async (req, res) => {
             } else {
                 console.log('Email sent: ' + info.response);
             }
-         });
+        });
         // console.log(info);
-res.render('Otp')
+        res.render('Otp')
 
     } catch (error) {
         console.log(error.message)
     }
 }
 
+const verifyOtp = async (req, res) => {
+    try {
+        // console.log("verify otp entered", new Date(), '///', req.session.otptime)
+        // console.log('otpdiff', new Date() - new Date(req.session.otptime))
+        if ((new Date() - new Date(req.session.otptime)  > 30000)) {
+            // console.log('entering 1st condition')
+            res.render('Otp', { errorMsg: 'Otp timeOut' })
+        } else {
+            if (req.body.Otp == req.session.otp) {
+                // console.log('otp is equal')
+                let user = new User(req.session.user)
+                await user.save()
+                const successMsg = 'OTP verified successfully!';
+                res.render('login', { successMsg });
+
+
+            } else {
+                // console.log('coming to ese')
+                const errorMsg = 'Invalid OTP!';
+                Swal.fire('Error!', errorMsg, 'error');
+                res.render('Otp', { errorMsg })
+            }
+
+        }
+
+
+
+
+
+    } catch (error) {
+        console.log(error.message);
+
+    }
+
+}
+
 module.exports = {
-    loadHome, loadlogin, loadRegister, insertUser, verifyLogin, sendOtp
+    loadHome, loadlogin, loadRegister, insertUser, verifyLogin, sendOtp, verifyOtp
 }

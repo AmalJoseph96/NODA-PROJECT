@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTP Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,7 +41,7 @@
             border-radius: 5px;
             box-sizing: border-box;
         }
-        button[type="submit"] {
+        button {
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -50,20 +50,53 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        button[type="submit"]:hover {
+        button:hover {
             background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Enter OTP</h1>
-        <form action="/send_otp" method="post">
-            <!-- <label for="contact">Enter Your Phone Number or Email:</label> -->
-            <input type="text" id="contact" name="contact" required>
+        <form action="/verifyOtp" method="post">
+            <input type="text" id="otp" name="Otp" required>
             <button type="submit">Submit</button>
         </form>
+        <button id="resendOtpBtn" style="display: none;">Resend OTP</button>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <% if (locals.errorMsg) { %>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '<%= errorMsg %>',
+                text: 'You have successfully verified your OTP!'
+            });
+        </script>
+    <% } %>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const resendButton = document.getElementById('resendOtpBtn');
+            
+            // Function to enable the Resend OTP button after 10 seconds
+            function enableResendButton() {
+                resendButton.style.display = 'none';
+                setTimeout(() => {
+                    resendButton.style.display = 'block';
+                },10000); // 10 seconds
+            }
+
+            // Initial call to hide the button for the first 10 seconds
+            enableResendButton();
+
+            resendButton.addEventListener('click', function() {
+                window.location.href='/sendOtp'
+            });
+        });
+    </script>
 </body>
 </html>
-

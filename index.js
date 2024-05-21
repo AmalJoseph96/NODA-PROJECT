@@ -8,6 +8,7 @@ const port = 3000;
 
 const express = require('express');
 const session = require('express-session');
+const Swal = require('sweetalert2');
 const app = express();
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
@@ -15,7 +16,7 @@ app.set('views', path.join(__dirname, 'views'))
 app.use('/', userRoute);
 
 const adminRoute = require('./routes/adminRoute');
-app.use('/admin',adminRoute) ;
+app.use('/admin', adminRoute);
 
 app.listen(port, () => {
     console.log(`Server started on: http://localhost:${port} `);

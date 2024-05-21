@@ -8,6 +8,8 @@ const categorySchema = new mongoose.Schema({
       },
       is_active:{
         type:Boolean,
+        default:true,
+        required:true
         
       },
       description:{

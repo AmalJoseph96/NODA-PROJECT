@@ -34,6 +34,7 @@ user_route.get('/register', userController.loadRegister);
 user_route.post('/register',userController.insertUser) ;
 user_route.post('/login',userController.verifyLogin);
 user_route.get('/sendOtp',userController.sendOtp);
+user_route.post('/verifyOtp',userController.verifyOtp)
 
 
 module.exports = user_route;

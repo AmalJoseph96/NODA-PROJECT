@@ -63,9 +63,9 @@
                         <span class="text">Users</span>
                     </a>
                     <div class="submenu">
-                        <a href="page-sellers-cards.html">Sellers cards</a>
+                        <!-- <a href="page-sellers-cards.html">Sellers cards</a> -->
                         <a href="page-sellers-list.html" class="active">Userlist </a>
-                        <a href="page-seller-detail.html">Seller profile</a>
+                        <!-- <a href="page-seller-detail.html">Seller profile</a> -->
                     </div>
                 </li>
                 <li class="menu-item has-submenu">
@@ -229,20 +229,31 @@
                                     <th>Status</th>
                                     <th>Registration</th>
                                     <th class="text-end"> Action </th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <%if(locals.userData){%>
 
-                                    <%for(let i = 0;i<userData.length;i++){%>
+                                    <%for(let i = 0;i<userData.length;i++){%> 
 
                                         <tr>
                                             <td><%=userData[i].name%></td>
                                             <td><%=userData[i].email%></td>
+                                            <%if(userData[i].isActive){%>
                                             <td><span class="badge rounded-pill alert-success">Active</span></td>
+                                            <%}else{%>
+                                                <td><span class="badge rounded-pill alert-danger">inactive</span></td>
+                                                <%}%>
                                             <td><%=userData[i].date.toLocaleString()%></td>
+                                            <!-- <td></td> -->
                                             <td class="text-end">
-                                                <a href="#" class="btn btn-sm btn-brand rounded font-sm mt-15">View details</a>
+                                             <%if(userData[i].isActive){%>
+                                                <a href="/admin/blockUser?userId=<%=userData[i]._id%>" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
+                                                <%}else{%>
+                                                    <a href="/admin/unblockUser?userId=<%=userData[i]._id%>" class="btn btn-sm btn-brand rounded font-sm mt-15">unBlock</a>
+                                                   <%}%>
+                                           
                                             </td>
                                         </tr>
 
