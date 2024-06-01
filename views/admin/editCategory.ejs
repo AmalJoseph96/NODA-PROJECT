@@ -3,7 +3,6 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
-
 <head>
     <meta charset="utf-8">
     <title>Evara Dashboard</title>
@@ -18,16 +17,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/admin-assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.js"></script>
 </head>
-<style>
-    .error {
-        color: red;
-        font-size: 0.9em;
-        display: none;
-    }
-</style>
 
 <body>
     <div class="screen-overlay"></div>
@@ -37,53 +27,76 @@
                 <img src="/admin-assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
             </a>
             <div>
-                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i>
-                </button>
+                <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
             </div>
         </div>
         <nav>
             <ul class="menu-aside">
                 <li class="menu-item">
-                    <a class="menu-link" href="/admin/home"> <i class="icon material-icons md-home"></i>
+                    <a class="menu-link" href="index.html"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/productlist"> <i
-                            class="icon material-icons md-shopping_bag"></i>
+                <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
+                    <div class="submenu">
+                        <a href="page-products-list.html">Product List</a>
+                        <a href="page-products-grid.html">Product grid</a>
+                        <a href="page-products-grid-2.html">Product grid 2</a>
+                        <a href="page-categories.html" class="active">Categories</a>
+                    </div>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
+                    <div class="submenu">
+                        <a href="page-orders-1.html">Order list 1</a>
+                        <a href="page-orders-2.html">Order list 2</a>
+                        <a href="page-orders-detail.html">Order detail</a>
+                    </div>
                 </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/userlist"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Users</span>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Sellers</span>
                     </a>
+                    <div class="submenu">
+                        <a href="page-sellers-cards.html">Sellers cards</a>
+                        <a href="page-sellers-list.html">Sellers list</a>
+                        <a href="page-seller-detail.html">Seller profile</a>
+                    </div>
                 </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Add product</span>
                     </a>
+                    <div class="submenu">
+                        <a href="page-form-product-1.html">Add product 1</a>
+                        <a href="page-form-product-2.html">Add product 2</a>
+                        <a href="page-form-product-3.html">Add product 3</a>
+                        <a href="page-form-product-4.html">Add product 4</a>
+                    </div>
                 </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/category"> <i
-                            class="icon material-icons md-monetization_on"></i>
-                        <span class="text">Category</span>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
+                        <span class="text">Transactions</span>
                     </a>
+                    <div class="submenu">
+                        <a href="page-transactions-1.html">Transaction 1</a>
+                        <a href="page-transactions-2.html">Transaction 2</a>
+                    </div>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item has-submenu">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
                         <span class="text">Account</span>
                     </a>
-                    <!-- <div class="submenu">
+                    <div class="submenu">
                         <a href="page-account-login.html">User login</a>
                         <a href="page-account-register.html">User registration</a>
                         <a href="page-error-404.html">Error 404</a>
-                    </div> -->
+                    </div>
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
@@ -127,8 +140,7 @@
                 <form class="searchform">
                     <div class="input-group">
                         <input list="search_terms" type="text" class="form-control" placeholder="Search term">
-                        <button class="btn btn-light bg" type="button"> <i
-                                class="material-icons md-search"></i></button>
+                        <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
                     </div>
                     <datalist id="search_terms">
                         <option value="Products">
@@ -139,8 +151,7 @@
                 </form>
             </div>
             <div class="col-nav">
-                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i
-                        class="material-icons md-apps"></i> </button>
+                <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
@@ -149,44 +160,30 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i>
-                        </a>
+                        <a class="nav-link btn-icon darkmode" href="#"> <i class="material-icons md-nights_stay"></i> </a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="requestfullscreen nav-link btn-icon"><i
-                                class="material-icons md-cast"></i></a>
+                        <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
                     </li>
                     <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage"
-                            aria-expanded="false"><i class="material-icons md-public"></i></a>
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png"
-                                    alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png"
-                                    alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png"
-                                    alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png"
-                                    alt="Français">中国人</a>
+                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
+                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
                         </div>
                     </li>
                     <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount"
-                            aria-expanded="false"> <img class="img-xs rounded-circle"
-                                src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
-                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit
-                                Profile</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account
-                                Settings</a>
-                            <a class="dropdown-item" href="#"><i
-                                    class="material-icons md-account_balance_wallet"></i>Wallet</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
                             <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
-                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help
-                                center</a>
+                            <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i
-                                    class="material-icons md-exit_to_app"></i>Logout</a>
+                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -195,8 +192,8 @@
         <section class="content-main">
             <div class="content-header">
                 <div>
-                    <h2 class="content-title card-title">Categories </h2>
-                    <p>Add, edit or delete a category</p>
+                    <h2 class="content-title card-title">Edit Categories </h2>
+                    <p>Add new fields here</p>
                 </div>
                 <div>
                     <input type="text" placeholder="Search Categories" class="form-control bg-white">
@@ -206,114 +203,24 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <div class="container">
-                                <form id="addCategoryForm" method="post" onsubmit="return validateForm()">
-                                    <div class="mb-4">
-                                        <label for="product_name" class="form-label">Name</label>
-                                        <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name" />
-                                        <div id="nameError" class="error"></div>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label class="form-label">Description</label>
-                                        <textarea placeholder="Type here" class="form-control" name="description"></textarea>
-                                        <div id="descriptionError" class="error"></div>
-                                    </div>
-                                    <div class="d-grid">
-                                        <button type="submit" class="btn btn-primary">Create category</button>
-                                    </div>
-                                </form>
-
-                                <script>
-                                    document.getElementById('addCategoryForm').addEventListener('submit', async function(event) {
-                                        event.preventDefault(); // Prevent the default form submission
-                            
-                                        const form = event.target;
-                                        const formData = new FormData(form);
-
-                                        console.log("formData:",formData)
-                            
-                                        // Convert formData to an object
-                                        const data = {};
-                                        formData.forEach((value, key) => {
-                                            data[key] = value;
-                                        });
-                            
-                                        try {
-                                            const response = await fetch(form.action, {
-                                                method: form.method,
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify(data)
-                                            });
-                            
-                                            if (!response.ok) {
-                                                const errorData = await response.json();
-                                                // alert(errorData.error);
-                                                Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: errorData.error,
-                    });
-                                            } else {
-                                                window.location.href = '/admin/category';
-                                            }
-                                        } catch (error) {
-                                            console.error('Error:', error);
-                                            alert('An error occurred. Please try again.');
-                                        }
-                                    });
-                                </script>
-                                <script>
-                                    function validateForm() {
-                                        // Get form elements
-                                        var name = document.getElementById('product_name').value.trim();
-                                        var description = document.querySelector('textarea[name="description"]').value.trim();
-                            
-                                        // Error elements
-                                        var nameError = document.getElementById('nameError');
-                                        var descriptionError = document.getElementById('descriptionError');
-                            
-                                        // Regular expression to check for numbers
-                                        var numberRegex = /\d/;
-                            
-                                        // Reset error messages
-                                        nameError.style.display = 'none';
-                                        descriptionError.style.display = 'none';
-                            
-                                        var isValid = true;
-                            
-                                        // Validate name
-                                        if (name === "") {
-                                            nameError.textContent = "Name cannot be empty or contain only spaces.";
-                                            nameError.style.display = 'block';
-                                            isValid = false;
-                                        } else if (numberRegex.test(name)) {
-                                            nameError.textContent = "Name cannot contain numbers.";
-                                            nameError.style.display = 'block';
-                                            isValid = false;
-                                        }
-                            
-                                        // Validate description
-                                        if (description === "") {
-                                            descriptionError.textContent = "Description cannot be empty or contain only spaces.";
-                                            descriptionError.style.display = 'block';
-                                            isValid = false;
-                                        } else if (numberRegex.test(description)) {
-                                            descriptionError.textContent = "Description cannot contain numbers.";
-                                            descriptionError.style.display = 'block';
-                                            isValid = false;
-                                        }
-                            
-                                        // If all validations pass
-                                        return isValid;
-                                    }
-                                </script>
-                            </div>
+                            <form action="/admin/editCategory?id=<%=catData._id%>" method="post">
+                                <div class="mb-4">
+            
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input type="text" placeholder="Type here" name="cname" class="form-control" id="product_name" value="<%=catData.categoryName%>" />
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" name="cdescription"><%=catData.description%></textarea>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary">Edit category</button>
+                                </div>
+                            </form>
                         </div>
                         <div class="col-md-9">
                             <div class="table-responsive">
-                                <table class="table table-hover">
+                                <!-- <table class="table table-hover">
                                     <thead>
                                         <tr>
                                             <th class="text-center">
@@ -323,48 +230,36 @@
                                             </th>
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>description</th>
-                                            <th>Status</th>
-                                            <!-- <th>Order</th> -->
+                                            <th>Description</th>
+                                            <th>Slug</th>
+                                            <th>Order</th>
                                             <th class="text-end">Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <%if(locals.catData){%>
-                                            <%for(let i=0;i<catData.length;i++){%>
-
                                         <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" />
                                                 </div>
                                             </td>
+                                            <td>21</td>
+                                            <td><b>Men clothes</b></td>
+                                            <td>Men clothes</td>
+                                            <td>/men</td>
                                             <td>1</td>
-                                            <td><b><%=catData[i].categoryName%></b></td>
-                                            <td><%=catData[i].description%></td>
-                                            <%if(catData[i].is_active){%>
-                                            <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                            <%}else{%>
-                                                <td><span class="badge rounded-pill alert-danger">inactive</span></td>
-                                                <%}%>
-
-                                            <!-- <td>1</td> -->
                                             <td class="text-end">
-                                                <a href="/admin/editCategory?catId=<%=catData[i]._id%>" class="btn-sm btn-brand rounded font-sm mt-15">Edit</a>
-                                             
-
-                                    
-                                                <%if(catData[i].is_active){%>
-                                                    <a onclick="confirmSubmission('<%=catData[i]._id%>',0)" class="btn-sm btn-brand rounded font-sm mt-15">Block</a>
-                                                   <%}else{%>
-                                                    <a onclick="confirmSubmission('<%=catData[i]._id%>',1)" class="btn btn-sm btn-brand rounded font-sm mt-15">unBlock</a>
-                                                    <%}%>
-                                             
+                                                <div class="dropdown">
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
+                                                    <div class="dropdown-menu">
+                                                        <a class="dropdown-item" href="#">View detail</a>
+                                                        <a class="dropdown-item" href="#">Edit info</a>
+                                                        <a class="dropdown-item text-danger" href="#">Delete</a>
+                                                    </div>
+                                                </div>
                                             </td>
                                         </tr>
-                                        <%}%>
-                                        <%}%>
-                                        <!-- <tr>
+                                        <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" />
@@ -377,18 +272,16 @@
                                             <td>2</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown"
-                                                        class="btn btn-light rounded btn-sm font-sm"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#">View detail</a>
                                                         <a class="dropdown-item" href="#">Edit info</a>
                                                         <a class="dropdown-item text-danger" href="#">Delete</a>
                                                     </div>
-                                                </div> 
+                                                </div>
                                             </td>
-                                        </tr> -->
-                                        <!-- <tr>
+                                        </tr>
+                                        <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" />
@@ -401,9 +294,7 @@
                                             <td>3</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown"
-                                                        class="btn btn-light rounded btn-sm font-sm"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#">View detail</a>
                                                         <a class="dropdown-item" href="#">Edit info</a>
@@ -411,11 +302,9 @@
                                                     </div>
                                                 </div> 
                                             </td>
-                                        </tr> -->
-                                        <!-- <tr>
-                                            <td class="text-center"><i
-                                                    class="material-icons md-subdirectory_arrow_right text-muted"></i>
-                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><i class="material-icons md-subdirectory_arrow_right text-muted"></i></td>
                                             <td>4</td>
                                             <td><b>Hot Gifts</b></td>
                                             <td>Hot Gifts</td>
@@ -423,21 +312,17 @@
                                             <td>4</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown"
-                                                        class="btn btn-light rounded btn-sm font-sm"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#">View detail</a>
                                                         <a class="dropdown-item" href="#">Edit info</a>
                                                         <a class="dropdown-item text-danger" href="#">Delete</a>
                                                     </div>
-                                                </div>
+                                                </div> 
                                             </td>
-                                        </tr> -->
-                                        <!-- <tr>
-                                            <td class="text-center"><i
-                                                    class="material-icons md-subdirectory_arrow_right text-muted"></i>
-                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-center"><i class="material-icons md-subdirectory_arrow_right text-muted"></i></td>
                                             <td>5</td>
                                             <td><b>Electronics</b></td>
                                             <td>Electronics</td>
@@ -445,15 +330,13 @@
                                             <td>5</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown"
-                                                        class="btn btn-light rounded btn-sm font-sm"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#">View detail</a>
                                                         <a class="dropdown-item" href="#">Edit info</a>
                                                         <a class="dropdown-item text-danger" href="#">Delete</a>
                                                     </div>
-                                                </div> dropdown //end
+                                                </div> 
                                             </td>
                                         </tr>
                                         <tr>
@@ -469,15 +352,13 @@
                                             <td>6</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown"
-                                                        class="btn btn-light rounded btn-sm font-sm"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#">View detail</a>
                                                         <a class="dropdown-item" href="#">Edit info</a>
                                                         <a class="dropdown-item text-danger" href="#">Delete</a>
                                                     </div>
-                                                </div> dropdown //end
+                                                </div> 
                                             </td>
                                         </tr>
                                         <tr>
@@ -493,15 +374,13 @@
                                             <td>7</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown"
-                                                        class="btn btn-light rounded btn-sm font-sm"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#">View detail</a>
                                                         <a class="dropdown-item" href="#">Edit info</a>
                                                         <a class="dropdown-item text-danger" href="#">Delete</a>
                                                     </div>
-                                                </div> dropdown //end
+                                                </div> 
                                             </td>
                                         </tr>
                                         <tr>
@@ -517,9 +396,7 @@
                                             <td>8</td>
                                             <td class="text-end">
                                                 <div class="dropdown">
-                                                    <a href="#" data-bs-toggle="dropdown"
-                                                        class="btn btn-light rounded btn-sm font-sm"> <i
-                                                            class="material-icons md-more_horiz"></i> </a>
+                                                    <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm"> <i class="material-icons md-more_horiz"></i> </a>
                                                     <div class="dropdown-menu">
                                                         <a class="dropdown-item" href="#">View detail</a>
                                                         <a class="dropdown-item" href="#">Edit info</a>
@@ -528,10 +405,8 @@
                                                 </div> 
                                             </td>
                                         </tr>
-                                        -->
-                                   
                                     </tbody>
-                                </table>
+                                </table> 
                             </div>
                         </div> <!-- .col// -->
                     </div> <!-- .row // -->
@@ -542,7 +417,7 @@
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
-                        document.write(new Date().getFullYear())
+                    document.write(new Date().getFullYear())
                     </script> ©, Evara - HTML Ecommerce Template .
                 </div>
                 <div class="col-sm-6">
@@ -560,36 +435,8 @@
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-
-    <script>
-        function confirmSubmission(id, condition) {
-          Swal.fire({
-              title: 'Are you sure?',
-              text: `${condition === 0 ? 'Are you sure to Block this Category' : 'Are you sure to Unblock this Category'}`,
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonText: 'Confirm',
-              confirmButtonColor:"#2e8b57",
-              cancelButtonText: 'Cancel'
-          }).then((result) => {
-              if (result.isConfirmed) {
-                  if(condition === 0 ) {
-                      window.location.href = "/admin/blockCategory?catId="+id;
-      
-                  }else
-                  window.location.href = "/admin/unblockCategory?catId="+id;
-              }
-          });
-      }
-
-
-        </script>
-
-
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-categories.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
-
 </html>

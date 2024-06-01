@@ -2,7 +2,7 @@
 <html lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-sellers-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:31 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Evara Dashboard</title>
@@ -33,60 +33,60 @@
         <nav>
             <ul class="menu-aside">
                 <li class="menu-item">
-                    <a class="menu-link" href="/admin/home"> <i class="icon material-icons md-home"></i>
+                    <a class="menu-link" href="index.html"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
                 </li>
-                <li class="menu-item ">
-                    <a class="menu-link" href="/admin/productlist"> <i class="icon material-icons md-shopping_bag"></i>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-products-list.html"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
-                    <!-- <div class="submenu">
+                    <div class="submenu">
                         <a href="page-products-list.html">Product List</a>
                         <a href="page-products-grid.html">Product grid</a>
                         <a href="page-products-grid-2.html">Product grid 2</a>
                         <a href="page-categories.html">Categories</a>
-                    </div> -->
+                    </div>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item has-submenu">
                     <a class="menu-link" href="page-orders-1.html"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
-                    <!-- <div class="submenu">
+                    <div class="submenu">
                         <a href="page-orders-1.html">Order list 1</a>
                         <a href="page-orders-2.html">Order list 2</a>
                         <a href="page-orders-detail.html">Order detail</a>
-                    </div> -->
-                </li>
-                <li class="menu-item ">
-                    <a class="menu-link" href="/admin/userlist"> <i class="icon material-icons md-store"></i>
-                        <span class="text">Users</span>
-                    </a>
-                    <div class="submenu">
-                        <!-- <a href="page-sellers-cards.html">Sellers cards</a> -->
-                        <!-- <a href="page-sellers-list.html" class="active">Userlist </a> -->
-                        <!-- <a href="page-seller-detail.html">Seller profile</a> -->
                     </div>
                 </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/addproduct"> <i class="icon material-icons md-add_box"></i>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-sellers-cards.html"> <i class="icon material-icons md-store"></i>
+                        <span class="text">Sellers</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="page-sellers-cards.html">Sellers cards</a>
+                        <a href="page-sellers-list.html">Sellers list</a>
+                        <a href="page-seller-detail.html">Seller profile</a>
+                    </div>
+                </li>
+                <li class="menu-item has-submenu active">
+                    <a class="menu-link" href="page-form-product-1.html"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Add product</span>
                     </a>
-                    <!-- <div class="submenu">
-                        <a href="page-form-product-1.html">Add product 1</a>
+                    <div class="submenu">
+                        <a href="page-form-product-1.html" class="active">Add product 1</a>
                         <a href="page-form-product-2.html">Add product 2</a>
                         <a href="page-form-product-3.html">Add product 3</a>
                         <a href="page-form-product-4.html">Add product 4</a>
-                    </div> -->
+                    </div>
                 </li>
-                <li class="menu-item">
-                    <a class="menu-link" href="/admin/category"><i class="icon material-icons md-add_box"></i> 
-                        <span class="text">Categories</span>
+                <li class="menu-item has-submenu">
+                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
+                        <span class="text">Transactions</span>
                     </a>
-                    <!-- <div class="submenu">
+                    <div class="submenu">
                         <a href="page-transactions-1.html">Transaction 1</a>
                         <a href="page-transactions-2.html">Transaction 2</a>
-                    </div> -->
+                    </div>
                 </li>
                 <li class="menu-item has-submenu">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
@@ -190,104 +190,150 @@
             </div>
         </header>
         <section class="content-main">
-            <div class="content-header">
-                <h2 class="content-title">Users list</h2>
-                <div>
-                    <a href="#" class="btn btn-primary"><i class="material-icons md-plus"></i> Create new</a>
+            <div class="row">
+                <div class="col-9">
+                    <div class="content-header">
+                        <h2 class="content-title">Edit Product</h2>
+                        <div>
+                            <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
+                            <button class="btn btn-md rounded font-sm hover-up">Edit</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="card mb-4">
-                <header class="card-header">
-                    <div class="row gx-3">
-                        <div class="col-lg-4 col-md-6 me-auto">
-                            <input type="text" placeholder="Search..." class="form-control">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Basic</h4>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-6">
-                            <select class="form-select">
-                                <option>Status</option>
-                                <option>Active</option>
-                                <option>Disabled</option>
-                                <option>Show all</option>
-                            </select>
+                        <div class="card-body">
+                            <form>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Product title</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Full description</label>
+                                    <textarea placeholder="Type here" class="form-control" rows="4"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">MRP</label>
+                                            <div class="row gx-2">
+                                                <input placeholder="$" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <!-- <div class="mb-4">
+                                            <label class="form-label">Promotional price</label>
+                                            <input placeholder="$" type="text" class="form-control">
+                                        </div> -->
+                                    </div>
+                                    <!-- <div class="col-lg-4">
+                                        <label class="form-label">Currency</label>
+                                        <select class="form-select">
+                                            <option> USD </option>
+                                            <option> EUR </option>
+                                            <option> RUBL </option>
+                                        </select>
+                                    </div> -->
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="text" placeholder="quantity" class="form-control" id="product_name" value="jjj">
+                                </div>
+                                <!-- <label class="form-check mb-4">
+                                    <input class="form-check-input" type="checkbox" value="">
+                                    <span class="form-check-label"> Make a template </span>
+                                </label> -->
+                            </form>
                         </div>
-                        <div class="col-lg-2 col-md-3 col-6">
-                            <select class="form-select">
-                                <option>Show 20</option>
-                                <option>Show 30</option>
-                                <option>Show 40</option>
-                            </select>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <!-- <h4>Shipping</h4> -->
                         </div>
+                        <!-- <div class="card-body">
+                            <form>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-4">
+                                            <label for="product_name" class="form-label">Width</label>
+                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <div class="mb-4">
+                                            <label for="product_name" class="form-label">Height</label>
+                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Weight</label>
+                                    <input type="text" placeholder="gam" class="form-control" id="product_name">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Shipping fees</label>
+                                    <input type="text" placeholder="$" class="form-control" id="product_name">
+                                </div>
+                            </form>
+                        </div> -->
                     </div>
-                </header> <!-- card-header end// -->
-                <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>User</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
-                                    <th>Registration</th>
-                                    <th class="text-end"> Action </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <%if(locals.userData){%>
-
-                                    <%for(let i = 0;i<userData.length;i++){%> 
-
-                                        <tr>
-                                            <td><%=userData[i].name%></td>
-                                            <td><%=userData[i].email%></td>
-                                            <%if(userData[i].isActive){%>
-                                            <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                            <%}else{%>
-                                                <td><span class="badge rounded-pill alert-danger">inactive</span></td>
-                                                <%}%>
-                                            <td><%=userData[i].date.toLocaleString()%></td>
-                                            <!-- <td></td> -->
-                                            <td class="text-end">
-                                             <%if(userData[i].isActive){%>
-                                                <a href="/admin/blockUser?userId=<%=userData[i]._id%>" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
-                                                <%}else{%>
-                                                    <a href="/admin/unblockUser?userId=<%=userData[i]._id%>" class="btn btn-sm btn-brand rounded font-sm mt-15">unBlock</a>
-                                                   <%}%>
-                                           
-                                            </td>
-                                        </tr>
-
-
-
-                                   <% }%>
-
-                              
-                               
-
-                                <% } %>
-                               
-                            </tbody>
-                        </table> <!-- table-responsive.// -->
-                    </div>
-                </div> <!-- card-body end// -->
-            </div> <!-- card end// -->
-            <div class="pagination-area mt-15 mb-50">
-                <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-start">
-                        <li class="page-item active"><a class="page-link" href="#">01</a></li>
-                        <li class="page-item"><a class="page-link" href="#">02</a></li>
-                        <li class="page-item"><a class="page-link" href="#">03</a></li>
-                        <li class="page-item"><a class="page-link dot" href="#">...</a></li>
-                        <li class="page-item"><a class="page-link" href="#">16</a></li>
-                        <li class="page-item"><a class="page-link" href="#"><i class="material-icons md-chevron_right"></i></a></li>
-                    </ul>
-                </nav>
+                </div>
+                <div class="col-lg-3">
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Media</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="input-upload">
+                                <img src="/admin-assets/imgs/theme/upload.svg" alt="">
+                                <input class="form-control" type="file">
+                            </div>
+                        </div>
+                    </div> <!-- card end// -->
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h4>Organization</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row gx-2">
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Category</label>
+                                    <select class="form-select">
+                                        <option> Automobiles </option>
+                                        <option> Home items </option>
+                                        <option> Electronics </option>
+                                        <option> Smartphones </option>
+                                        <option> Sport items </option>
+                                        <option> Baby and Tous </option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 mb-3">
+                                    <label class="form-label">Brand</label>
+                                    <select class="form-select">
+                                        <option> Nissan </option>
+                                        <option> Honda </option>
+                                        <option> Mercedes </option>
+                                        <option> Chevrolet </option>
+                                    </select>
+                                </div>
+                                <!-- <div class="mb-4">
+                                    <label for="product_name" class="form-label">Tags</label>
+                                    <input type="text" class="form-control">
+                                </div> -->
+                            </div> <!-- row.// -->
+                        </div>
+                    </div> <!-- card end// -->
+                </div>
             </div>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
-                    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+                    <script>
                     document.write(new Date().getFullYear())
                     </script> ©, Evara - HTML Ecommerce Template .
                 </div>
@@ -309,5 +355,5 @@
 </body>
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-sellers-list.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:23 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-form-product-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:32 GMT -->
 </html>

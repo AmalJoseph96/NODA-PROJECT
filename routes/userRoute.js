@@ -10,7 +10,7 @@ const config = require("../config/config") ;
 
 user_route.use(session({secret:config.sessionSecret})) ; 
 
-// const auth = require('../middleware/userAuth') ;
+const userAuth = require('../middleware/userAuth') ;
 
 user_route.set('view engine', 'ejs'); 
 user_route.set('views', './views/user');
@@ -29,12 +29,13 @@ user_route.use(express.static('public'));
 const userController = require('../controllers/userController');
 
 user_route.get('/', userController.loadHome);
-user_route.get('/login', userController.loadlogin)
-user_route.get('/register', userController.loadRegister);
-user_route.post('/register',userController.insertUser) ;
+user_route.get('/login',userAuth.isLogout, userController.loadlogin)
+user_route.get('/logout',userController.loadLogout) ;
+user_route.get('/register',userAuth.isLogout,userController.loadRegister);
+user_route.post('/register',userAuth.uniqueEmailId,userController.insertUser) ;
 user_route.post('/login',userController.verifyLogin);
-user_route.get('/sendOtp',userController.sendOtp);
-user_route.post('/verifyOtp',userController.verifyOtp)
+user_route.get('/sendOtp',userAuth.isLogout,userController.sendOtp);
+user_route.post('/verifyOtp',userAuth.isLogout,userController.verifyOtp)
 
 
 module.exports = user_route;

@@ -12,9 +12,9 @@ const productSchema= mongoose.Schema({
     date:{type:Date,default:Date.now},
     regularprice:{type:Number,required:true},
     salesprice:{type:Number,required:true},
-    image:[{ type:String}],
+    image:[{type:String}],
     tags:{type:String},
-    is_active:{type:Boolean,default:false},
+    is_active:{type:Boolean,default:true},
     quantity:{type:Number,default:0},
     cat_status:{type:Boolean,default:0},
     brand_status:{type:Boolean,default:0}

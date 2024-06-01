@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTP Page</title>
+    <title>OTP Verification</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <style>
         body {
@@ -25,23 +25,17 @@
             width: 100%;
             text-align: center;
         }
-        h1 {
-            margin-bottom: 20px;
+        .form-group {
+            margin-bottom: 15px;
         }
-        label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-        input[type="text"] {
+        .form-group input {
             width: calc(100% - 20px);
             padding: 10px;
-            margin-bottom: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
             box-sizing: border-box;
         }
-        button {
+        .btn {
             background-color: #007bff;
             color: #fff;
             border: none;
@@ -50,53 +44,198 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-        button:hover {
+        .btn:hover {
             background-color: #0056b3;
         }
-        button:disabled {
+        .btn:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
         }
     </style>
 </head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f2f2f2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .form-group {
+        margin-bottom: 15px;
+    }
+    .btn {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .btn:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+    }
+    .error {
+        color: red;
+        font-size: 0.9em;
+        display: none;
+    }
+</style>
 <body>
     <div class="container">
-        <h1>Enter OTP</h1>
-        <form action="/verifyOtp" method="post">
-            <input type="text" id="otp" name="Otp" required>
-            <button type="submit">Submit</button>
+        <h1>OTP Verification</h1>
+        <form id="otpForm" action="/verifyOtp" method="post">
+            <div class="form-group">
+                <input type="text" id="otp" name="Otp" placeholder="Enter OTP" required>
+                <div id="otpError" class="error">OTP must be exactly 4 digits long and contain no spaces.</div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn">Submit</button>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn" id="resendOtpBtn" disabled>Resend OTP (<span id="timer">10</span>s)</button>
+            </div>
         </form>
-        <button id="resendOtpBtn" style="display: none;">Resend OTP</button>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <% if (locals.errorMsg) { %>
         <script>
-            Swal.fire({
-                icon: 'success',
-                title: '<%= errorMsg %>',
-                text: 'You have successfully verified your OTP!'
+            document.addEventListener('DOMContentLoaded', function() {
+                const otpForm = document.getElementById('otpForm');
+                const otpInput = document.getElementById('otp');
+                const otpError = document.getElementById('otpError');
+                const resendOtpBtn = document.getElementById('resendOtpBtn');
+                const timerSpan = document.getElementById('timer');
+                let timer = 10;
+    
+                // OTP validation function
+                function validateOtp() {
+                    const otpValue = otpInput.value;
+                    const isValid = /^\d{4}$/.test(otpValue);
+    
+                    if (!isValid) {
+                        otpError.style.display = 'block';
+                    } else {
+                        otpError.style.display = 'none';
+                    }
+    
+                    return isValid;
+                }
+    
+                otpInput.addEventListener('input', validateOtp);
+    
+                otpForm.addEventListener('submit', function(event) {
+                    if (!validateOtp()) {
+                        event.preventDefault();
+                    }
+                });
+    
+                // Countdown timer for Resend OTP button
+                const countdown = setInterval(function() {
+                    timer--;
+                    timerSpan.textContent = timer;
+                    if (timer === 0) {
+                        clearInterval(countdown);
+                        resendOtpBtn.disabled = false;
+                        resendOtpBtn.textContent = 'Resend OTP';
+                    }
+                }, 10000);
+    
+                resendOtpBtn.addEventListener('click', function() {
+                    resendOtpBtn.disabled = true;
+                    timer = 10;
+                    timerSpan.textContent = timer;
+                    resendOtpBtn.innerHTML = `Resend OTP (<span id="timer">10</span>s)`;
+                    setTimeout(function() {
+                        resendOtpBtn.disabled = false;
+                        resendOtpBtn.textContent = 'Resend OTP';
+                    }, 10000);
+    
+                    fetch('/sendOtp')
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data.message);
+                            // Reset timer for the next resend
+                            timer = 10;
+                            resendOtpBtn.disabled = true;
+                            countdown = setInterval(function() {
+                                timer--;
+                                timerSpan.textContent = timer;
+                                if (timer === 0) {
+                                    clearInterval(countdown);
+                                    resendOtpBtn.disabled = false;
+                                    resendOtpBtn.textContent = 'Resend OTP';
+                                }
+                            }, 1000);
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
             });
         </script>
-    <% } %>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const resendButton = document.getElementById('resendOtpBtn');
-            
-            // Function to enable the Resend OTP button after 10 seconds
-            function enableResendButton() {
-                resendButton.style.display = 'none';
-                setTimeout(() => {
-                    resendButton.style.display = 'block';
-                },10000); // 10 seconds
+            let timer = 10;
+
+            function startOtpTimer() {
+                resendButton.disabled = true;
+                resendButton.innerHTML = `Resend OTP (<span id="timer">${timer}</span>s)`;
+                const interval = setInterval(() => {
+                    timer--;
+                    document.getElementById('timer').innerText = timer;
+                    if (timer <= 0) {
+                        clearInterval(interval);
+                        resendButton.disabled = false;
+                        resendButton.innerHTML = 'Resend OTP';
+                    }
+                }, 1000);
             }
 
-            // Initial call to hide the button for the first 10 seconds
-            enableResendButton();
+            // Initial call to disable the button for the first 10 seconds
+            startOtpTimer();
 
             resendButton.addEventListener('click', function() {
-                window.location.href='/sendOtp'
+                fetch('/sendOtp') // Assuming your server has a route to send OTP
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data.message);
+                        Swal.fire('OTP sent!', 'Please check your email or phone.', 'success');
+                        // Reset and start the timer again
+                        timer = 10;
+                        startOtpTimer();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
             });
         });
+
     </script>
 </body>
 </html>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<% if (locals.errorMsg) { %>
+    <script>
+    Swal.fire({
+        position: "center",
+        icon: "error",
+        title: "<%= locals.errorMsg %>",
+        showConfirmButton: false,
+        timer: 1500
+    });
+</script>
+
+<% } %>
+
+
+
+
+
+
+
+
+ 

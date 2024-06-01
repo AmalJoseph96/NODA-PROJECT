@@ -1,80 +1,142 @@
-﻿
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - E-Commerce</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
-
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        /* Add your CSS styles here */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f1f1f1;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
+
         .login-container {
             max-width: 400px;
-            margin: 100px auto;
-            padding: 20px;
+            width: 100%;
             background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
+
         .login-container h2 {
             text-align: center;
             margin-bottom: 20px;
+            font-weight: 500;
+            color: #333;
         }
+
         .login-form {
-            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
         }
+
         .login-form label {
-            display: block;
             margin-bottom: 5px;
-            font-weight: bold;
+            font-weight: 500;
+            color: #555;
         }
+
         .login-form input[type="text"],
         .login-form input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
+            padding: 15px;
+            margin-bottom: 5px;
+            border: 1px solid #ddd;
             border-radius: 5px;
-            box-sizing: border-box;
+            font-size: 16px;
+            color: #333;
         }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
         .login-form button {
-            width: 100%;
-            padding: 10px;
-            background-color:green;
-            color: #fff;
+            padding: 15px;
+            background-color: #28a745;
             border: none;
             border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
         }
+
         .login-form button:hover {
-            background-color: #0056b3;
+            background-color: #218838;
+        }
+
+        .login-form .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #007bff;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .login-form .register-link:hover {
+            text-decoration: underline;
         }
     </style>
 </head>
+
 <body>
     <div class="login-container">
-        <h2>Login</h2>
-        <form class="login-form" action="/login" method="post">
+        <h2>Login to Your Account</h2>
+        <form class="login-form" id="loginForm" action="/login" method="post" onsubmit="return validateForm()">
             <div>
-                <label for="username">Email:</label>
-                <input type="text" id="username" name="email" required>
+                <label for="username">Email</label>
+                <input type="text" id="username" name="email" >
+                <div id="emailError" class="error-message"></div>
             </div>
             <div>
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" >
+                <div id="passwordError" class="error-message"></div>
             </div>
-            <div>
-                <button type="submit">Login</button>
-                <a href="/register" style="text-decoration: none;">Register here...</a>
-            </div>
+            <button type="submit">Login</button>
         </form>
+        <a href="/register" class="register-link">Don't have an account? Register here</a>
     </div>
+    <script>
+        function validateForm() {
+            let isValid = true;
+
+            // Clear previous error messages
+            document.getElementById('emailError').textContent = '';
+            document.getElementById('passwordError').textContent = '';
+
+            // Validate email format
+            const email = document.getElementById('username').value.trim();
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById('emailError').textContent = 'Please enter a valid email address.';
+                isValid = false;
+            }
+
+            // Validate password
+            const password = document.getElementById('password').value.trim();
+            if (password.length < 8) {
+                document.getElementById('passwordError').textContent = 'Password should be at least 8 characters long.';
+                isValid = false;
+            } else if (password.includes(' ')) {
+                document.getElementById('passwordError').textContent = 'Password should not contain spaces.';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <% if (locals.successMsg) { %>
         <script>
@@ -84,11 +146,7 @@
                 text: 'You have successfully verified your OTP!'
             });
         </script>
-    <% } %>
+        <% } %>
 </body>
-</html> 
 
-
-
-
-
+</html>

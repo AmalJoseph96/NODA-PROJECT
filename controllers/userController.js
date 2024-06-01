@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const helper = require('../helpers/helperFunction')
 const Swal = require('sweetalert2');
 const nodemailer = require('nodemailer');
+const Product = require('../models/productModel') ;
 
 const securePassword = async (password) => {
     try {
@@ -17,11 +18,15 @@ const securePassword = async (password) => {
 }
 const loadHome = async (req, res) => {
     try {
-        res.render('home')
+        const product = await Product.find({is_active:true})
+        const userId = req.session.user_id ;
+        const logData = await User.findById(userId) ;
+        res.render('home',{logData,product}) ;
     } catch (error) {
         console.log(error);
     }
 }
+
 
 const loadlogin = async (req, res) => {
     try {
@@ -30,6 +35,16 @@ const loadlogin = async (req, res) => {
         console.log(error);
     }
 
+}
+
+const loadLogout = async (req,res)=>{
+    try {
+        req.session.user_id = null ;
+        res.redirect('/login') ;
+        
+    } catch (error) {
+        console.log(error.message) ;
+    }
 }
 
 const verifyLogin = async (req, res) => {
@@ -164,14 +179,10 @@ const sendOtp = async (req, res) => {
 
 const verifyOtp = async (req, res) => {
     try {
-        // console.log("verify otp entered", new Date(), '///', req.session.otptime)
-        // console.log('otpdiff', new Date() - new Date(req.session.otptime))
         if ((new Date() - new Date(req.session.otptime)  > 30000)) {
-            // console.log('entering 1st condition')
             res.render('Otp', { errorMsg: 'Otp timeOut' })
         } else {
             if (req.body.Otp == req.session.otp) {
-                // console.log('otp is equal')
                 let user = new User(req.session.user)
                 await user.save()
                 const successMsg = 'OTP verified successfully!';
@@ -179,9 +190,8 @@ const verifyOtp = async (req, res) => {
 
 
             } else {
-                // console.log('coming to ese')
                 const errorMsg = 'Invalid OTP!';
-                Swal.fire('Error!', errorMsg, 'error');
+                // Swal.fire('Error!', errorMsg, 'error');
                 res.render('Otp', { errorMsg })
             }
 
@@ -199,5 +209,5 @@ const verifyOtp = async (req, res) => {
 }
 
 module.exports = {
-    loadHome, loadlogin, loadRegister, insertUser, verifyLogin, sendOtp, verifyOtp
+    loadHome, loadlogin, loadRegister, insertUser, verifyLogin, sendOtp, verifyOtp,loadLogout
 }
