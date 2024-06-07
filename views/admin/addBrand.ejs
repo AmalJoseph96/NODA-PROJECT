@@ -202,35 +202,39 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-md-3">
-                            <form>
+                        <div class="container d-flex flex-row">
+                            <div class="col-md-3">
+                              <form action="/admin/addBrandLoad" method="post" enctype="multipart/form-data">
                                 <div class="mb-4">
-                                    <label for="product_name" class="form-label">Brand Name</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" />
+                                  <label for="product_name" class="form-label">Brand Name</label>
+                                  <input type="text" placeholder="Type here" class="form-control" id="product_name" name="bname" />
                                 </div>
-                                <!-- <div class="mb-4">
-                                    <label for="product_slug" class="form-label">Slug</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_slug" />
-                                </div> -->
-                                <!-- <div class="mb-4">
-                                    <label class="form-label">Parent</label>
-                                    <select class="form-select">
-                                        <option>Clothes</option>
-                                        <option>T-Shirts</option>
-                                    </select>
-                                </div> -->
                                 <div class="mb-4">
-                                    <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" class="form-control"></textarea>
+                                  <label class="form-label">Description</label>
+                                  <textarea placeholder="Type here" class="form-control" name="bdescription"></textarea>
                                 </div>
                                 <div class="d-grid">
-                                    <button class="btn btn-primary">Add Brand</button>
+                                  <button type="submit" class="btn btn-primary">Add Brand</button>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                      <h4>Media</h4>
+                                    </div>
+                                    <div class="card-body">
+                                      <div class="input-upload">
+                                        <img src="/admin-assets/imgs/theme/upload.svg" alt="">
+                                        <input class="form-control" type="file" name="image" multiple>
+                                      </div>
+                                    </div>
+                                  </div>
+                              </form>
+                            </div>
+                        
+                          </div>
+                          
                         <div class="col-md-9">
                             <div class="table-responsive">
-                                <div class="card mb-4">
+                                <!-- <div class="card mb-4">
                                     <div class="card-header">
                                         <h4>Media</h4>
                                     </div>
@@ -240,7 +244,7 @@
                                             <input class="form-control" type="file" name="image">
                                         </div>
                                     </div>
-                                </div> 
+                                </div>  -->
                                 <!-- <table class="table table-hover">
                                     <thead>
                                         <tr>

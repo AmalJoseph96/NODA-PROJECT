@@ -293,13 +293,13 @@
                                             <td class="col-action text-end">
                                         </td> 
                                         <td class="col-action text-end">
-                                            <a href="/admin/editProduct?id=<%=product[i]._id %>" class="btn btn-sm btn-brand rounded font-sm mt-15">
+                                            <a href="/admin/editProduct?productId=<%=product[i]._id %>" class="btn btn-sm btn-brand rounded font-sm mt-15">
                                                 <i class="material-icons md-edit"></i> Edit
                                             </a>
                                             <% if (product[i].is_active) { %>
-                                                <a href="/admin/blockProduct?productId=<%=product[i]._id%>" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
+                                                <a onclick="confirmSubmission('<%=product[i]._id%>',0)" class="btn btn-sm btn-brand rounded font-sm mt-15">Block</a>
                                             <% } else { %>
-                                                <a href="/admin/unblockProduct?productId=<%=product[i]._id%>" class="btn btn-sm btn-brand rounded font-sm mt-15">unBlock</a>
+                                                <a onclick="confirmSubmission('<%=product[i]._id%>',1)" class="btn btn-sm btn-brand rounded font-sm mt-15">unBlock</a>
 
                                             <% } %>
                                         </td>
@@ -346,6 +346,30 @@
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        function confirmSubmission(id, condition) {
+          Swal.fire({
+              title: 'Are you sure?',
+              text: `${condition === 0 ? 'Are you sure to Block this product' : 'Are you sure to Unblock this product'}`,
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonText: 'Confirm',
+              confirmButtonColor:"#2e8b57",
+              cancelButtonText: 'Cancel'
+          }).then((result) => {
+              if (result.isConfirmed) {
+                  if(condition === 0 ) {
+                      window.location.href = "/admin/blockProduct?productId="+id;
+      
+                  }else
+                  window.location.href = "/admin/unblockProduct?productId="+id;
+              }
+          });
+      }
+
+
+        </script>
 </body>
 
 

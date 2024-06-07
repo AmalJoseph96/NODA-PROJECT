@@ -35,8 +35,9 @@ user_route.get('/register',userAuth.isLogout,userController.loadRegister);
 user_route.post('/register',userAuth.uniqueEmailId,userController.insertUser) ;
 user_route.post('/login',userController.verifyLogin);
 user_route.get('/sendOtp',userAuth.isLogout,userController.sendOtp);
-user_route.post('/verifyOtp',userAuth.isLogout,userController.verifyOtp)
-
+user_route.post('/verifyOtp',userAuth.isLogout,userController.verifyOtp) ;
+user_route.get('/productDetails',userAuth.ensureAuthenticated,userController.productDetails) ;
+ 
 
 module.exports = user_route;
 

@@ -1,20 +1,22 @@
 
 const mongoose = require('mongoose');
-const dotenv = require('dotenv') ;
-dotenv.config() ;
+const dotenv = require('dotenv');
+dotenv.config();
 mongoose.connect(process.env.MONGOSTRING);
 const userRoute = require('./routes/userRoute');
 const nocache = require('nocache');
-const path = require('path')
+const path = require('path') ;
+const sharp = require('sharpjs') ;
+
 
 
 const express = require('express');
 const session = require('express-session');
 const Swal = require('sweetalert2');
 const app = express();
-const multer = require('multer') ;
-const storage = multer.memoryStorage() ;
-app.use("/uploads",express.static("uploads")) ;
+const multer = require('multer');
+const storage = multer.memoryStorage();
+app.use("/uploads", express.static("uploads"));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 

@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt');
 const Category = require('../models/categoryModel');
 const Product = require('../models/productModel')
 const path = require('path');
+const Brand = require('../models/brandModel');
+const fs = require('fs') ;
+const sharp = require('sharpjs') ;
+
 
 const securePassword = async (password) => {
     try {
@@ -124,10 +128,11 @@ const unblockCategory = async (req, res) => {
 
 const addCategory = async (req, res) => {
     try {
-        const existingCategory = await Category.findOne({categoryName:req.body.name}) ;
-        if(existingCategory){
-            res.status(400).json({error:"category already exists"}) ;
-            return ;
+        const categoryName = req.body.name.toUpperCase();
+        const existingCategory = await Category.findOne({ categoryName });
+        if (existingCategory) {
+            res.status(400).json({ error: "category already exists" });
+            return;
         }
         const category = new Category({
             categoryName: req.body.name,
@@ -172,14 +177,64 @@ const unblockUser = async (req, res) => {
     }
 }
 const addProductPage = async (req, res) => {
-
-    res.render('addproduct');
+    const brandD = await Brand.find();
+    const catData = await Category.find();
+    res.render('addproduct', { brandD, catData });
 }
+// const addProduct = async (req, res) => {
+//     try {
+
+//         const processedImages = req.processedImages || [];
+
+//         console.log(req.files);
+//         const productData = new Product({
+//             title: req.body.title,
+//             brand: req.body.brand,
+//             description: req.body.description,
+//             weight: req.body.weight,
+//             shape: req.body.shape,
+//             color: req.body.color,
+//             category: req.body.category,
+//             regularprice: req.body.regularPrice,
+//             salesprice: req.body.salesPrice,
+//             image: req.files.map((file)=>file.filename),
+//             quantity: req.body.quantity
+
+
+
+//         })
+//         await productData.save();
+
+    
+
+
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+
 const addProduct = async (req, res) => {
     try {
-        const processedImages = req.processedImages || [];
+        const processedImages = [];
 
-        console.log(req.body);
+        // Process and resize images
+        const imagePromises = req.files.map(async (file) => {
+            const imagePath = path.join('uploads', file.filename);
+            const resizedImagePath = path.join('uploads', `resized_${file.filename}`);
+            
+            await sharp(file.buffer) // Using file.buffer for in-memory processing
+                .resize({ width: 572, height: 572 })
+                .toFile(resizedImagePath);
+
+            // Add the resized image filename to the processedImages array
+            processedImages.push(`resized_${file.filename}`);
+        });
+
+        // Wait for all images to be processed
+        await Promise.all(imagePromises);
+
+        // Create the product with the processed images
         const productData = new Product({
             title: req.body.title,
             brand: req.body.brand,
@@ -190,21 +245,19 @@ const addProduct = async (req, res) => {
             category: req.body.category,
             regularprice: req.body.regularPrice,
             salesprice: req.body.salesPrice,
-            image: req.files.map((file) => file.filename),
+            image: processedImages,
             quantity: req.body.quantity
+        });
 
-
-
-        })
         await productData.save();
 
-        console.log(productData);
-
+        // res.status(201).json({ message: 'Product added successfully', product: productData });
 
     } catch (error) {
         console.log(error.message);
+        // res.status(500).json({ message: 'Error adding product', error: error.message });
     }
-}
+};
 
 const editCategory = async (req, res) => {
     const catData = await Category.findById(req.query.catId)
@@ -215,10 +268,10 @@ const editCategory = async (req, res) => {
 const editCategoryLoad = async (req, res) => {
     try {
 
-       let id = req.query.id
+        let id = req.query.id
         const { cname, cdescription } = req.body;
 
-        const newCategory = await Category.findByIdAndUpdate(id, { $set: { categoryName:cname, description:cdescription } },{new:true})
+        const newCategory = await Category.findByIdAndUpdate(id, { $set: { categoryName: cname, description: cdescription } }, { new: true })
 
 
 
@@ -236,6 +289,6 @@ const editCategoryLoad = async (req, res) => {
 
 
 module.exports = {
-    loadLogin, verifyLogin, loadDashboard, userList, loadCategory, addCategory, blockUser, unblockUser, addProductPage, addProduct, blockCategory, unblockCategory, editCategory, editCategoryLoad
+    loadLogin,securePassword, verifyLogin, loadDashboard, userList, loadCategory, addCategory, blockUser, unblockUser, addProductPage, addProduct, blockCategory, unblockCategory, editCategory, editCategoryLoad
 
 }

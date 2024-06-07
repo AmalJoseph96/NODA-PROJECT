@@ -208,6 +208,19 @@ const verifyOtp = async (req, res) => {
 
 }
 
+const productDetails = async (req,res)=>{
+    try {
+     
+        const productId = await Product.findById(req.query.productId)
+
+        res.render('productDetails',{productId}) ;
+        
+    } catch (error) {
+        console.log(error.message) ;
+        
+    }
+}
+
 module.exports = {
-    loadHome, loadlogin, loadRegister, insertUser, verifyLogin, sendOtp, verifyOtp,loadLogout
+    loadHome, loadlogin, loadRegister, insertUser, verifyLogin, sendOtp, verifyOtp,loadLogout,productDetails
 }
