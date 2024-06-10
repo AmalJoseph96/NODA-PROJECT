@@ -6,7 +6,9 @@ mongoose.connect(process.env.MONGOSTRING);
 const userRoute = require('./routes/userRoute');
 const nocache = require('nocache');
 const path = require('path') ;
-const sharp = require('sharpjs') ;
+
+
+
 
 
 
@@ -19,6 +21,7 @@ const storage = multer.memoryStorage();
 app.use("/uploads", express.static("uploads"));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
+
 
 app.use('/', userRoute);
 

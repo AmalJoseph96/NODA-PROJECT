@@ -15,8 +15,18 @@
     <meta property="og:image" content="">
     <!-- Favicon -->
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
-    <!-- Template CSS -->
+
+    <!-- jQuery -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    
+    <!-- Magic Zoom Plus CSS -->
+    <link rel="stylesheet" href="magiczoomplus/magiczoomplus.css">
+    
+    <!-- Main CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+
+    <!-- Magic Zoom Plus JS -->
+    <script src="magiczoomplus/magiczoomplus.js"></script>
 </head>
 
 <body>
@@ -832,13 +842,28 @@
                         <div class="product-detail accordion-detail">
                             <div class="row mb-50">
                                 <div class="col-md-6 col-sm-12 col-xs-12">
-                                    <div class="detail-gallery">
-                                        <span class="zoom-icon"><i class="fi-rs-search"></i></span>
-                                        <%if(productId){%>
-                                        <figure class="border-radius-10">
-                                            <img src="/uploads/<%=productId.image[0]%>" alt="product image">
-                                        </figure>
-                                        <%}%>
+                                    <div class="detail-gallery" style="width: 100%;">
+                                        <div class="product-image-slider">
+                                            <% if (productId) { %>
+                                                <figure class="border-radius-10" style="background-color: white;">
+                                                    <a href="/uploads/<%= productId.image[0] %>" class="MagicZoom" >
+                                                        <img style="max-width: fit-content;" src="/uploads/<%= productId.image[0] %>" alt="Product Image">
+                                                    </a>
+                                                </figure>
+                                            <% } %>
+                                        </div>
+                                    </div>
+
+                                    <!-- <script>
+                                        $(document).ready(function() {
+                                            MagicZoomPlus.options = {
+                                                'zoomMode': 'zoom',
+                                                'variableZoom': true,
+                                                'zoomPosition': 'outer'
+                                            };
+                                        });
+                                    </script> -->
+                                    
                                         <!-- MAIN SLIDES -->
                                         <!-- <div class="product-image-slider">
                                             <figure class="border-radius-10">
@@ -873,7 +898,6 @@
                                             <div><img src="assets/imgs/shop/thumbnail-8.jpg" alt="product image"></div>
                                             <div><img src="assets/imgs/shop/thumbnail-9.jpg" alt="product image"></div>
                                         </div> -->
-                                    </div>
                                     <!-- End Gallery -->
                                     <!-- <div class="social-icons single-share">
                                         <ul class="text-grey-5 d-inline-block">
@@ -892,7 +916,7 @@
                                         <h2 class="title-detail"><%=productId.title%></h2>
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
-                                                <span> Brand: <a href="shop-grid-right.html"><%=productId.brand%></a></span>
+                                                <span> Brand: <a href="shop-grid-right.html"><%=productId.brand.name%></a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -915,14 +939,14 @@
                                             <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquam rem officia, corrupti reiciendis minima nisi modi, quasi, odio minus dolore impedit fuga eum eligendi? Officia doloremque facere quia. Voluptatum, accusantium!</p>
                                         </div> -->
                                         <div class="product_sort_info font-xs mb-30">
-                                            <ul>
+                                            <!-- <ul>
                                                 <li class="mb-10"><i class="fi-rs-crown mr-5"></i> 1 Year AL Jazeera Brand Warranty</li>
                                                 <li class="mb-10"><i class="fi-rs-refresh mr-5"></i> 30 Day Return Policy</li>
                                                 <li><i class="fi-rs-credit-card mr-5"></i> Cash on Delivery available</li>
-                                            </ul>
+                                            </ul> -->
                                         </div>
                                     
-                                        <div class="attr-detail attr-size">
+                                        <!-- <div class="attr-detail attr-size">
                                             <strong class="mr-10">Size</strong>
                                             <ul class="list-filter size-filter font-small">
                                                 <li><a href="#">S</a></li>
@@ -931,7 +955,7 @@
                                                 <li><a href="#">XL</a></li>
                                                 <li><a href="#">XXL</a></li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
                                         <div class="detail-extralink">
                                             <!-- <div class="detail-qty border radius">
@@ -951,7 +975,7 @@
                                             <li>Availability:<span class="in-stock text-success ml-5">8 Items In Stock</span></li>
                                         </ul> -->
                                         
-                                        <%}%>
+                                      
                                     </div>
                                     <!-- Detail Info -->
                                 </div>
@@ -965,13 +989,13 @@
                                 <div class="tab-content shop_info_tab entry-main-content">
                                     <div class="tab-pane fade show active" id="Description">
                                         <div class="">
-                                            <p>Uninhibited carnally hired played in whimpered dear gorilla koala depending and much yikes off far quetzal goodness and from for grimaced goodness unaccountably and meadowlark near unblushingly crucial scallop
-                                                tightly neurotic hungrily some and dear furiously this apart.</p>
-                                            <p>Spluttered narrowly yikes left moth in yikes bowed this that grizzly much hello on spoon-fed that alas rethought much decently richly and wow against the frequent fluidly at formidable acceptably flapped
-                                                besides and much circa far over the bucolically hey precarious goldfinch mastodon goodness gnashed a jellyfish and one however because.
+                                            <!-- <p>Uninhibited carnally hired played in whimpered dear gorilla koala depending and much yikes off far quetzal goodness and from for grimaced goodness unaccountably and meadowlark near unblushingly crucial scallop
+                                                tightly neurotic hungrily some and dear furiously this apart.</p> -->
+                                            <p><%=productId.description%>
                                             </p>
                                         </div>
                                     </div>
+                                    <%}%>
                                     <!-- <div class="tab-pane fade" id="Additional-info">
                                         <table class="font-md">
                                             <tbody>
@@ -1619,6 +1643,17 @@
     <!-- Template  JS -->
     <script src="assets/js/maind134.js?v=3.4"></script>
     <script src="assets/js/shopd134.js?v=3.4"></script>
+
+    <!-- <script>
+        $(document).ready(function() {
+            // MagicZoomPlus is initialized automatically
+            MagicZoomPlus.options = {
+                'zoomMode': 'zoom',
+                'variableZoom': true,
+                'zoomPosition': 'inner'
+            };
+        });
+    </script> -->
 </body>
 
 

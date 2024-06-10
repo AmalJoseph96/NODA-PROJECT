@@ -20,6 +20,7 @@ const adminAuth = require('../middleware/adminAuth');
 adminRoute.get('/', adminAuth.isLogout, adminController.loadLogin);
 adminRoute.post('/', adminAuth.isLogout, adminController.verifyLogin);
 adminRoute.get('/home', adminAuth.isLogin, adminController.loadDashboard);
+adminRoute.get('/logout',adminController.loadLogout) ;
 adminRoute.get('/userlist', adminAuth.isLogin, adminController.userList);
 adminRoute.get('/category', adminAuth.isLogin, adminController.loadCategory);
 adminRoute.get('/blockCategory', adminAuth.isLogin, adminController.blockCategory);
@@ -28,17 +29,17 @@ adminRoute.post('/category', adminAuth.isLogin, adminController.addCategory);
 adminRoute.get('/blockUser', adminAuth.isLogin, adminController.blockUser);
 adminRoute.get('/unblockUser', adminAuth.isLogin, adminController.unblockUser);
 adminRoute.get('/addproduct', adminAuth.isLogin, adminController.addProductPage);
-adminRoute.post('/addProduct', upload.array('image', 5), adminController.addProduct);
+adminRoute.post('/addProduct', upload.array('image',5), adminController.addProduct);
 adminRoute.get('/productlist', adminAuth.isLogin, productController.productList);
 adminRoute.get('/blockProduct', adminAuth.isLogin, productController.blockProduct);
 adminRoute.get('/unblockProduct', adminAuth.isLogin, productController.unblockProduct);
 adminRoute.get('/editProduct', adminAuth.isLogin, productController.editProduct);
 adminRoute.get('/brand', adminAuth.isLogin, productController.brand);
 adminRoute.get('/addBrand', adminAuth.isLogin, productController.addBrand);
-adminRoute.post('/addBrandLoad', upload.array('image', 2), productController.addBrandLoad);
+adminRoute.post('/addBrandLoad', upload.array('image',2), productController.addBrandLoad);
 adminRoute.get('/editCategory', adminController.editCategory);
 adminRoute.post('/editCategory', adminController.editCategoryLoad);
-adminRoute.post('/editProduct', productController.editProductLoad);
+adminRoute.post('/editProduct', upload.array('image',2), productController.editProductLoad);
 
 
 

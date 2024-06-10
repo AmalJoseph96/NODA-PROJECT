@@ -4,8 +4,8 @@ const Category = require('../models/categoryModel');
 const Product = require('../models/productModel')
 const path = require('path');
 const Brand = require('../models/brandModel');
-const fs = require('fs') ;
-const sharp = require('sharpjs') ;
+const fs = require('fs');
+const sharp = require('sharp');
 
 
 const securePassword = async (password) => {
@@ -29,6 +29,22 @@ const loadLogin = async (req, res) => {
     }
 }
 
+const loadLogout = async (req, res) => {
+    try {
+
+        req.session.admin_id = null;
+        res.redirect('/admin');
+
+
+
+
+    } catch (error) {
+        console.log(error.message);
+
+    }
+
+}
+
 const verifyLogin = async (req, res) => {
     try {
 
@@ -43,7 +59,6 @@ const verifyLogin = async (req, res) => {
                     res.render('login', { message: "incorrect email and password" });
                 } else {
                     req.session.admin_id = userData._id;
-                    // console.log("hghhhhhvh");
                     res.redirect('/admin/home');
                 }
 
@@ -67,7 +82,8 @@ const verifyLogin = async (req, res) => {
 
 const loadDashboard = async (req, res) => {
     try {
-        res.render('dashboard')
+        const logData = await User.findById(req.session.admin_id)
+        res.render('dashboard', { logData })
 
     } catch (error) {
         console.log(error.message);
@@ -181,50 +197,20 @@ const addProductPage = async (req, res) => {
     const catData = await Category.find();
     res.render('addproduct', { brandD, catData });
 }
-// const addProduct = async (req, res) => {
-//     try {
-
-//         const processedImages = req.processedImages || [];
-
-//         console.log(req.files);
-//         const productData = new Product({
-//             title: req.body.title,
-//             brand: req.body.brand,
-//             description: req.body.description,
-//             weight: req.body.weight,
-//             shape: req.body.shape,
-//             color: req.body.color,
-//             category: req.body.category,
-//             regularprice: req.body.regularPrice,
-//             salesprice: req.body.salesPrice,
-//             image: req.files.map((file)=>file.filename),
-//             quantity: req.body.quantity
-
-
-
-//         })
-//         await productData.save();
-
-    
-
-
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
 
 
 const addProduct = async (req, res) => {
     try {
-        const processedImages = [];
+        const processedImages = req.processedImages || [];
 
         // Process and resize images
         const imagePromises = req.files.map(async (file) => {
-            const imagePath = path.join('uploads', file.filename);
-            const resizedImagePath = path.join('uploads', `resized_${file.filename}`);
-            
-            await sharp(file.buffer) // Using file.buffer for in-memory processing
-                .resize({ width: 572, height: 572 })
+            const imagePath = `uploads/${file.filename}`;
+            const resizedImagePath = `uploads/resized_${file.filename}`;
+
+            // Resize the image to a fixed width and height
+            await sharp(imagePath)
+                .resize({ width: 200, height: 200 })
                 .toFile(resizedImagePath);
 
             // Add the resized image filename to the processedImages array
@@ -234,7 +220,7 @@ const addProduct = async (req, res) => {
         // Wait for all images to be processed
         await Promise.all(imagePromises);
 
-        // Create the product with the processed images
+        // Save the product data to the database with the processed image filenames
         const productData = new Product({
             title: req.body.title,
             brand: req.body.brand,
@@ -248,14 +234,12 @@ const addProduct = async (req, res) => {
             image: processedImages,
             quantity: req.body.quantity
         });
-
         await productData.save();
 
-        // res.status(201).json({ message: 'Product added successfully', product: productData });
+        res.redirect('/admin/productlist');
 
     } catch (error) {
-        console.log(error.message);
-        // res.status(500).json({ message: 'Error adding product', error: error.message });
+        console.error('Error adding product:', error);
     }
 };
 
@@ -289,6 +273,6 @@ const editCategoryLoad = async (req, res) => {
 
 
 module.exports = {
-    loadLogin,securePassword, verifyLogin, loadDashboard, userList, loadCategory, addCategory, blockUser, unblockUser, addProductPage, addProduct, blockCategory, unblockCategory, editCategory, editCategoryLoad
+    loadLogin, securePassword, verifyLogin, loadDashboard, userList, loadCategory, addCategory, blockUser, unblockUser, addProductPage, addProduct, blockCategory, unblockCategory, editCategory, editCategoryLoad, loadLogout
 
 }

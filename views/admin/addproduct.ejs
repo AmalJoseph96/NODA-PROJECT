@@ -17,6 +17,18 @@
     <link rel="shortcut icon" type="image/x-icon" href="/admin-assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+
+
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        .error-message {
+            color: red;
+            font-size: 0.875em;
+            margin-top: 5px;
+        }
+    </style>
 </head>
 
 <body>
@@ -185,164 +197,224 @@
             </div>
         </header>
         <section class="content-main">
-            <form action="/admin/addProduct" method="post" enctype="multipart/form-data">
-            <div class="row">
-                <div class="col-9">
-                    <div class="content-header">
-                        <h2 class="content-title">Add New Product</h2>
-                        <div>
-                            <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
-                            <button type="submit" class="btn btn-md rounded font-sm hover-up">Add product</button>
+            <form id="productForm" action="/admin/addProduct" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="col-9">
+                        <div class="content-header">
+                            <h2 class="content-title">Add New Product</h2>
+                            <div>
+                                <button type="submit" class="btn btn-md rounded font-sm hover-up">Add product</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-6">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Basic</h4>
-                        </div>
-                        <div class="card-body">
-                            
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Basic</h4>
+                            </div>
+                            <div class="card-body">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Product title</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_name" name="title">
+                                    <div class="error-message" id="titleError"></div>
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
-                                    <textarea placeholder="Type here" class="form-control" rows="4" name="description"></textarea>
+                                    <textarea placeholder="Type here" class="form-control" rows="4" name="description" id="description"></textarea>
+                                    <div class="error-message" id="descriptionError"></div>
                                 </div>
                                 <div class="row">
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Weight</label>
                                             <div class="row gx-2">
-                                                <input placeholder="Type here" type="number" class="form-control" name="weight">
+                                                <input placeholder="Enter weight in grams" type="number" class="form-control" name="weight" id="weight">
+                                                <div class="error-message" id="weightError"></div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Colour</label>
-                                            <input placeholder="Type here" type="text" class="form-control" name="color">
+                                            <input placeholder="Type here" type="text" class="form-control" name="color" id="color">
+                                            <div class="error-message" id="colorError"></div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
                                             <label class="form-label">Shape</label>
-                                            <input placeholder="Type here" type="text" class="form-control" name="shape">
+                                            <input placeholder="Type here" type="text" class="form-control" name="shape" id="shape">
+                                            <div class="error-message" id="shapeError"></div>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-lg-4">
-                                        <label class="form-label">Shape</label>
-                                        <select class="form-select">
-                                            <option> USD </option>
-                                            <option> EUR </option>
-                                            <option> RUBL </option>
-                                        </select>
-                                    </div> -->
                                 </div>
                                 <div class="col-lg-4">
                                     <% if (brandD) { %>
                                         <label class="form-label">Brand</label>
                                         <select class="form-select" name="brand">
                                             <% for (let i = 0; i < brandD.length; i++) { %>
-                                                <option><%= brandD[i].name%></option>
+                                                <option value="<%=brandD[i]._id%>"><%= brandD[i].name %></option>
                                             <% } %>
                                         </select>
+                                        <div class="error-message" id="brandError"></div>
                                     <% } %>
                                 </div>
-                                
-                                <!-- <label class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    <span class="form-check-label"> Make a template </span>
-                                </label> -->
-                           
+                            </div>
                         </div>
-                    </div> <!-- card end// -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <!-- <h4>Shipping</h4> -->
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Regular price</label>
-                                        <div class="row gx-2">
-                                            <input placeholder="$" type="number" class="form-control" name="regularPrice">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Pricing</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Regular price</label>
+                                            <div class="row gx-2">
+                                                <input placeholder="$" type="number" class="form-control" name="regularPrice" id="regularPrice">
+                                                <div class="error-message" id="regularPriceError"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Sales price</label>
+                                            <input placeholder="$" type="number" class="form-control" name="salesPrice" id="salesPrice">
+                                            <div class="error-message" id="salesPriceError"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-4">
+                                        <div class="mb-4">
+                                            <label class="form-label">Quantity</label>
+                                            <input placeholder="Type here" type="number" class="form-control" name="quantity" id="quantity">
+                                            <div class="error-message" id="quantityError"></div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">sales-Price</label>
-                                        <input placeholder="$" type="number" class="form-control" name="salesPrice">
-                                    </div>
-                                </div>
-                                <div class="col-lg-4">
-                                    <div class="mb-4">
-                                        <label class="form-label">Quantity</label>
-                                        <input placeholder="$" type="number" class="form-control" name="quantity">
-                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Media</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="input-upload">
+                                    <img src="/admin-assets/imgs/theme/upload.svg" alt="">
+                                    <input class="form-control" type="file" name="image" id="image" multiple>
+                                    <div class="error-message" id="imageError"></div>
                                 </div>
                             </div>
                         </div>
-                    </div> <!-- card end// -->
-                </div>
-                <div class="col-lg-3">
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <h4>Media</h4>
-                        </div>
-                        <div class="card-body">
-                            <div class="input-upload">
-                                <img src="/admin-assets/imgs/theme/upload.svg" alt="">
-                                <input class="form-control" type="file" name="image" multiple>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <h4>Organization</h4>
                             </div>
-                        </div>
-                    </div> <!-- card end// -->
-                    <div class="card mb-4">
-                        <div class="card-header">
-                            <!-- <h4>Organization</h4> -->
-                        </div>
-                        <div class="card-body">
-                            <div class="row gx-2">
-                                <div class="col-sm-6 mb-3">
-                                    <% if (catData && catData.length) { %>
-                                      <label class="form-label">Category</label>
-                                      <select class="form-select" name="category" style="
-                                        -webkit-appearance: none;
-                                        -moz-appearance: none;
-                                        appearance: none;
-                                        background: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;feather feather-chevron-down&quot;><polyline points=&quot;6 9 12 15 18 9&quot;></polyline></svg>') no-repeat right 0.75rem center;
-                                        background-size: 1em;
-                                        padding-right: 2.5rem;
-                                      ">
-                                        <% for (let i = 0; i < catData.length; i++) { %>
-                                          <option value="<%= catData[i].id %>"><%= catData[i].categoryName %></option>
+                            <div class="card-body">
+                                <div class="row gx-2">
+                                    <div class="col-sm-6 mb-3">
+                                        <% if (catData && catData.length) { %>
+                                            <label class="form-label">Category</label>
+                                            <select class="form-select" name="category" style="
+                                                -webkit-appearance: none;
+                                                -moz-appearance: none;
+                                                appearance: none;
+                                                background: url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; class=&quot;feather feather-chevron-down&quot;><polyline points=&quot;6 9 12 15 18 9&quot;></polyline></svg>') no-repeat right 0.75rem center;
+                                                background-size: 1em;
+                                                padding-right: 2.5rem;">
+                                                <% for (let i = 0; i < catData.length; i++) { %>
+                                                    <option value="<%= catData[i]._id %>"><%= catData[i].categoryName %></option>
+                                                <% } %>
+                                            </select>
+                                            <div class="error-message" id="categoryError"></div>
                                         <% } %>
-                                      </select>
-                                    <% } %>
-                                  </div>
-                                  
-                                <!-- <div class="col-sm-6 mb-3">
-                                    <label class="form-label">Gender</label>
-                                    <select class="form-select">
-                                        <option> Male </option>
-                                        <option>Female </option>
-                                        <option> Unisex</option>
-                                    </select>
-                                </div> -->
-                                <!-- <div class="mb-4">
-                                    <label for="product_name" class="form-label">Tags</label>
-                                    <input type="text" class="form-control">
-                                </div> -->
-                            </div> <!-- row.// -->
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div> <!-- card end// -->
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+            <script>
+                document.getElementById('productForm').addEventListener('submit', function (e) {
+                    // Prevent form submission
+                    e.preventDefault();
+        
+                    // Clear previous error messages
+                    document.querySelectorAll('.error-message').forEach(function(el) {
+                        el.textContent = '';
+                    });
+        
+                    // Validate fields
+                    const title = document.getElementById('product_name').value.trim();
+                    const description = document.getElementById('description').value.trim();
+                    const weight = document.getElementById('weight').value.trim();
+                    const regularPrice = document.getElementById('regularPrice').value.trim();
+                    const salesPrice = document.getElementById('salesPrice').value.trim();
+                    const quantity = document.getElementById('quantity').value.trim();
+                    const image = document.getElementById('image').files.length;
+                    const category = document.querySelector('select[name="category"]').value;
+                    const brand = document.querySelector('select[name="brand"]').value;
+        
+                    let isValid = true;
+        
+                    // Check for empty fields and spaces
+                    if (title === '') {
+                        document.getElementById('titleError').textContent = 'Product title is required.';
+                        isValid = false;
+                    }
+                    if (description === '') {
+                        document.getElementById('descriptionError').textContent = 'Description is required.';
+                        isValid = false;
+                    }
+                    if (weight === '') {
+                        document.getElementById('weightError').textContent = 'Weight is required.';
+                        isValid = false;
+                    } else if (isNaN(weight)) {
+                        document.getElementById('weightError').textContent = 'Weight must be a number.';
+                        isValid = false;
+                    }
+                    if (regularPrice === '') {
+                        document.getElementById('regularPriceError').textContent = 'Regular price is required.';
+                        isValid = false;
+                    } else if (isNaN(regularPrice)) {
+                        document.getElementById('regularPriceError').textContent = 'Regular price must be a number.';
+                        isValid = false;
+                    }
+                    if (salesPrice === '') {
+                        document.getElementById('salesPriceError').textContent = 'Sales price is required.';
+                        isValid = false;
+                    } else if (isNaN(salesPrice)) {
+                        document.getElementById('salesPriceError').textContent = 'Sales price must be a number.';
+                        isValid = false;
+                    }
+                    if (quantity === '') {
+                        document.getElementById('quantityError').textContent = 'Quantity is required.';
+                        isValid = false;
+                    } else if (isNaN(quantity)) {
+                        document.getElementById('quantityError').textContent = 'Quantity must be a number.';
+                        isValid = false;
+                    }
+                    if (image === 0) {
+                        document.getElementById('imageError').textContent = 'Image upload is required.';
+                        isValid = false;
+                    }
+                    if (category === '') {
+                        document.getElementById('categoryError').textContent = 'Category is required.';
+                        isValid = false;
+                    }
+                    if (brand === '') {
+                        document.getElementById('brandError').textContent = 'Brand is required.';
+                        isValid = false;
+                    }
+        
+                    // Submit the form if all checks pass
+                    if (isValid) {
+                        this.submit();
+                    }
+                });
+            </script>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">

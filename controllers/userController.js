@@ -3,7 +3,7 @@ const bcrypt = require('bcrypt');
 const helper = require('../helpers/helperFunction')
 const Swal = require('sweetalert2');
 const nodemailer = require('nodemailer');
-const Product = require('../models/productModel') ;
+const Product = require('../models/productModel');
 
 const securePassword = async (password) => {
     try {
@@ -18,10 +18,10 @@ const securePassword = async (password) => {
 }
 const loadHome = async (req, res) => {
     try {
-        const product = await Product.find({is_active:true})
-        const userId = req.session.user_id ;
-        const logData = await User.findById(userId) ;
-        res.render('home',{logData,product}) ;
+        const product = await Product.find({ is_active: true })
+        const userId = req.session.user_id;
+        const logData = await User.findById(userId);
+        res.render('home', { logData, product });
     } catch (error) {
         console.log(error);
     }
@@ -30,6 +30,7 @@ const loadHome = async (req, res) => {
 
 const loadlogin = async (req, res) => {
     try {
+
         res.render('login')
     } catch (error) {
         console.log(error);
@@ -37,13 +38,13 @@ const loadlogin = async (req, res) => {
 
 }
 
-const loadLogout = async (req,res)=>{
+const loadLogout = async (req, res) => {
     try {
-        req.session.user_id = null ;
-        res.redirect('/login') ;
-        
+        req.session.user_id = null;
+        res.redirect('/login');
+
     } catch (error) {
-        console.log(error.message) ;
+        console.log(error.message);
     }
 }
 
@@ -52,17 +53,23 @@ const verifyLogin = async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const userData = await User.findOne({ email: email });
-        console.log("userdata:", userData)
+        // console.log("userdata:", userData)
 
         if (userData) {
             const passwordMatch = await bcrypt.compare(password, userData.password);
             if (passwordMatch) {
-                // console.log(passwordMatch)
-                // console.log(userData._id)
-                // console.log(req.session)
 
-                req.session.user_id = userData._id;
-                res.redirect('/');
+                if (userData.isActive == true) {
+                    req.session.user_id = userData._id;
+                    res.redirect('/');
+
+                } else {
+                    res.render('login', { message1: "User Blocked By Admin" });
+
+                }
+
+
+
 
             } else {
                 res.render('login', { message: "email and password is incorrect" });
@@ -88,15 +95,7 @@ const loadRegister = async (req, res) => {
 
     }
 }
-const userRegisteration = async (req, res) => {
-    try {
 
-
-
-    } catch (error) {
-        console.log(error.message)
-    }
-}
 const insertUser = async (req, res) => {
     try {
         const spassword = await securePassword(req.body.password)
@@ -179,7 +178,7 @@ const sendOtp = async (req, res) => {
 
 const verifyOtp = async (req, res) => {
     try {
-        if ((new Date() - new Date(req.session.otptime)  > 30000)) {
+        if ((new Date() - new Date(req.session.otptime) > 30000)) {
             res.render('Otp', { errorMsg: 'Otp timeOut' })
         } else {
             if (req.body.Otp == req.session.otp) {
@@ -208,19 +207,19 @@ const verifyOtp = async (req, res) => {
 
 }
 
-const productDetails = async (req,res)=>{
+const productDetails = async (req, res) => {
     try {
-     
-        const productId = await Product.findById(req.query.productId)
 
-        res.render('productDetails',{productId}) ;
-        
+        const productId = await Product.findById(req.query.productId).populate("brand")
+
+        res.render('productDetails', { productId });
+
     } catch (error) {
-        console.log(error.message) ;
-        
+        console.log(error.message);
+
     }
 }
 
 module.exports = {
-    loadHome, loadlogin, loadRegister, insertUser, verifyLogin, sendOtp, verifyOtp,loadLogout,productDetails
+    loadHome, loadlogin, loadRegister, insertUser, verifyLogin, sendOtp, verifyOtp, loadLogout, productDetails
 }

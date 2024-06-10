@@ -19,6 +19,14 @@
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
 </head>
 
+<style>
+    .error-message {
+        color: red;
+        font-size: 0.875em;
+        margin-top: 5px;
+    }
+</style>
+
 <body>
     <div class="screen-overlay"></div>
     <aside class="navbar-aside" id="offcanvas_aside">
@@ -204,30 +212,72 @@
                     <div class="row">
                         <div class="container d-flex flex-row">
                             <div class="col-md-3">
-                              <form action="/admin/addBrandLoad" method="post" enctype="multipart/form-data">
-                                <div class="mb-4">
-                                  <label for="product_name" class="form-label">Brand Name</label>
-                                  <input type="text" placeholder="Type here" class="form-control" id="product_name" name="bname" />
-                                </div>
-                                <div class="mb-4">
-                                  <label class="form-label">Description</label>
-                                  <textarea placeholder="Type here" class="form-control" name="bdescription"></textarea>
-                                </div>
-                                <div class="d-grid">
-                                  <button type="submit" class="btn btn-primary">Add Brand</button>
-                                </div>
-                                <div class="card mb-4">
-                                    <div class="card-header">
-                                      <h4>Media</h4>
+                                <form id="brandForm" action="/admin/addBrandLoad" method="post" enctype="multipart/form-data">
+                                    <div class="mb-4">
+                                        <label for="product_name" class="form-label">Brand Name</label>
+                                        <input type="text" placeholder="Type here" class="form-control" id="product_name" name="bname">
+                                        <div class="error-message" id="bnameError"></div>
                                     </div>
-                                    <div class="card-body">
-                                      <div class="input-upload">
-                                        <img src="/admin-assets/imgs/theme/upload.svg" alt="">
-                                        <input class="form-control" type="file" name="image" multiple>
-                                      </div>
+                                    <div class="mb-4">
+                                        <label class="form-label">Description</label>
+                                        <textarea placeholder="Type here" class="form-control" name="bdescription" id="bdescription"></textarea>
+                                        <div class="error-message" id="bdescriptionError"></div>
                                     </div>
-                                  </div>
-                              </form>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary">Add Brand</button>
+                                    </div>
+                                    <div class="card mb-4">
+                                        <div class="card-header">
+                                            <h4>Media</h4>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="input-upload">
+                                                <img src="/admin-assets/imgs/theme/upload.svg" alt="">
+                                                <input class="form-control" type="file" name="image" multiple>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+                                <script>
+                                    document.getElementById('brandForm').addEventListener('submit', function (e) {
+                                        // Prevent form submission
+                                        e.preventDefault();
+                            
+                                        // Clear previous error messages
+                                        document.querySelectorAll('.error-message').forEach(function(el) {
+                                            el.textContent = '';
+                                        });
+                            
+                                        // Validate fields
+                                        const bname = document.getElementById('product_name').value;
+                                        const bdescription = document.getElementById('bdescription').value;
+                            
+                                        let isValid = true;
+                            
+                                        // Check for empty fields and spaces
+                                        if (bname.trim() === '') {
+                                            document.getElementById('bnameError').textContent = 'Brand Name cannot be empty or contain only spaces.';
+                                            isValid = false;
+                                        } else if (!/^[A-Za-z\s]+$/.test(bname)) {
+                                            document.getElementById('bnameError').textContent = 'Brand Name can only contain letters and spaces.';
+                                            isValid = false;
+                                        }
+                            
+                                        if (bdescription.trim() === '') {
+                                            document.getElementById('bdescriptionError').textContent = 'Description cannot be empty or contain only spaces.';
+                                            isValid = false;
+                                        } else if (!/^[A-Za-z\s]+$/.test(bdescription)) {
+                                            document.getElementById('bdescriptionError').textContent = 'Description can only contain letters and spaces.';
+                                            isValid = false;
+                                        }
+                            
+                                        // Submit the form if all checks pass
+                                        if (isValid) {
+                                            this.submit();
+                                        }
+                                    });
+                                </script>
                             </div>
                         
                           </div>

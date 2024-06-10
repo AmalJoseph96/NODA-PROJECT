@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const Category = require('../models/categoryModel');
 const path = require('path');
 const Brand = require('../models/brandModel');
+const sharp=require('sharp')
 
 
 
@@ -60,18 +61,59 @@ const editProduct = async (req, res) => {
 
 const editProductLoad = async (req,res)=>{
     try {
+        const productId = req.query.id;
+        console.log('product id is ',productId)
+        const { name, description, regularPrice, quantity, category, brand } = req.body;
+        console.log('bodydata ',req.body)
+        const productData = await Product.findById(productId)
+        productData.title = name
+        productData.description = description
+        productData.regularprice = regularPrice
+        productData.quantity = quantity
+        productData.category = category
+        productData.brand = brand
 
+        if (req.files && req.files.length > 0) {
+            const newImages = [];
         
+            for (const file of req.files) {
+                const filename = file.filename;
+        
+                // Use Sharp to crop the image (adjust the crop options as needed)
+                const croppedImageBuffer = await sharp(file.path)
+                    .resize({ width: 500, height: 500, fit: 'cover' }) // Example cropping options
+                    .toBuffer();
+        
+                const croppedFilename = `cropped_${filename}`;
+        
+                const outputPath = path.join(__dirname,`../uploads/${croppedFilename}`);
+                // Save the cropped image
+                await sharp(croppedImageBuffer)
+                    .toFile(outputPath);
+                    
+                newImages.push(croppedFilename);
+            }
+        
+            // Add the new cropped images to the product
+            productData.image.push(...newImages);
+        
+        }
+      
 
+          const updatedProduct = await productData.save();
+          if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
 
-
-
+        res.redirect('/admin/productlist'); // Adjust the redirection path as necessary
         
     } catch (error) {
-        console.log(error.message);
+        console.log(error.message) ;
         
     }
-}
+
+};
+
 const brand = async (req, res) => {
     try {
         const brandD = await Brand.find()
@@ -106,6 +148,8 @@ const addBrandLoad = async (req, res) => {
         })
 
         await brandData.save();
+
+        res.redirect('/admin/brand')
 
 
 

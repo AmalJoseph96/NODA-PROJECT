@@ -17,6 +17,14 @@
     <link rel="shortcut icon" type="image/x-icon" href="/admin-assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Include DataTables JS -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+</head>
+   
+</head>
 </head>
 
 <body>
@@ -233,31 +241,31 @@
                     </div>
                 </header> <!-- card-header end// -->
                 <div class="card-body">
-                    <table class="table" id="example">
+                    <table class="table" id="myTable">
                         <thead>
                             <tr>
-                                <th scope="col" class="col-check">
+                                <!-- <th scope="col" class="col-check">
                                     <div class="form-check">
-                                        <!-- <input class="form-check-input" type="checkbox"> -->
+                                        <input class="form-check-input" type="checkbox">
                                     </div>
-                                </th>
+                                </th> -->
                                 <th scope="col" class="col-name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PRODUCT</th>
                                 <th scope="col" class="col-price">PRICE</th>
                                 <th scope="col" class="col-price">QUANTITY</th>
                                 <th scope="col" class="col-status">&nbsp;STATUS</th>
                                 <th scope="col" class="col-date">&nbsp;&nbsp;&nbsp;DATE</th>
-                                <!-- <th scope="col" class="col-action text-end">ACTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th> -->
+                                <th scope="col" class="col-action text-end">ACTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
                             <% if (product) { %>
                                 <% for (let i = 0; i < product.length; i++) { %>
                                     <tr>
-                                        <td class="col-check">
+                                        <!-- <td class="col-check">
                                             <div class="form-check">
-                                                <!-- <input class="form-check-input" type="checkbox"> -->
+                                                <input class="form-check-input" type="checkbox">
                                             </div>
-                                        </td>
+                                        </td> -->
                                         <td class="col-name">
                                             <a class="itemside" href="#">
                                                 <div class="left">
@@ -290,7 +298,7 @@
                                                 return `${day}/${month}/${year}`;
                                             } %>
                                             <span class="fs-0" style="color: rgb(0, 0, 0); font-weight: bold;"><%= formatDate(product[i].date) %></span>
-                                            <td class="col-action text-end">
+                                           
                                         </td> 
                                         <td class="col-action text-end">
                                             <a href="/admin/editProduct?productId=<%=product[i]._id %>" class="btn btn-sm btn-brand rounded font-sm mt-15">
@@ -324,6 +332,7 @@
                 </nav>
             </div>
         </section> <!-- content-main end// -->
+        
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
@@ -339,6 +348,16 @@
             </div>
         </footer>
     </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+<script>
+    $(document).ready(function () {
+        new DataTable('#myTable');
+
+})
+</script>
     <script src="/admin-assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/admin-assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/admin-assets/js/vendors/select2.min.js"></script>
