@@ -337,82 +337,95 @@
                 </div>
             </form>
             <script>
-                document.getElementById('productForm').addEventListener('submit', function (e) {
-                    // Prevent form submission
-                    e.preventDefault();
+                document.addEventListener('DOMContentLoaded', function () {
+                    // Form element
+                    var form = document.getElementById('productForm');
         
-                    // Clear previous error messages
-                    document.querySelectorAll('.error-message').forEach(function(el) {
-                        el.textContent = '';
-                    });
+                    // Form fields
+                    var titleField = document.getElementById('product_name');
+                    var descriptionField = document.getElementById('description');
+                    var weightField = document.getElementById('weight');
+                    var regularPriceField = document.getElementById('regularPrice');
+                    var salesPriceField = document.getElementById('salesPrice');
+                    var quantityField = document.getElementById('quantity');
         
-                    // Validate fields
-                    const title = document.getElementById('product_name').value.trim();
-                    const description = document.getElementById('description').value.trim();
-                    const weight = document.getElementById('weight').value.trim();
-                    const regularPrice = document.getElementById('regularPrice').value.trim();
-                    const salesPrice = document.getElementById('salesPrice').value.trim();
-                    const quantity = document.getElementById('quantity').value.trim();
-                    const image = document.getElementById('image').files.length;
-                    const category = document.querySelector('select[name="category"]').value;
-                    const brand = document.querySelector('select[name="brand"]').value;
+                    // Error message elements
+                    var titleError = document.getElementById('titleError');
+                    var descriptionError = document.getElementById('descriptionError');
+                    var weightError = document.getElementById('weightError');
+                    var regularPriceError = document.getElementById('regularPriceError');
+                    var salesPriceError = document.getElementById('salesPriceError');
+                    var quantityError = document.getElementById('quantityError');
         
-                    let isValid = true;
-        
-                    // Check for empty fields and spaces
-                    if (title === '') {
-                        document.getElementById('titleError').textContent = 'Product title is required.';
-                        isValid = false;
-                    }
-                    if (description === '') {
-                        document.getElementById('descriptionError').textContent = 'Description is required.';
-                        isValid = false;
-                    }
-                    if (weight === '') {
-                        document.getElementById('weightError').textContent = 'Weight is required.';
-                        isValid = false;
-                    } else if (isNaN(weight)) {
-                        document.getElementById('weightError').textContent = 'Weight must be a number.';
-                        isValid = false;
-                    }
-                    if (regularPrice === '') {
-                        document.getElementById('regularPriceError').textContent = 'Regular price is required.';
-                        isValid = false;
-                    } else if (isNaN(regularPrice)) {
-                        document.getElementById('regularPriceError').textContent = 'Regular price must be a number.';
-                        isValid = false;
-                    }
-                    if (salesPrice === '') {
-                        document.getElementById('salesPriceError').textContent = 'Sales price is required.';
-                        isValid = false;
-                    } else if (isNaN(salesPrice)) {
-                        document.getElementById('salesPriceError').textContent = 'Sales price must be a number.';
-                        isValid = false;
-                    }
-                    if (quantity === '') {
-                        document.getElementById('quantityError').textContent = 'Quantity is required.';
-                        isValid = false;
-                    } else if (isNaN(quantity)) {
-                        document.getElementById('quantityError').textContent = 'Quantity must be a number.';
-                        isValid = false;
-                    }
-                    if (image === 0) {
-                        document.getElementById('imageError').textContent = 'Image upload is required.';
-                        isValid = false;
-                    }
-                    if (category === '') {
-                        document.getElementById('categoryError').textContent = 'Category is required.';
-                        isValid = false;
-                    }
-                    if (brand === '') {
-                        document.getElementById('brandError').textContent = 'Brand is required.';
-                        isValid = false;
+                    // Function to check if a field is empty
+                    function isEmpty(value) {
+                        return value.trim() === '';
                     }
         
-                    // Submit the form if all checks pass
-                    if (isValid) {
-                        this.submit();
+                    // Function to display error message
+                    function showError(element, message) {
+                        element.textContent = message;
+                        element.style.color = 'red';
                     }
+        
+                    // Function to validate the form
+                    function validateForm(event) {
+                        // Resetting previous error messages
+                        titleError.textContent = '';
+                        descriptionError.textContent = '';
+                        weightError.textContent = '';
+                        regularPriceError.textContent = '';
+                        salesPriceError.textContent = '';
+                        quantityError.textContent = '';
+        
+                        // Validating Title
+                        if (isEmpty(titleField.value)) {
+                            showError(titleError, 'Title is required');
+                            event.preventDefault();
+                        } else if (!/^[a-zA-Z\s]+$/.test(titleField.value)) {
+                            showError(titleError, 'Title must contain only characters');
+                            event.preventDefault();
+                        }
+        
+                        // Validating Description
+                        if (isEmpty(descriptionField.value)) {
+                            showError(descriptionError, 'Description is required');
+                            event.preventDefault();
+                        } else if (!/^[a-zA-Z\s]+$/.test(descriptionField.value)) {
+                            showError(descriptionError, 'Description must contain only characters');
+                            event.preventDefault();
+                        }
+        
+                        // Validating Weight
+                        if (isNaN(weightField.value) || parseInt(weightField.value) <= 0) {
+                            showError(weightError, 'Weight should be a positive integer');
+                            event.preventDefault();
+                        }
+        
+                        // Validating Regular Price
+                        if (isNaN(regularPriceField.value) || parseInt(regularPriceField.value) <= 0) {
+                            showError(regularPriceError, 'Regular price should be a positive number');
+                            event.preventDefault();
+                        }
+        
+                        // Validating Sales Price
+                        if (isNaN(salesPriceField.value) || parseInt(salesPriceField.value) <= 0) {
+                            showError(salesPriceError, 'Sales price should be a positive number');
+                            event.preventDefault();
+                        } else if (parseInt(salesPriceField.value) >= parseInt(regularPriceField.value)) {
+                            showError(salesPriceError, 'Sales price should be less than Regular price');
+                            event.preventDefault();
+                        }
+        
+                        // Validating Quantity
+                        if (isNaN(quantityField.value) || parseInt(quantityField.value) <= 0) {
+                            showError(quantityError, 'Quantity should be a positive number');
+                            event.preventDefault();
+                        }
+                    }
+        
+                    // Adding form submit event listener
+                    form.addEventListener('submit', validateForm);
                 });
             </script>
         </section> <!-- content-main end// -->

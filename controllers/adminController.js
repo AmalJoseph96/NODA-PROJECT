@@ -51,7 +51,6 @@ const verifyLogin = async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const userData = await User.findOne({ email: email });
-        // console.log(userData);
         if (userData) {
             const passwordMatch = await bcrypt.compare(password, userData.password);
             if (passwordMatch) {
@@ -94,7 +93,6 @@ const loadDashboard = async (req, res) => {
 const userList = async (req, res) => {
     try {
         const userData = await User.find({ is_admin: false })
-        // console.log('userdaaaata', userData);
         res.render('userlist', { userData });
 
     } catch (error) {

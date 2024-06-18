@@ -233,7 +233,7 @@
                                         <div class="card-body">
                                             <div class="input-upload">
                                                 <img src="/admin-assets/imgs/theme/upload.svg" alt="">
-                                                <input class="form-control" type="file" name="image" multiple>
+                                                <input class="form-control" type="file" name="image" accept="image/*" multiple>
                                             </div>
                                         </div>
                                     </div>
@@ -278,6 +278,54 @@
                                         }
                                     });
                                 </script>
+
+<script>
+    document.getElementById('brandForm').addEventListener('submit', function (e) {
+        // Prevent form submission
+        e.preventDefault();
+
+        // Validate fields
+        const bname = document.getElementById('product_name').value.trim();
+        const bdescription = document.getElementById('bdescription').value.trim();
+        const imageInput = document.querySelector('input[name="image"]');
+        const allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        
+        // Clear previous errors
+        document.getElementById('bnameError').textContent = '';
+        document.getElementById('bdescriptionError').textContent = '';
+
+        let valid = true;
+
+        // Validate brand name and description
+        if (bname === '') {
+            document.getElementById('bnameError').textContent = 'Brand name is required.';
+            valid = false;
+        }
+        if (bdescription === '') {
+            document.getElementById('bdescriptionError').textContent = 'Description is required.';
+            valid = false;
+        }
+
+        // Validate image file type
+        if (imageInput.files.length > 0) {
+            for (let i = 0; i < imageInput.files.length; i++) {
+                if (!allowedExtensions.exec(imageInput.files[i].name)) {
+                    alert('Please upload file having extensions .jpeg/.jpg/.png/.gif only.');
+                    valid = false;
+                    break;
+                }
+            }
+        } else {
+            alert('Please upload at least one image.');
+            valid = false;
+        }
+
+        // If all validations pass, submit the form
+        if (valid) {
+            this.submit();
+        }
+    });
+</script>
                             </div>
                         
                           </div>

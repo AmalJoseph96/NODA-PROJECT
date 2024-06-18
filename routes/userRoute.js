@@ -27,6 +27,7 @@ user_route.use(express.static('public'));
 
 
 const userController = require('../controllers/userController');
+const cartController = require('../controllers/cartController');
 
 user_route.get('/', userController.loadHome);
 user_route.get('/login',userAuth.isLogout, userController.loadlogin)
@@ -37,6 +38,13 @@ user_route.post('/login',userController.verifyLogin);
 user_route.get('/sendOtp',userAuth.isLogout,userController.sendOtp);
 user_route.post('/verifyOtp',userAuth.isLogout,userController.verifyOtp) ;
 user_route.get('/productDetails',userAuth.ensureAuthenticated,userController.productDetails) ;
+
+//....................//cart....................................
+
+user_route.get('/cart',userAuth.isLogin,cartController.loadCart);
+user_route.post('/addToCart',cartController.addToCart) ;
+user_route.post('/removeFromCart',cartController.removeFromCart);
+user_route.post('/updateQuantity',cartController.updateQuantity);
  
 
 module.exports = user_route;

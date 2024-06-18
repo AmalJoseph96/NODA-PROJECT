@@ -890,7 +890,7 @@
                                         </div> -->
                                         <!-- THUMBNAILS -->
                                         <!-- <div class="slider-nav-thumbnails pl-15 pr-15">
-                                            <div><img src="assets/imgs/shop/thumbnail-3.jpg" alt="product image"></div>
+                                            <div><img src="assets/imgs/shop/thumbnail-3.jpg" alt="product image"></div>          
                                             <div><img src="assets/imgs/shop/thumbnail-4.jpg" alt="product image"></div>
                                             <div><img src="assets/imgs/shop/thumbnail-5.jpg" alt="product image"></div>
                                             <div><img src="assets/imgs/shop/thumbnail-6.jpg" alt="product image"></div>
@@ -908,6 +908,7 @@
                                             <li class="social-linkedin"><a href="#"><img src="assets/imgs/theme/icons/icon-pinterest.svg" alt=""></a></li>
                                         </ul>
                                     </div> -->
+                    
                                 </div>
                                 <div class="col-md-6 col-sm-12 col-xs-12">
                                  
@@ -964,7 +965,9 @@
                                                 <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                             </div> -->
                                             <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                                <input type="hidden" name="productId" id="productId" value="<%=productId._id%>">
+                                                <button onclick="addToCart()" type="submit" class="button button-add-to-cart">Add to cart</button>
+                                              
                                                 <!-- <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a> -->
                                                 <!-- <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
                                             </div>
@@ -1603,6 +1606,8 @@
                 </div>
             </div>
         </div>
+       
+        
     </footer>
     <!-- Preloader Start -->
     <div id="preloader-active">
@@ -1643,6 +1648,7 @@
     <!-- Template  JS -->
     <script src="assets/js/maind134.js?v=3.4"></script>
     <script src="assets/js/shopd134.js?v=3.4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <!-- <script>
         $(document).ready(function() {
@@ -1654,6 +1660,48 @@
             };
         });
     </script> -->
+
+    <script>
+        function addToCart(){
+            var productId = document.getElementById('productId').value
+    
+            var quantity = 1 ;
+
+            console.log('Product ID amal:', productId);
+
+            const data = {productId,quantity} ;
+
+            fetch('http://localhost:3000/addToCart',{
+               method :'POST',
+               headers:{
+                'Content-Type':'application/json'
+               },
+               body:JSON.stringify(data)
+            })
+            .then(response=>{
+                if(!response.ok){
+                    throw new Error('network response was not ok') ;
+                }
+                return response.json()
+            })
+            .then(data => {
+                console.log('Product added to cart:', data);
+                // Use SweetAlert to display the alert with the message from the response
+                Swal.fire({
+                    title: 'Success!',
+                    text: data.message,
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.href = '/cart';
+                });
+            })
+            .catch(error=>{
+                console.error('there was a problem with the fetch operation')
+            })
+
+        }
+    </script>
 </body>
 
 

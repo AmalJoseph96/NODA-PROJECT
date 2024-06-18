@@ -49,8 +49,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="/admin/productlist"> <i
-                            class="icon material-icons md-shopping_bag"></i>
+                    <a class="menu-link" href="/admin/productlist"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
                 </li>
@@ -70,8 +69,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="/admin/category"> <i
-                            class="icon material-icons md-monetization_on"></i>
+                    <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Category</span>
                     </a>
                 </li>
@@ -207,15 +205,17 @@
                     <div class="row">
                         <div class="col-md-3">
                             <div class="container">
-                                <form id="addCategoryForm" method="post" onsubmit="return validateForm()">
+                                <form id="addCategoryForm" method="post" >
                                     <div class="mb-4">
                                         <label for="product_name" class="form-label">Name</label>
-                                        <input type="text" placeholder="Type here" class="form-control" id="product_name" name="name" />
+                                        <input type="text" placeholder="Type here" class="form-control"
+                                            id="product_name" name="name" />
                                         <div id="nameError" class="error"></div>
                                     </div>
                                     <div class="mb-4">
                                         <label class="form-label">Description</label>
-                                        <textarea placeholder="Type here" class="form-control" name="description"></textarea>
+                                        <textarea placeholder="Type here" class="form-control"
+                                            name="description"></textarea>
                                         <div id="descriptionError" class="error"></div>
                                     </div>
                                     <div class="d-grid">
@@ -224,68 +224,30 @@
                                 </form>
 
                                 <script>
+                                    // Function to validate form and handle submission
                                     document.getElementById('addCategoryForm').addEventListener('submit', async function(event) {
                                         event.preventDefault(); // Prevent the default form submission
-                            
-                                        const form = event.target;
-                                        const formData = new FormData(form);
-
-                                        console.log("formData:",formData)
-                            
-                                        // Convert formData to an object
-                                        const data = {};
-                                        formData.forEach((value, key) => {
-                                            data[key] = value;
-                                        });
-                            
-                                        try {
-                                            const response = await fetch(form.action, {
-                                                method: form.method,
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                },
-                                                body: JSON.stringify(data)
-                                            });
-                            
-                                            if (!response.ok) {
-                                                const errorData = await response.json();
-                                                // alert(errorData.error);
-                                                Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: errorData.error,
-                    });
-                                            } else {
-                                                window.location.href = '/admin/category';
-                                            }
-                                        } catch (error) {
-                                            console.error('Error:', error);
-                                            alert('An error occurred. Please try again.');
-                                        }
-                                    });
-                                </script>
-                                <script>
-                                    function validateForm() {
+                                
                                         // Get form elements
                                         var name = document.getElementById('product_name').value.trim();
                                         var description = document.querySelector('textarea[name="description"]').value.trim();
-                            
+                                
                                         // Error elements
                                         var nameError = document.getElementById('nameError');
                                         var descriptionError = document.getElementById('descriptionError');
-                            
+                                
                                         // Regular expression to check for numbers
                                         var numberRegex = /\d/;
-                            
+                                
                                         // Reset error messages
                                         nameError.style.display = 'none';
                                         descriptionError.style.display = 'none';
-                            
+                                
                                         var isValid = true;
-                            
+                                
                                         // Validate name
                                         if (name === "") {
-                                            nameError.textContent = "Name cannot be empty or contain only spaces.";
+                                            nameError.textContent = "Name cannot be empty.";
                                             nameError.style.display = 'block';
                                             isValid = false;
                                         } else if (numberRegex.test(name)) {
@@ -293,10 +255,10 @@
                                             nameError.style.display = 'block';
                                             isValid = false;
                                         }
-                            
+                                
                                         // Validate description
                                         if (description === "") {
-                                            descriptionError.textContent = "Description cannot be empty or contain only spaces.";
+                                            descriptionError.textContent = "Description cannot be empty.";
                                             descriptionError.style.display = 'block';
                                             isValid = false;
                                         } else if (numberRegex.test(description)) {
@@ -304,11 +266,47 @@
                                             descriptionError.style.display = 'block';
                                             isValid = false;
                                         }
-                            
-                                        // If all validations pass
-                                        return isValid;
-                                    }
+                                
+                                        // If all validations pass, proceed with form submission
+                                        if (isValid) {
+                                            const form = event.target;
+                                            const formData = new FormData(form);
+                                
+                                            // Convert formData to an object
+                                            const data = {};
+                                            formData.forEach((value, key) => {
+                                                data[key] = value;
+                                            });
+                                
+                                            try {
+                                                const response = await fetch(form.action, {
+                                                    method: form.method,
+                                                    headers: {
+                                                        'Content-Type': 'application/json'
+                                                    },
+                                                    body: JSON.stringify(data)
+                                                });
+                                
+                                                if (!response.ok) {
+                                                    const errorData = await response.json();
+                                                    // alert(errorData.error);
+                                                    Swal.fire({
+                                                        icon: 'error',
+                                                        title: 'Oops...',
+                                                        text: errorData.error,
+                                                    });
+                                                } else {
+                                                    window.location.href = '/admin/category';
+                                                }
+                                            } catch (error) {
+                                                console.error('Error:', error);
+                                                alert('An error occurred. Please try again.');
+                                            }
+                                        }
+                                    });
                                 </script>
+                                
+
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -333,38 +331,48 @@
                                         <%if(locals.catData){%>
                                             <%for(let i=0;i<catData.length;i++){%>
 
-                                        <tr>
-                                            <td class="text-center">
-                                                <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" value="" />
-                                                </div>
-                                            </td>
-                                            <td>1</td>
-                                            <td><b><%=catData[i].categoryName%></b></td>
-                                            <td><%=catData[i].description%></td>
-                                            <%if(catData[i].is_active){%>
-                                            <td><span class="badge rounded-pill alert-success">Active</span></td>
-                                            <%}else{%>
-                                                <td><span class="badge rounded-pill alert-danger">inactive</span></td>
+                                                <tr>
+                                                    <td class="text-center">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" value="" />
+                                                        </div>
+                                                    </td>
+                                                    <td>1</td>
+                                                    <td><b>
+                                                            <%=catData[i].categoryName%>
+                                                        </b></td>
+                                                    <td>
+                                                        <%=catData[i].description%>
+                                                    </td>
+                                                    <%if(catData[i].is_active){%>
+                                                        <td><span class="badge rounded-pill alert-success">Active</span>
+                                                        </td>
+                                                        <%}else{%>
+                                                            <td><span
+                                                                    class="badge rounded-pill alert-danger">inactive</span>
+                                                            </td>
+                                                            <%}%>
+
+                                                                <!-- <td>1</td> -->
+                                                                <td class="text-end">
+                                                                    <a href="/admin/editCategory?catId=<%=catData[i]._id%>"
+                                                                        class="btn-sm btn-brand rounded font-sm mt-15">Edit</a>
+
+
+
+                                                                    <%if(catData[i].is_active){%>
+                                                                        <a onclick="confirmSubmission('<%=catData[i]._id%>',0)"
+                                                                            class="btn-sm btn-brand rounded font-sm mt-15">Block</a>
+                                                                        <%}else{%>
+                                                                            <a onclick="confirmSubmission('<%=catData[i]._id%>',1)"
+                                                                                class="btn btn-sm btn-brand rounded font-sm mt-15">unBlock</a>
+                                                                            <%}%>
+
+                                                                </td>
+                                                </tr>
                                                 <%}%>
-
-                                            <!-- <td>1</td> -->
-                                            <td class="text-end">
-                                                <a href="/admin/editCategory?catId=<%=catData[i]._id%>" class="btn-sm btn-brand rounded font-sm mt-15">Edit</a>
-                                             
-
-                                    
-                                                <%if(catData[i].is_active){%>
-                                                    <a onclick="confirmSubmission('<%=catData[i]._id%>',0)" class="btn-sm btn-brand rounded font-sm mt-15">Block</a>
-                                                   <%}else{%>
-                                                    <a onclick="confirmSubmission('<%=catData[i]._id%>',1)" class="btn btn-sm btn-brand rounded font-sm mt-15">unBlock</a>
                                                     <%}%>
-                                             
-                                            </td>
-                                        </tr>
-                                        <%}%>
-                                        <%}%>
-                                        <!-- <tr>
+                                                        <!-- <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" />
@@ -388,7 +396,7 @@
                                                 </div> 
                                             </td>
                                         </tr> -->
-                                        <!-- <tr>
+                                                        <!-- <tr>
                                             <td class="text-center">
                                                 <div class="form-check">
                                                     <input class="form-check-input" type="checkbox" value="" />
@@ -412,7 +420,7 @@
                                                 </div> 
                                             </td>
                                         </tr> -->
-                                        <!-- <tr>
+                                                        <!-- <tr>
                                             <td class="text-center"><i
                                                     class="material-icons md-subdirectory_arrow_right text-muted"></i>
                                             </td>
@@ -434,7 +442,7 @@
                                                 </div>
                                             </td>
                                         </tr> -->
-                                        <!-- <tr>
+                                                        <!-- <tr>
                                             <td class="text-center"><i
                                                     class="material-icons md-subdirectory_arrow_right text-muted"></i>
                                             </td>
@@ -529,7 +537,7 @@
                                             </td>
                                         </tr>
                                         -->
-                                   
+
                                     </tbody>
                                 </table>
                             </div>
@@ -564,27 +572,27 @@
 
     <script>
         function confirmSubmission(id, condition) {
-          Swal.fire({
-              title: 'Are you sure?',
-              text: `${condition === 0 ? 'Are you sure to Block this Category' : 'Are you sure to Unblock this Category'}`,
-              icon: 'warning',
-              showCancelButton: true,
-              confirmButtonText: 'Confirm',
-              confirmButtonColor:"#2e8b57",
-              cancelButtonText: 'Cancel'
-          }).then((result) => {
-              if (result.isConfirmed) {
-                  if(condition === 0 ) {
-                      window.location.href = "/admin/blockCategory?catId="+id;
-      
-                  }else
-                  window.location.href = "/admin/unblockCategory?catId="+id;
-              }
-          });
-      }
+            Swal.fire({
+                title: 'Are you sure?',
+                text: `${condition === 0 ? 'Are you sure to Block this Category' : 'Are you sure to Unblock this Category'}`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Confirm',
+                confirmButtonColor: "#2e8b57",
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (condition === 0) {
+                        window.location.href = "/admin/blockCategory?catId=" + id;
+
+                    } else
+                        window.location.href = "/admin/unblockCategory?catId=" + id;
+                }
+            });
+        }
 
 
-        </script>
+    </script>
 
 
 </body>
