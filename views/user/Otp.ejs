@@ -87,7 +87,7 @@
 <body>
     <div class="container">
         <h1>OTP Verification</h1>
-        <form id="otpForm" action="/verifyOtp" method="post">
+        <form id="otpForm" action="/verifyOtp?target=<%=target%>" method="post">
             <div class="form-group">
                 <input type="text" id="otp" name="Otp" placeholder="Enter OTP" required>
                 <div id="otpError" class="error">OTP must be exactly 4 digits long and contain no spaces.</div>

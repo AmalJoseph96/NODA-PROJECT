@@ -17,6 +17,16 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+
+    <!-- SweetAlert CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.css">
+
+<!-- Your existing CSS and other stylesheets -->
+<link rel="stylesheet" href="/path/to/your/css/styles.css">
+
+<!-- SweetAlert JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.7/dist/sweetalert2.min.js"></script>
+
     <style>
         .btn-add-address {
             display: inline-block;
@@ -437,38 +447,37 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table">
-                                                        <thead>
+                                                    <table class="table table-striped table-hover">
+                                                        <thead class="thead-dark">
                                                             <tr>
-                                                                <th>Order</th>
+                                                                <th>Order ID</th>
+                                                                <th>Order Status</th>
+                                                                <th>Payment Status</th>
+                                                                <th>Payment Method</th>
                                                                 <th>Date</th>
-                                                                <th>Status</th>
                                                                 <th>Total</th>
-                                                                <th>Actions</th>
+                                                                <th>View Details</th>
+                                                                <th>Cancel</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            <% orders.forEach(order => { %>
                                                             <tr>
-                                                                <td>#1357</td>
-                                                                <td>March 45, 2020</td>
-                                                                <td>Processing</td>
-                                                                <td>$125.00 for 2 item</td>
-                                                                <td><a href="#" class="btn-small d-block">View</a></td>
+                                                                <td><%= order.orderId %></td>
+                                                                <td><%= order.orderStatus %></td>
+                                                                <td><%= order.payementStatus %></td>
+                                                                <td><%= order.payementMethod %></td>
+                                                                <td><%= order.orderDate.toDateString() %></td>
+                                                                <td><%= order.totalAmount %></td>
+                                                                <td>
+                                                                    <a href="/orderDetails/<%= order._id %>" class="btn btn-primary">View Details</a>
+                                                                </td>
+                                                                <td>
+                                                                    <a href="#" class="btn btn-danger" onclick="confirmCancellation('<%= order._id %>')">Cancel</a>
+
+                                                                </td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>#2468</td>
-                                                                <td>June 29, 2020</td>
-                                                                <td>Completed</td>
-                                                                <td>$364.00 for 5 item</td>
-                                                                <td><a href="#" class="btn-small d-block">View</a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td>#2366</td>
-                                                                <td>August 02, 2020</td>
-                                                                <td>Completed</td>
-                                                                <td>$280.00 for 3 item</td>
-                                                                <td><a href="#" class="btn-small d-block">View</a></td>
-                                                            </tr>
+                                                            <% }); %>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -520,7 +529,7 @@
                                                                                     <%= address.country %>
                                                                                 </address>
                                                                                 <p>Phone: <%= address.mobile %></p>
-                                                                                <button onclick="window.location.href = '/editAddress/<%= address._id %>'" class="btn-edit-address mt-2">
+                                                                                <button onclick="window.location.href = '/editAddress?address=<%=address._id%>'" class="btn-edit-address mt-2">
                                                                                     Edit Address
                                                                                 </button>
                                                                             </div>
@@ -541,34 +550,43 @@
                                             </div>
                                         
                                     </div>
-                                    <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
+                                </div>
+                           <div class="tab-pane fade" id="account-detail" role="tabpanel" aria-labelledby="account-detail-tab">
                                  <h2>Change Password</h2>
-                                 <%if(logData){%>
-                                        <form action="/changePassword" method="POST">
-                                            <div class="form-group">
-                                                <label for="currentEmail">Current Email</label>
-                                                <input type="email" id="currentEmail" name="currentEmail" class="form-control" value="<%=logData.email%>" placeholder="Enter current email" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="currentPassword">Current Password</label>
-                                                <input type="password" id="currentPassword" name="currentPassword" class="form-control" value="<%=logData.password%>" placeholder="Enter current password" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="newPassword">New Password</label>
-                                                <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Enter new password" required>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="confirmNewPassword">Confirm New Password</label>
-                                                <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="form-control" placeholder="Confirm new password" required>
-                                            </div>
-                                            <div style="margin-top: 20px;">
-                                                <button type="submit" style="background-color: #088178; color: white; border: none; padding: 10px 20px; cursor: pointer; font-size: 14px; border-radius: 5px;">
-                                                    Save
-                                                </button>
-                                            </div>
-                                        </form>
-                                        <%}%>
-                                        
+                                 <% if (logData) { %>
+                                    <form action="/changePassword" method="POST">
+                                        <div class="form-group">
+                                            <label for="currentEmail">Current Email</label>
+                                            <input type="email" id="currentEmail" name="currentEmail" class="form-control" value="<%= logData.email %>" placeholder="Enter current email" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="currentPassword">Current Password</label>
+                                            <input type="password" id="currentPassword" name="currentPassword" class="form-control" value="<%= logData.password %>" placeholder="Enter current password" required>
+                                            <span class="toggle-password" onclick="togglePasswordVisibility('currentPassword')">👁️</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="newPassword">New Password</label>
+                                            <input type="password" id="newPassword" name="newPassword" class="form-control" placeholder="Enter new password" required>
+                                            <span class="toggle-password" onclick="togglePasswordVisibility('newPassword')">👁️</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirmNewPassword">Confirm New Password</label>
+                                            <input type="password" id="confirmNewPassword" name="confirmNewPassword" class="form-control" placeholder="Confirm new password" required>
+                                            <span class="toggle-password" onclick="togglePasswordVisibility('confirmNewPassword')">👁️</span>
+                                        </div>
+                                        <div style="margin-top: 20px;">
+                                            <button type="submit">Save</button>
+                                        </div>
+                                    </form>
+                                <% } %>
+
+                                <script>
+                                    function togglePasswordVisibility(id) {
+                                        const field = document.getElementById(id);
+                                        const type = field.getAttribute('type') === 'password' ? 'text' : 'password';
+                                        field.setAttribute('type', type);
+                                    }
+                                </script>
                                         
                                     </div>
                                 </div>
@@ -727,6 +745,26 @@
     <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
     <!-- Template  JS -->
     <script src="assets/js/maind134.js?v=3.4"></script>
+
+    <script>
+        function confirmCancellation(orderId) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You are about to cancel this order!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User confirmed, redirect to cancel route
+                    window.location.href = `/cancelOrder?orderId=${orderId}`;
+                }
+            });
+        }
+    </script>
+    
 </body>
 
 

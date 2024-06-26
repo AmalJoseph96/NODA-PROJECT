@@ -7,7 +7,7 @@ const orderSchema = mongoose.Schema({
         quantity:{type:Number}
     }],
 
-    address:{
+    addressId:{
        type:mongoose.Schema.ObjectId,
        ref:"Address"
     },
@@ -17,7 +17,8 @@ const orderSchema = mongoose.Schema({
     orderStatus:{type:String,enum:['Order Placed','Confirmed','Shipped','Delivered','Cancelled','Returned','Pending'],default:"Order Placed"},
     orderDate:{type:Date,default:Date.now},
     totalAmount:{type:String},
-    deliveryStatus:{type:Number,default:0}
+
+
 })
 
 module.exports = mongoose.model("Order",orderSchema);

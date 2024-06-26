@@ -38,6 +38,9 @@ user_route.post('/login', userController.verifyLogin);
 user_route.get('/sendOtp', userAuth.isLogout, userController.sendOtp);
 user_route.post('/verifyOtp', userAuth.isLogout, userController.verifyOtp);
 user_route.get('/productDetails', userAuth.ensureAuthenticated, userController.productDetails);
+user_route.get('/forgotPassword',userController.forgotPassword);
+user_route.post('/resetPassword',userController.resetPassword);
+user_route.post('/verifyPassword',userController.verifyPassword);
 
 //....................//cart//....................................
 
@@ -56,6 +59,15 @@ user_route.get('/addAddress',userAuth.isLogin,userController.addAddress);
 user_route.post('/saveAddress',userAuth.isLogin,userController.saveAddress);
 user_route.post('/updateProfile',userAuth.isLogin,userController.updateProfile);
 user_route.post('/changePassword',userAuth.isLogin,userController.changePassword);
+user_route.get('/editAddress',userController.editAddress);
+user_route.post('/updateAddress',userController.updateAddress);
+user_route.get('/cancelOrder',userController.cancelOrder);
+user_route.get('/orderDetails/:orderId',userAuth.isLogin,userController.orderDetails);
+
+
+
+
+
 
 
 

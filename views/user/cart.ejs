@@ -707,6 +707,7 @@
                                         <th scope="col">Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Quantity</th>
+                                        <th scope="col">Available Stock</th>
                                         <th scope="col">Subtotal</th>
                                         <th scope="col">Remove</th>
                                     </tr>
@@ -721,13 +722,18 @@
                                                 <td class="product-des product-name">
                                                     <p class="font-xs"><%= product.productId.title %></p>
                                                 </td>
-                                                <td class="price" data-title="Price"><span id="price_<%= product.productId._id %>"><%= product.productId.regularprice %></span></td>
+                                                <td class="price" data-title="Price">
+                                                    <span id="price_<%= product.productId._id %>"><%= product.productId.regularprice %></span>
+                                                </td>
                                                 <td class="text-center" data-title="Stock">
                                                     <div class="detail-qty border radius m-auto">
-                                                        <a href="#" class="qty-down" data-product-id="<%= product.productId._id %>" onclick="handleQuantityChange(this, 'decrease')">&#9660;</a>
+                                                        <a href="#" class="qty-down" data-product-id="<%= product.productId._id %>" onclick="handleQuantityChange(this, 'decrease', <%= product.productId.quantity %>)">&#9660;</a>
                                                         <span class="qty-val" id="quantity_<%= product.productId._id %>"><%= product.quantity %></span>
-                                                        <a href="#" class="qty-up" data-product-id="<%= product.productId._id %>" onclick="handleQuantityChange(this, 'increase')">&#9650;</a>
+                                                        <a href="#" class="qty-up" data-product-id="<%= product.productId._id %>" onclick="handleQuantityChange(this, 'increase', <%= product.productId.quantity %>)">&#9650;</a>
                                                     </div>
+                                                </td>
+                                                <td class="text-center" data-title="Available Stock">
+                                                    <%= product.productId.quantity %>
                                                 </td>
                                                 <td class="text-right" data-title="Cart">
                                                     <span id="subtotal_<%= product.productId._id %>"><%= (product.quantity * product.productId.regularprice).toFixed(2) %></span>
@@ -741,11 +747,10 @@
                                         <% }) %>
                                     <% } else { %>
                                         <tr>
-                                            <td colspan="6">Your cart is empty.</td>
+                                            <td colspan="7">Your cart is empty.</td>
                                         </tr>
                                     <% } %>
                                 </tbody>
-                                
                             </table>
                         </div>
                         <div class="cart-action text-end">

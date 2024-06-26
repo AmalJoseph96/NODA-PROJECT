@@ -10,7 +10,7 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f7f7f7;
+            background: linear-gradient(135deg, #74ABE2, #5563DE);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -23,7 +23,7 @@
             width: 100%;
             background-color: #fff;
             padding: 30px;
-            border-radius: 10px;
+            border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         }
 
@@ -50,9 +50,16 @@
             padding: 15px;
             margin-bottom: 5px;
             border: 1px solid #ddd;
-            border-radius: 5px;
+            border-radius: 10px;
             font-size: 16px;
             color: #333;
+            transition: border-color 0.3s ease;
+            width: calc(100% - 40px); /* Adjusted to leave space for the eye icon */
+        }
+
+        .login-form input[type="text"]:focus,
+        .login-form input[type="password"]:focus {
+            border-color: #74ABE2;
         }
 
         .error-message {
@@ -63,9 +70,9 @@
 
         .login-form button {
             padding: 15px;
-            background-color: #28a745;
+            background-color: blue;
             border: none;
-            border-radius: 5px;
+            border-radius: 10px;
             color: #fff;
             font-size: 16px;
             cursor: pointer;
@@ -73,51 +80,61 @@
         }
 
         .login-form button:hover {
-            background-color: #218838;
+            background-color: skyblue;
         }
 
-        .login-form .register-link {
+        .forgot-password-link,
+        .register-link {
+            display: block;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 10px;
             color: #007bff;
             text-decoration: none;
             font-size: 14px;
         }
 
-        .login-form .register-link:hover {
+        .forgot-password-link:hover,
+        .register-link:hover {
             text-decoration: underline;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
-               
-
     <div class="login-container">
         <h2>Login to Your Account</h2>
         <form class="login-form" id="loginForm" action="/login" method="post" onsubmit="return validateForm()">
             <div>
-
-
-                <% if (locals.message) { %>
-                    <span style="color: red;"><%= message %></span>
-                <% } %>
-                
                 <label for="username">Email</label>
-                <input type="text" id="username" name="email" >
+                <input type="text" id="username" name="email">
                 <div id="emailError" class="error-message"></div>
+                <% if (locals.message) { %>
+                    <span class="error-message"><%= message %></span>
+                <% } %>
             </div>
-            <div>
+            <div class="input-wrapper">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" >
+                <input type="password" id="password" name="password">
+                <i class="toggle-password" onclick="togglePassword()">👁️</i>
                 <div id="passwordError" class="error-message"></div>
             </div>
             <button type="submit">Login</button>
         </form>
+        <a href="/forgotPassword" class="forgot-password-link">Forgot Password?</a>
         <a href="/register" class="register-link">Don't have an account? Register here</a>
     </div>
-
-
 
     <script>
         function validateForm() {
@@ -147,6 +164,12 @@
 
             return isValid;
         }
+
+        function togglePassword() {
+            const passwordField = document.getElementById('password');
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <% if (locals.successMsg) { %>
@@ -157,16 +180,15 @@
                 text: 'You have successfully verified your OTP!'
             });
         </script>
-        <% } %>
-        <% if (locals.message1) { %>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: '<%= message1 %>',
-                    // text: 'You have successfully verified your OTP!'
-                });
-            </script>
-            <% } %>
+    <% } %>
+    <% if (locals.message1) { %>
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: '<%= message1 %>',
+            });
+        </script>
+    <% } %>
 </body>
 
 </html>

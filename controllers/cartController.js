@@ -111,17 +111,20 @@ const updateQuantity = async (req, res) => {
         const { productId, action } = req.body;
         const userId = req.session.user_id;
 
-        console.log("productIdamal",productId);
+        // console.log("productIdamal",productId);
 
         const cart = await Cart.findOne({ userId });
 
         if(cart){
-            const productsToUpdate = cart.products.find(product=>product.productId.toString()===productId);
+            const productsToUpdate = cart.products.find(product=>product.productId.toString()===productId)
+            const productData = await Product.findById(productId)
+
 
                console.log("pppp",productsToUpdate);
             if(productsToUpdate){
                 if(action === 'increase'){
-                    productsToUpdate.quantity += 1 ;
+
+                    productsToUpdate.quantity+1 > productData.quantity ? productsToUpdate.quantity : productsToUpdate.quantity++
                 }else if(action ==='decrease'&&productsToUpdate.quantity>1){
                     productsToUpdate.quantity -=1 ;
                 }
