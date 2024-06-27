@@ -21,7 +21,7 @@ const securePassword = async (password) => {
 }
 const loadHome = async (req, res) => {
     try {
-        const product = await Product.find({ is_active: true })
+        const product = await Product.find({ is_active: true }).sort({ date: -1 }).limit(3);
         const userId = req.session.user_id;
         const logData = await User.findById(userId);
         res.render('home', { logData, product });
@@ -561,6 +561,67 @@ const placeOrder = async (req, res) => {
     }
 }
 
+const deleteAddress = async (req,res)=>{
+    try {
+
+        const{addressId}= req.params
+        await Address.findByIdAndDelete(addressId);
+        res.status(200).json({success:true});
+
+        
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
+
+const checkOutAddress = async (req,res)=>{
+    try {
+        res.render('checkOutAddress');
+        
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
+
+const saveCheckOutAddress = async (req,res)=>{
+    try {
+        const { firstName, lastName, address, city, state, country, postalCode, mobile } = req.body;
+        const userId = req.session.user_id
+        const newAddress = new Address({
+            userId,
+            firstName,
+            lastName,
+            address,
+            city,
+            state,
+            country,
+            postalCode,
+            mobile
+        });
+
+        const savedAddress = await newAddress.save();
+        res.status(200).json({ success: true, message: 'Address saved successfully', data: savedAddress });
+
+        
+
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
+
+const shopProducts = async (req,res)=>{
+    try {
+        const product = await Product.find({ is_active: true })
+        res.render('shopProducts',{product}); 
+        
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
 module.exports = {
     loadHome,
     loadlogin,
@@ -585,5 +646,9 @@ module.exports = {
     editAddress,
     updateAddress,
     cancelOrder,
-    orderDetails
+    orderDetails,
+    deleteAddress,
+    checkOutAddress,
+    saveCheckOutAddress,
+    shopProducts
 }

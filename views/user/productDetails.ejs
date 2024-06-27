@@ -833,7 +833,7 @@
                                         <div class="product-image-slider">
                                             <% if (productId && productId.image && productId.image.length > 0) { %>
                                                 <figure class="border-radius-10" style="background-color: white;">
-                                                    <a id="mainImageLink" href="/uploads/<%= productId.image[0] %>" class="MagicZoom" data-options="zoom-position: inner">
+                                                    <a id="mainImageLink" href="/uploads/<%= productId.image[0] %>" class="MagicZoom" data-options="zoom-position: outer">
                                                         <img id="mainImage" style="max-width: fit-content;" src="/uploads/<%= productId.image[0] %>" alt="Product Image">
                                                     </a>
                                                 </figure>

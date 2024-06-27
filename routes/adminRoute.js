@@ -40,6 +40,8 @@ adminRoute.post('/addBrandLoad', upload.array('image',2), productController.addB
 adminRoute.get('/editCategory', adminController.editCategory);
 adminRoute.post('/editCategory', adminController.editCategoryLoad);
 adminRoute.post('/editProduct', upload.array('image',2), productController.editProductLoad);
+adminRoute.get('/orderList',adminAuth.isLogin,adminController.orderList);
+adminRoute.post('/changeOrderStatus/:orderId',adminAuth.isLogin,adminController.changeOrderStatus);
 
 
 

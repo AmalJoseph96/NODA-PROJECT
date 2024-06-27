@@ -6,6 +6,10 @@ const path = require('path');
 const Brand = require('../models/brandModel');
 const fs = require('fs');
 const sharp = require('sharp');
+const Address = require('../models/addressModel');
+const Cart = require('../models/cartModel');
+const Order = require('../models/orderModel')
+
 
 
 const securePassword = async (password) => {
@@ -268,9 +272,67 @@ const editCategoryLoad = async (req, res) => {
     }
 }
 
+const orderList = async (req, res) => {
+    try {
+        const orderData = await Order.find().sort({ orderDate: -1 }).populate('userId')
+
+        console.log("orderdataamal", orderData)
+
+        res.render('orderList', { orderData })
+
+    } catch (error) {
+        console.log(error.message);
+
+    }
+}
+
+const changeOrderStatus = async (req, res) => {
+    try {
+
+        const { orderId } = req.params;
+        const { status } = req.body;
+
+
+        let updatedFields = {
+            orderStatus: status,
+        };
+
+        if (status === 'Delivered') {
+            updatedFields.payementStatus = 'Received';
+        }
+
+        const order = await Order.findByIdAndUpdate(orderId, updatedFields);
+
+        res.json({ success: true, order });
+
+
+
+    } catch (error) {
+        console.log(error.message);
+
+    }
+}
+
 
 
 module.exports = {
-    loadLogin, securePassword, verifyLogin, loadDashboard, userList, loadCategory, addCategory, blockUser, unblockUser, addProductPage, addProduct, blockCategory, unblockCategory, editCategory, editCategoryLoad, loadLogout
+    loadLogin,
+    securePassword,
+    verifyLogin,
+    loadDashboard,
+    userList,
+    loadCategory,
+    addCategory,
+    blockUser,
+    unblockUser,
+    addProductPage,
+    addProduct,
+    blockCategory,
+    unblockCategory,
+    editCategory,
+    editCategoryLoad,
+    loadLogout,
+    orderList,
+    changeOrderStatus
 
 }
