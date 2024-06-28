@@ -1,9 +1,15 @@
 const express = require('express');
 const adminRoute = express();
+const dotenv = require('dotenv');
+dotenv.config();
 
 const session = require('express-session');
 const config = require('../config/config');
-adminRoute.use(session({ secret: config.sessionSecret }));
+adminRoute.use(session({
+     secret: process.env.SESSION_SECRET,
+     resave:false,
+     saveUninitialized:false
+    }));
 
 
 adminRoute.set('view engine', 'ejs');

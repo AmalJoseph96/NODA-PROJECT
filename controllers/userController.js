@@ -43,8 +43,22 @@ const loadlogin = async (req, res) => {
 
 const loadLogout = async (req, res) => {
     try {
-        req.session.user_id = null;
-        res.redirect('/login');
+        // req.session.user_id = null;
+        // res.redirect('/login');
+        req.logout((err) => {
+            if (err) {
+                console.error('Logout Error:', err);
+                return res.redirect('/failure');
+            }
+            req.session.destroy((err) => {
+                if (err) {
+                    console.error('Session Destruction Error:', err);
+                }
+                // Redirect to Google's logout URL
+                // res.redirect('https://accounts.google.com/logout');
+                res.redirect('/login')
+            });
+        });
 
     } catch (error) {
         console.log(error.message);
@@ -622,6 +636,25 @@ const shopProducts = async (req,res)=>{
         
     }
 }
+
+const googleLogin = async(req,res)=>{
+    try {
+
+        // console.log("req",req.isAuthenticated());
+        const userData=await User.findOne({email:req.user.emails[0].value})
+        if(userData){
+            req.session.user_id=userData._id
+            res.redirect('/');
+        }else{
+
+        }
+        
+        
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
 module.exports = {
     loadHome,
     loadlogin,
@@ -650,5 +683,6 @@ module.exports = {
     deleteAddress,
     checkOutAddress,
     saveCheckOutAddress,
-    shopProducts
+    shopProducts,
+    googleLogin
 }

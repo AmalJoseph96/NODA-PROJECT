@@ -28,8 +28,10 @@ const userSchema = new mongoose.Schema({
         type:Boolean,
         default:true
     },
-},{
-    timestamps:true
+    date:{
+        type:Date,
+        default:Date.now
+    }
 }) ;  
 
 module.exports = mongoose.model('User',userSchema) ;

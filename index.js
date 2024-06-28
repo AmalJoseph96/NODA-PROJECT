@@ -5,10 +5,7 @@ dotenv.config();
 mongoose.connect(process.env.MONGOSTRING);
 const userRoute = require('./routes/userRoute');
 const nocache = require('nocache');
-const path = require('path') ;
-
-
-
+const path = require('path');
 
 
 
@@ -27,6 +24,11 @@ app.use('/', userRoute);
 
 const adminRoute = require('./routes/adminRoute');
 app.use('/admin', adminRoute);
+
+
+
+
+
 
 app.listen(process.env.PORT, () => {
     console.log(`Server started on: http://localhost:${process.env.PORT} `);

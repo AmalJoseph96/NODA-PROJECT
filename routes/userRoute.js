@@ -1,19 +1,35 @@
 const express = require("express");
 const user_route = express();
 const session = require('express-session');
+const passport = require('passport');
 const nocache = require('nocache');
+require('dotenv').config();
+require('../passport');
+
+
+
 
 user_route.use(nocache());
 
 const config = require("../config/config");
 
 
-user_route.use(session({ secret: config.sessionSecret }));
+user_route.use(session({
+     secret: process.env.SESSION_SECRET,
+    resave:false,
+    saveUninitialized:false
+ }));
 
 const userAuth = require('../middleware/userAuth');
 
+
+
+
 user_route.set('view engine', 'ejs');
 user_route.set('views', './views/user');
+
+user_route.use(passport.initialize());
+user_route.use(passport.session());
 
 
 const bodyParser = require('body-parser');
@@ -26,10 +42,41 @@ const path = require('path');
 user_route.use(express.static('public'));
 
 
+function ensureLoggedOut(req, res, next) {
+    if (req.isAuthenticated()) {
+        return res.redirect('/'); // Redirect to home page if user is authenticated
+    }
+    next(); // Proceed if user is not authenticated
+}
+
+//auth
+user_route.get('/auth/google',
+    ensureLoggedOut,
+    passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+//auth callback
+
+
+user_route.get('/auth/google/callback', 
+    passport.authenticate('google',{
+            successRedirect:'/success',
+            failureRedirect:'/failure'
+
+    }));
+    
+
+
+
 const userController = require('../controllers/userController');
 const cartController = require('../controllers/cartController');
 
-user_route.get('/', userController.loadHome);
+//sucess
+user_route.get('/success',userController.googleLogin)
+
+//failure
+user_route.get('/failure',userController.loadlogin);
+
+user_route.get('/',userController.loadHome);
 user_route.get('/login', userAuth.isLogout, userController.loadlogin)
 user_route.get('/logout', userController.loadLogout);
 user_route.get('/register', userAuth.isLogout, userController.loadRegister);
