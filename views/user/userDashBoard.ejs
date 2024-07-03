@@ -59,6 +59,51 @@
                 background-color: #075e4b; /* Darker shade of primary color on hover */
             }
         </style>
+
+        <style>
+            .custom-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.custom-table th, .custom-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.custom-table thead {
+    background-color: #343a40;
+    color: #fff;
+}
+
+.custom-table tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #ddd;
+}
+
+.custom-table .btn {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+.custom-table .btn-primary {
+    background-color:green;
+    border-color:gray;
+}
+
+.custom-table .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.custom-table .btn:hover {
+    opacity: 0.8;
+}
+
+        </style>
     
         
 </head>
@@ -449,7 +494,7 @@
                                             </div>
                                             <div class="card-body">
                                                 <div class="table-responsive">
-                                                    <table class="table table-striped table-hover">
+                                                    <table class="table table-striped table-hover custom-table">
                                                         <thead class="thead-dark">
                                                             <tr>
                                                                 <th>Order ID</th>
@@ -459,7 +504,6 @@
                                                                 <th>Date</th>
                                                                 <th>Total</th>
                                                                 <th>View Details</th>
-                                                                <th>Cancel</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -470,13 +514,9 @@
                                                                 <td><%= order.payementStatus %></td>
                                                                 <td><%= order.payementMethod %></td>
                                                                 <td><%= order.orderDate.toDateString() %></td>
-                                                                <td><%= order.totalAmount %></td>
+                                                                <td> <%= order.totalAmount%></td>
                                                                 <td>
-                                                                    <a href="/orderDetails/<%= order._id %>" class="btn btn-primary">View Details</a>
-                                                                </td>
-                                                                <td>
-                                                                    <a href="#" class="btn btn-danger" onclick="confirmCancellation('<%= order._id %>')">Cancel</a>
-
+                                                                    <a href="/orderDetails/<%= order._id %>" class="btn btn-primary btn-sm">View Details</a>
                                                                 </td>
                                                             </tr>
                                                             <% }); %>
@@ -486,6 +526,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    
                                     <div class="tab-pane fade" id="track-orders" role="tabpanel" aria-labelledby="track-orders-tab">
                                         <div class="card">
                                             <div class="card-header">
@@ -754,24 +795,6 @@
     <script src="assets/js/maind134.js?v=3.4"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        function confirmCancellation(orderId) {
-            Swal.fire({
-                title: 'Are you sure?',
-                text: 'You are about to cancel this order!',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, cancel it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // User confirmed, redirect to cancel route
-                    window.location.href = `/cancelOrder?orderId=${orderId}`;
-                }
-            });
-        }
-    </script>
 
 <script>
     function deleteAddress(addressId) {

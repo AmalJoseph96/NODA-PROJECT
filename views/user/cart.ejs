@@ -17,6 +17,50 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-rhCx2x6WHT9f/jNk31LisDs16j7ZhsW2Aa2mcXl7d+5m2OspCr6sOY6mF6g+18PjChmV6svUZcLXPlh2oBrKtQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+    <script src="https://kit.fontawesome.com/30459940a1.js" crossorigin="anonymous"></script>
+
+   <style>
+    /* Basic button styles */
+.qty-button {
+    display: inline-block;
+    border: none;
+    background-color:#088178; /* Green background color */
+    color: white; /* Text color */
+    padding: 5px;
+    margin: 0;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Adjust button size */
+.qty-button {
+    width: 30px; /* Adjust width as needed */
+    height: 30px; /* Adjust height as needed */
+}
+
+/* Hover effect */
+.qty-button:hover {
+    background-color: #088178; /* Darker green on hover */
+}
+
+/* Font Awesome icon size and alignment */
+.qty-button i {
+    font-size: 16px; /* Adjust icon size */
+    vertical-align: middle; /* Align icon vertically */
+    margin: 0 auto; /* Center the icon horizontally */
+}
+
+   </style>
+
+
+
 </head>
 
 <body>
@@ -717,26 +761,32 @@
                                         <% cart.products.forEach(product => { %>
                                             <tr>
                                                 <td class="image product-thumbnail">
-                                                    <img style="max-width: 50px; max-height: 50px;" src="/uploads/<%= product.productId.image %>" alt="image">
+                                                    <img style="max-width: 50px; max-height: 50px;" src="/uploads/<%= product.productId.image[0] %>" alt="image">
                                                 </td>
                                                 <td class="product-des product-name">
                                                     <p class="font-xs"><%= product.productId.title %></p>
                                                 </td>
                                                 <td class="price" data-title="Price">
-                                                    <span id="price_<%= product.productId._id %>"><%= product.productId.regularprice %></span>
+                                                    <span id="price_<%= product.productId._id %>"><%= product.productId.salesprice %></span>
                                                 </td>
                                                 <td class="text-center" data-title="Stock">
                                                     <div class="detail-qty border radius m-auto">
-                                                        <a href="#" class="qty-down" data-product-id="<%= product.productId._id %>" onclick="handleQuantityChange(this, 'decrease', <%= product.productId.quantity %>)">&#9660;</a>
+                                                        <button class="qty-button qty-down" data-product-id="<%= product.productId._id %>" onclick="handleQuantityChange(this, 'decrease', <%= product.productId.quantity %>)">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
                                                         <span class="qty-val" id="quantity_<%= product.productId._id %>"><%= product.quantity %></span>
-                                                        <a href="#" class="qty-up" data-product-id="<%= product.productId._id %>" onclick="handleQuantityChange(this, 'increase', <%= product.productId.quantity %>)">&#9650;</a>
+                                                        <button class="qty-button qty-up" data-product-id="<%= product.productId._id %>" onclick="handleQuantityChange(this, 'increase', <%= product.productId.quantity %>)">
+                                                            <!-- <i class="fas fa-plus"></i> -->
+                                                            <i class="fa-solid fa-plus"></i>
+                                                        </button>
                                                     </div>
                                                 </td>
+                                                
                                                 <td class="text-center" data-title="Available Stock">
                                                     <%= product.productId.quantity %>
                                                 </td>
                                                 <td class="text-right" data-title="Cart">
-                                                    <span id="subtotal_<%= product.productId._id %>"><%= (product.quantity * product.productId.regularprice).toFixed(2) %></span>
+                                                    <span id="subtotal_<%= product.productId._id %>"><%= (product.quantity * product.productId.salesprice).toFixed(2) %></span>
                                                 </td>
                                                 <td class="action" data-title="Remove">
                                                     <button class="remove-product" data-product-id="<%= product.productId._id %>" style="background-color: #ff0000; color: #fff; border: none; padding: 5px 10px; cursor: pointer; font-size: 14px; border-radius: 4px;">

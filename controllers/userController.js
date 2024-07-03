@@ -43,8 +43,6 @@ const loadlogin = async (req, res) => {
 
 const loadLogout = async (req, res) => {
     try {
-        // req.session.user_id = null;
-        // res.redirect('/login');
         req.logout((err) => {
             if (err) {
                 console.error('Logout Error:', err);
@@ -54,9 +52,8 @@ const loadLogout = async (req, res) => {
                 if (err) {
                     console.error('Session Destruction Error:', err);
                 }
-                // Redirect to Google's logout URL
-                // res.redirect('https://accounts.google.com/logout');
-                res.redirect('/login')
+                res.redirect
+                    ('/login')
             });
         });
 
@@ -316,7 +313,7 @@ const userDashBoard = async (req, res) => {
         const logData = await User.findById(userId);
         const addresses = await Address.find({ userId: userId })
         const orders = await Order.find({ userId }).populate('products.productId').populate('addressId').exec();
-        console.log("address", addresses);
+        // console.log("address", addresses);
         res.render('userDashBoard', { logData, addresses, orders });
 
 
@@ -467,37 +464,37 @@ const updateAddress = async (req, res) => {
     }
 }
 
-const cancelOrder = async (req,res)=>{
+const cancelOrder = async (req, res) => {
     try {
 
         const orderId = req.query.orderId
 
         const order = await Order.findById(orderId)
 
-          // Update order status to "Cancelled"
+        // Update order status to "Cancelled"
 
-          order.orderStatus = 'Cancelled'
-          await order.save() ;
+        order.orderStatus = 'Cancelled'
+        await order.save();
 
-          res.redirect('/userDashBoard');
-        
+        res.redirect('/userDashBoard');
+
     } catch (error) {
         console.log(error.message);
-        
+
     }
 }
 
-const orderDetails = async (req,res)=>{
+const orderDetails = async (req, res) => {
     try {
-        const{orderId} = req.params
+        const { orderId } = req.params
         const order = await Order.findById(orderId).populate('products.productId').populate('addressId').populate('userId')
-        console.log("kiran",order)
-        res.render('orderDetails',{order})
+        console.log("orderDetails", order)
+        res.render('orderDetails', { order })
 
-        
+
     } catch (error) {
-        console.log(error.message) ;
-        
+        console.log(error.message);
+
     }
 }
 
@@ -508,7 +505,7 @@ const checkOut = async (req, res) => {
         const cartData = await Cart.findOne({ userId: userId }).populate('products.productId');
         let total = 0
         cartData.products.forEach((item) => {
-            total += item.quantity * item.productId.regularprice
+            total += item.quantity * item.productId.salesprice
 
 
 
@@ -537,19 +534,19 @@ const placeOrder = async (req, res) => {
         }
 
         const orderId = await generateUniqueSixDigitOrderId()
-        console.log("orer", orderId);
+        // console.log("orer", orderId);
 
         const { selectedAddress, payment_option } = req.body;
 
-        console.log("selectedaddress",selectedAddress);
+        // console.log("selectedaddress", selectedAddress);
 
         const cart = await Cart.findOne({ userId: req.session.user_id }).populate('products.productId')
         let total = 0
         cart.products.forEach((item) => {
-            total += item.quantity * item.productId.regularprice
+            total += item.quantity * item.productId.salesprice
         })
-        cart.products.forEach(async(item)=>{
-            await Product.findByIdAndUpdate(item.productId,{$inc:{quantity:-item.quantity}})
+        cart.products.forEach(async (item) => {
+            await Product.findByIdAndUpdate(item.productId, { $inc: { quantity: -item.quantity } })
         })
 
         const order = new Order({
@@ -567,7 +564,7 @@ const placeOrder = async (req, res) => {
 
         res.redirect('/userDashBoard')
 
-        console.log("orderData", orderData);
+        // console.log("orderData", orderData);
 
     } catch (error) {
         console.log(error.message);
@@ -575,31 +572,31 @@ const placeOrder = async (req, res) => {
     }
 }
 
-const deleteAddress = async (req,res)=>{
+const deleteAddress = async (req, res) => {
     try {
 
-        const{addressId}= req.params
+        const { addressId } = req.params
         await Address.findByIdAndDelete(addressId);
-        res.status(200).json({success:true});
+        res.status(200).json({ success: true });
 
-        
+
     } catch (error) {
         console.log(error.message);
-        
+
     }
 }
 
-const checkOutAddress = async (req,res)=>{
+const checkOutAddress = async (req, res) => {
     try {
         res.render('checkOutAddress');
-        
+
     } catch (error) {
         console.log(error.message);
-        
+
     }
 }
 
-const saveCheckOutAddress = async (req,res)=>{
+const saveCheckOutAddress = async (req, res) => {
     try {
         const { firstName, lastName, address, city, state, country, postalCode, mobile } = req.body;
         const userId = req.session.user_id
@@ -618,41 +615,74 @@ const saveCheckOutAddress = async (req,res)=>{
         const savedAddress = await newAddress.save();
         res.status(200).json({ success: true, message: 'Address saved successfully', data: savedAddress });
 
-        
+
 
     } catch (error) {
         console.log(error.message);
-        
+
     }
 }
 
-const shopProducts = async (req,res)=>{
+const shopProducts = async (req, res) => {
     try {
         const product = await Product.find({ is_active: true })
-        res.render('shopProducts',{product}); 
-        
+        res.render('shopProducts', { product });
+
     } catch (error) {
         console.log(error.message);
-        
+
     }
 }
 
-const googleLogin = async(req,res)=>{
+const googleLogin = async (req, res) => {
     try {
 
-        // console.log("req",req.isAuthenticated());
-        const userData=await User.findOne({email:req.user.emails[0].value})
-        if(userData){
-            req.session.user_id=userData._id
+        // console.log("req",req.user);
+        const userData = await User.findOne({ email: req.user.emails[0].value })
+        if (userData) {
+            req.session.user_id = userData._id
             res.redirect('/');
-        }else{
+        } else {
+
+            let user = new User({
+                name:req.user.displayName,
+                email:req.user.emails[0].value
+            });
+
+
+            let userData = await user.save();
+            req.session.user_id = userData._id
+
+            res.redirect('/');
+
+              
 
         }
-        
-        
+
+
     } catch (error) {
         console.log(error.message);
-        
+
+    }
+}
+
+const returnOrder = async (req, res) => {
+    try {
+        const orderId = req.query.orderId
+
+        const order = await Order.findById(orderId)
+
+        // Update order status to "Cancelled"
+
+        order.orderStatus = 'Returned'
+        await order.save();
+
+        res.redirect('/userDashBoard');
+
+
+    } catch (error) {
+        console.log(error.message)
+
     }
 }
 module.exports = {
@@ -684,5 +714,6 @@ module.exports = {
     checkOutAddress,
     saveCheckOutAddress,
     shopProducts,
-    googleLogin
+    googleLogin,
+    returnOrder
 }

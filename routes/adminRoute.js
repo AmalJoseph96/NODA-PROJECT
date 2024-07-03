@@ -19,6 +19,11 @@ const multer = require('multer');
 const upload = multer({ dest: "uploads" });
 
 
+
+
+
+
+
 const adminController = require('../controllers/adminController');
 const productController = require('../controllers/productController');
 const adminAuth = require('../middleware/adminAuth');
@@ -48,6 +53,8 @@ adminRoute.post('/editCategory', adminController.editCategoryLoad);
 adminRoute.post('/editProduct', upload.array('image',2), productController.editProductLoad);
 adminRoute.get('/orderList',adminAuth.isLogin,adminController.orderList);
 adminRoute.post('/changeOrderStatus/:orderId',adminAuth.isLogin,adminController.changeOrderStatus);
+adminRoute.get('/orderDetails/:orderId',adminAuth.isLogin,adminController.orderDetails);
+adminRoute.delete('/deleteProductImage',adminAuth.isLogin,productController.deleteProductImage);
 
 
 

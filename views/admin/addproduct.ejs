@@ -21,6 +21,18 @@
 
     <!-- Include jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" />
+    <style>
+        #imagePreview {
+            max-width: 50%;
+            display: none;
+        }
+        .cropped-image-preview {
+            max-width: 50%;
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
 
     
 
@@ -301,13 +313,28 @@
                             <div class="card-header">
                                 <h4>Media</h4>
                             </div>
-                            <div class="card-body">
+                            <!-- <div class="card-body">
                                 <div class="input-upload">
                                     <img src="/admin-assets/imgs/theme/upload.svg" alt="">
                                     <input class="form-control" type="file" name="image" id="image" multiple>
                                     <div class="error-message" id="imageError"></div>
                                 </div>
+                            </div> -->
+                            <div class="card-body">
+                                <div class="input-upload">
+                                    <img src="/admin-assets/imgs/theme/upload.svg" alt="Upload Icon">
+                                    <input class="form-control" type="file" name="image" id="image" multiple>
+                                    <div class="error-message" id="imageError"></div>
+                                    <img id="imagePreview" alt="Image Preview">
+                                </div>
+                                <div>
+                                    <h2>Cropped Image Preview</h2>
+                                    <img id="croppedImagePreview" class="cropped-image-preview">
+                                </div>
+                                <!-- <button type="submit">Submit</button> -->
                             </div>
+                        
+
                         </div>
                         <div class="card mb-4">
                             <div class="card-header">
@@ -453,6 +480,56 @@
     <script src="/admin-assets/js/vendors/jquery.fullscreen.min.js"></script>
     <!-- Main Script -->
     <script src="/admin-assets/js/main.js" type="text/javascript"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            let cropper;
+            const imageInput = document.getElementById('image');
+            const imagePreview = document.getElementById('imagePreview');
+            const croppedImagePreview = document.getElementById('croppedImagePreview');
+            const productForm = document.getElementById('productForm');
+
+            imageInput.addEventListener('change', function (event) {
+                const files = event.target.files;
+                if (files && files.length > 0) {
+                    const file = files[0];
+                    const reader = new FileReader();
+                    reader.onload = function () {
+                        imagePreview.src = reader.result;
+                        imagePreview.style.display = 'block';
+                        if (cropper) {
+                            cropper.destroy();
+                        }
+                        cropper = new Cropper(imagePreview, {
+                            aspectRatio: 1,
+                            viewMode: 1,
+                            crop(event) {
+                                const canvas = cropper.getCroppedCanvas();
+                                const dataUrl = canvas.toDataURL('image/png');
+                                croppedImagePreview.src = dataUrl;
+                                croppedImagePreview.style.display = 'block';
+
+                                // Create a hidden input to store the cropped image data
+                                let croppedImageInput = document.getElementById('croppedImage');
+                                if (!croppedImageInput) {
+                                    croppedImageInput = document.createElement('input');
+                                    croppedImageInput.type = 'hidden';
+                                    croppedImageInput.name = 'croppedImage';
+                                    croppedImageInput.id = 'croppedImage';
+                                    productForm.appendChild(croppedImageInput);
+                                }
+                                croppedImageInput.value = dataUrl;
+                            }
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+    </script>
+
 </body>
 
 

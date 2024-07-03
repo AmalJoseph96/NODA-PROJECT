@@ -262,7 +262,8 @@
                                             <%}else{%>
                                                 <td><span class="badge rounded-pill alert-danger">inactive</span></td>
                                                 <%}%>
-                                            <td><%=userData[i].date.toLocaleString()%></td>
+                                                <td><%= new Date(userData[i].createdAt).toLocaleString() %></td>
+
                                             <!-- <td></td> -->
                                             <td class="text-end">
                                              <%if(userData[i].isActive){%>

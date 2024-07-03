@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt');
 const Category = require('../models/categoryModel');
 const path = require('path');
 const Brand = require('../models/brandModel');
-const sharp=require('sharp')
+const sharp=require('sharp');
+const fs = require('fs'); 
 
 
 
@@ -63,12 +64,12 @@ const editProductLoad = async (req,res)=>{
     try {
         const productId = req.query.id;
         console.log('product id is ',productId)
-        const { name, description, regularPrice, quantity, category, brand } = req.body;
+        const { name, description, regularPrice,salesPrice, quantity, category, brand } = req.body;
         console.log('bodydata ',req.body)
         const productData = await Product.findById(productId)
         productData.title = name
         productData.description = description
-        productData.regularprice = regularPrice
+        productData.salesprice = salesPrice
         productData.quantity = quantity
         productData.category = category
         productData.brand = brand
@@ -160,9 +161,42 @@ const addBrandLoad = async (req, res) => {
     }
 }
 
+const deleteProductImage = async (req,res)=>{
+    try {
+        const { productId, imageName } = req.query;
+        const product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+          // Remove the image from the product's image array
+          product.image = product.image.filter(image => image !== imageName);
+
+                  // Delete the image file from the filesystem
+        const imagePath = path.join(__dirname, '../uploads', imageName);
+        fs.unlink(imagePath, (err) => {
+            if (err) {
+                console.error('Error deleting file:', err);
+            }
+        });
+
+        await product.save();
+        res.status(200).json({ message: 'Image deleted successfully' });
+
+
+
+        
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+
+}
+
 
 module.exports = {
-    productList, blockProduct, unblockProduct, editProduct, brand, addBrand, addBrandLoad,editProductLoad
+    productList, blockProduct, unblockProduct, editProduct, brand, addBrand, addBrandLoad,editProductLoad,deleteProductImage
 }
 
 

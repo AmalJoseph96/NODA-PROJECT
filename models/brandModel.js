@@ -7,6 +7,8 @@ const brandSchema = new mongoose.Schema({
     category: { type: mongoose.Schema.Types.ObjectId, ref: "categories" },
     is_active: { type: Boolean, default: true }
 
+},{
+    timestamps:true
 });
 
 module.exports = mongoose.model("brand", brandSchema);

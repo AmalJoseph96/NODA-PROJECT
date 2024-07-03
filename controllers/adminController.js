@@ -8,7 +8,7 @@ const fs = require('fs');
 const sharp = require('sharp');
 const Address = require('../models/addressModel');
 const Cart = require('../models/cartModel');
-const Order = require('../models/orderModel')
+const Order = require('../models/orderModel');
 
 
 
@@ -201,26 +201,64 @@ const addProductPage = async (req, res) => {
 }
 
 
+// const addProduct = async (req, res) => {
+//     try {
+//         const processedImages = req.processedImages || [];
+
+//         // Process and resize images
+//         const imagePromises = req.files.map(async (file) => {
+//             const imagePath = `uploads/${file.filename}`;
+//             const resizedImagePath = `uploads/resized_${file.filename}`;
+
+//             // Resize the image to a fixed width and height
+//             await sharp(imagePath)
+//                 .resize({ width: 500, height: 500 })
+//                 .toFile(resizedImagePath);
+
+//             // Add the resized image filename to the processedImages array
+//             processedImages.push(`resized_${file.filename}`);
+//         });
+
+//         // Wait for all images to be processed
+//         await Promise.all(imagePromises);
+
+//         // Save the product data to the database with the processed image filenames
+//         const productData = new Product({
+//             title: req.body.title,
+//             brand: req.body.brand,
+//             description: req.body.description,
+//             weight: req.body.weight,
+//             shape: req.body.shape,
+//             color: req.body.color,
+//             category: req.body.category,
+//             regularprice: req.body.regularPrice,
+//             salesprice: req.body.salesPrice,
+//             image: processedImages,
+//             quantity: req.body.quantity
+//         });
+//         await productData.save();
+
+//         res.redirect('/admin/productlist');
+
+//     } catch (error) {
+//         console.error('Error adding product:', error);
+//     }
+// };
+  
 const addProduct = async (req, res) => {
     try {
-        const processedImages = req.processedImages || [];
+        const processedImages = [];
 
-        // Process and resize images
-        const imagePromises = req.files.map(async (file) => {
-            const imagePath = `uploads/${file.filename}`;
-            const resizedImagePath = `uploads/resized_${file.filename}`;
-
-            // Resize the image to a fixed width and height
-            await sharp(imagePath)
-                .resize({ width: 200, height: 200 })
-                .toFile(resizedImagePath);
-
-            // Add the resized image filename to the processedImages array
-            processedImages.push(`resized_${file.filename}`);
-        });
-
-        // Wait for all images to be processed
-        await Promise.all(imagePromises);
+        // If a cropped image is provided
+        if (req.body.croppedImage) {
+            const base64Data = req.body.croppedImage.replace(/^data:image\/png;base64,/, '');
+            const imageName = `cropped_${Date.now()}.png`;
+            const imagePath = path.join(__dirname, '../uploads', imageName);
+            
+            // Save the cropped image to the uploads directory
+            fs.writeFileSync(imagePath, base64Data, 'base64');
+            processedImages.push(imageName);
+        }
 
         // Save the product data to the database with the processed image filenames
         const productData = new Product({
@@ -242,11 +280,15 @@ const addProduct = async (req, res) => {
 
     } catch (error) {
         console.error('Error adding product:', error);
+        res.status(500).send('Error adding product');
     }
 };
 
+
+
 const editCategory = async (req, res) => {
-    const catData = await Category.findById(req.query.catId)
+    const catId = req.query.catId;
+    const catData = await Category.findById(catId)
     res.render('editCategory', { catData })
 
 }
@@ -254,14 +296,25 @@ const editCategory = async (req, res) => {
 const editCategoryLoad = async (req, res) => {
     try {
 
+        console.log('coming to controller')
         let id = req.query.id
         const { cname, cdescription } = req.body;
+        const categoryName = cname
 
+        const existingCategory = await Category.findOne({ categoryName });
+        console.log('existign category is ',existingCategory)
+        if (existingCategory) {
+
+           return res.status(401).json({message:"category already exists"})
+            
+        }
         const newCategory = await Category.findByIdAndUpdate(id, { $set: { categoryName: cname, description: cdescription } }, { new: true })
 
+        if(newCategory)(
+            res.status(200).json({message:'category updated successfully'})
+        )
 
-
-        res.redirect('/admin/category');
+       
 
 
 
@@ -313,6 +366,24 @@ const changeOrderStatus = async (req, res) => {
     }
 }
 
+const orderDetails = async (req, res) => {
+    try {
+        const { orderId } = req.params
+
+        console.log("athulm",orderId);
+        const order = await Order.findById(orderId).populate('products.productId').populate('addressId').populate('userId')
+        console.log("orderDetailsanjith", order)
+        res.render('orderDetails', { order })
+
+
+    } catch (error) {
+        console.log(error.message);
+
+    }
+}
+
+
+
 
 
 module.exports = {
@@ -333,6 +404,8 @@ module.exports = {
     editCategoryLoad,
     loadLogout,
     orderList,
-    changeOrderStatus
+    changeOrderStatus,
+    orderDetails,
+    
 
 }

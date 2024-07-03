@@ -9,7 +9,6 @@ const productSchema= mongoose.Schema({
     shape:{type:String},
     color:{type:String},
     category:{type: mongoose.Schema.Types.ObjectId,ref:'category'},
-    date:{type:Date,default:Date.now},
     regularprice:{type:Number,required:true},
     salesprice:{type:Number,required:true},
     image:[{type:String}],
@@ -19,6 +18,10 @@ const productSchema= mongoose.Schema({
     cat_status:{type:Boolean,default:0},
     brand_status:{type:Boolean,default:0}
    
+
+
+},{
+    timestamps:true
 })
 
 

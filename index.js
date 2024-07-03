@@ -20,10 +20,13 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'))
 
 
+
 app.use('/', userRoute);
 
 const adminRoute = require('./routes/adminRoute');
 app.use('/admin', adminRoute);
+
+
 
 
 

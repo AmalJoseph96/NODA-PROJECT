@@ -10,6 +10,8 @@ const addressSchema = mongoose.Schema({
     country: { type: String, required: true },
     postalCode: { type: String, required: true },
     mobile: { type: Number, required: true }
+},{
+    timestamps:true
 })
 
 module.exports = mongoose.model("Address", addressSchema);
