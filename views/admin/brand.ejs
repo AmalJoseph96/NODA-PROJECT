@@ -45,7 +45,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="page-orders-1.html">
+                    <a class="menu-link" href="/admin/orderList">
                         <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
@@ -68,21 +68,17 @@
                         <span class="text">Categories</span>
                     </a>
                 </li>
-                <li class="menu-item has-submenu">
+                <li class="menu-item ">
                     <a class="menu-link" href="#">
                         <i class="icon material-icons md-person"></i>
-                        <span class="text">Account</span>
+                        <span class="text">Banner Management</span>
                     </a>
-                    <div class="submenu">
-                        <a href="page-account-login.html">User login</a>
-                        <a href="page-account-register.html">User registration</a>
-                        <a href="page-error-404.html">Error 404</a>
-                    </div>
+                  
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="page-reviews.html">
                         <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
+                        <span class="text">offers</span>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -94,21 +90,17 @@
                 <li class="menu-item">
                     <a class="menu-link" disabled href="#">
                         <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
+                        <span class="text">Coupon</span>
                     </a>
                 </li>
             </ul>
             <hr>
             <ul class="menu-aside">
-                <li class="menu-item has-submenu">
+                <li class="menu-item ">
                     <a class="menu-link" href="#">
                         <i class="icon material-icons md-settings"></i>
                         <span class="text">Settings</span>
                     </a>
-                    <div class="submenu">
-                        <a href="page-settings-1.html">Setting sample 1</a>
-                        <a href="page-settings-2.html">Setting sample 2</a>
-                    </div>
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="page-blank.html">
@@ -159,7 +151,11 @@
                                 <div class="col">
                                     <div class="card card-product-grid" style="width: 200px; height: 300px;">
                                         <a href="" class="img-wrap" style="height: 200px;">
-                                            <img src="/uploads/<%= brandD[i].image[0] %>" alt="Product" style="height: 100%; width: 100%; object-fit: cover;">
+                                            <% if(brandD[i].image && brandD[i].image.length > 0) { %>
+                                                <img src="/uploads/<%= brandD[i].image %>" alt="Product" style="height: 100%; width: 100%; object-fit: cover;">
+                                            <% } else { %>
+                                                <img src="/admin-assets/imgs/theme/default-image.png" alt="No Image" style="height: 100%; width: 100%; object-fit: cover;">
+                                            <% } %>
                                         </a>
                                         <div class="info-wrap">
                                             <a href="#" class="title text-truncate" style="text-align: center; font-weight: bold;"><%= brandD[i].name %></a>

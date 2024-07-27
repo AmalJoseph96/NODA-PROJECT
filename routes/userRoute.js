@@ -98,6 +98,8 @@ user_route.post('/removeFromCart', cartController.removeFromCart);
 user_route.post('/updateQuantity', cartController.updateQuantity);
 user_route.get('/checkOut',userAuth.isLogin,userController.checkOut);
 user_route.post('/placeOrder',userAuth.isLogin,userController.placeOrder);
+user_route.post('/onlinepayment', userController.onlinePayment)
+user_route.get('/onlinepayment', userController.paymentSuccess)
 
 //.......................//DashBoard//...........................
 

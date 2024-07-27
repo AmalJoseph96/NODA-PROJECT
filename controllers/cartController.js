@@ -19,7 +19,7 @@ const loadCart = async (req, res) => {
 
         res.render('cart', { logData, cart });
 
-        // console.log("cart data",cart);
+        
 
     } catch (error) {
         console.log(error.message);
@@ -81,7 +81,7 @@ const removeFromCart = async (req, res) => {
         const { productId } = req.body
         const userId = req.session.user_id
 
-        // console.log("amal",{productId,userId});
+        
 
         let cart = await Cart.findOne({ userId })
 
@@ -111,7 +111,7 @@ const updateQuantity = async (req, res) => {
         const { productId, action } = req.body;
         const userId = req.session.user_id;
 
-        // console.log("productIdamal",productId);
+     
 
         const cart = await Cart.findOne({ userId });
 

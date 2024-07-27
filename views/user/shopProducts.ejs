@@ -17,6 +17,96 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+    <style>
+        /* Styling the dropdown */
+        .custom-dropdown {
+            position: relative;
+            display: inline-block;
+            width: 200px; /* Adjust width as needed */
+        }
+    
+        .custom-dropdown select {
+            width: 100%;
+            padding: 10px 30px 10px 10px; /* Adjust right padding to make space for the arrow */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+        }
+    
+        .custom-dropdown::after {
+            content: '▼';
+            position: absolute;
+            top: 50%;
+            right: 10px;
+            transform: translateY(-50%);
+            pointer-events: none;
+            font-size: 16px;
+            color: #333;
+        }
+    
+        .custom-dropdown select:focus {
+            outline: none;
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+    
+        .custom-dropdown select option {
+            padding: 10px;
+        }
+    </style>
+
+<style>
+    .user-auth-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.user-auth-links li {
+    margin-left: 20px;
+}
+
+.user-auth-links i {
+    margin-right: 8px;
+    color: #333; /* Icon color */
+}
+
+.auth-link {
+    text-decoration: none;
+    font-size: 16px;
+    color: #333; /* Text color */
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.auth-link:hover {
+    background-color: #007bff; /* Background color on hover */
+    color: #fff; /* Text color on hover */
+}
+
+.auth-link:active {
+    background-color: #0056b3; /* Background color on active */
+    color: #fff; /* Text color on active */
+}
+
+/* Optional: Adding a bit of space around the links */
+.user-auth-links {
+    padding: 10px 0;
+}
+
+</style>
+    
+    
 </head>
 
 <body>
@@ -158,19 +248,19 @@
                     <div class="col-xl-3 col-lg-4">
                         <div class="header-info">
                             <ul>
-                                <li><i class="fi-rs-smartphone"></i> <a href="#">(+01) - 2345 - 6789</a></li>
-                                <li><i class="fi-rs-marker"></i><a  href="page-contact.html">Our location</a></li>
+                                <!-- <li><i class="fi-rs-smartphone"></i> <a href="#">(+01) - 2345 - 6789</a></li> -->
+                                <!-- <li><i class="fi-rs-marker"></i><a  href="page-contact.html">Our location</a></li> -->
                             </ul>
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-4">
                         <div class="text-center">
                             <div id="news-flash" class="d-inline-block">
-                                <ul>
+                                <!-- <ul>
                                     <li>Get great devices up to 50% off <a href="shop-grid-right.html">View details</a></li>
                                     <li>Supper Value Deals - Save more with coupons</li>
                                     <li>Trendy 25silver jewelry, save up 35% off today <a href="shop-grid-right.html">Shop now</a></li>
-                                </ul>
+                                </ul> -->
                             </div>
                         </div>
                     </div>
@@ -178,14 +268,21 @@
                         <div class="header-info header-info-right">
                             <ul>
                                 <li>
-                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i class="fi-rs-angle-small-down"></i></a>
-                                    <ul class="language-dropdown">
+                                    <a class="language-dropdown-active" href="/userDashBoard"> <i class="fi-rs-world"></i> Account </a>
+                                    <!-- <ul class="language-dropdown">
                                         <li><a href="#"><img src="assets/imgs/theme/flag-fr.png" alt="">Français</a></li>
                                         <li><a href="#"><img src="assets/imgs/theme/flag-dt.png" alt="">Deutsch</a></li>
                                         <li><a href="#"><img src="assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
-                                    </ul>
+                                    </ul> -->
                                 </li>
-                                <li><i class="fi-rs-user"></i><a href="page-login-register.html">Log In / Sign Up</a></li>
+                                <ul class="user-auth-links">
+                                    <% if (locals.logData) { %>
+                                        <li><i class="fi-rs-user"></i><a href="/logout" class="auth-link">Logout</a></li>
+                                    <% } else { %>
+                                        <li><i class="fi-rs-user"></i><a href="/login" class="auth-link">Login/Signup</a></li>
+                                    <% } %>
+                                </ul>
+                                <!-- <li><i class="fi-rs-user"></i><a href="page-login-register.html">Log In / Sign Up</a></li> -->
                             </ul>
                         </div>
                     </div>
@@ -200,22 +297,11 @@
                     </div>
                     <div class="header-right">
                         <div class="search-style-2">
-                            <form action="#">
-                                <select class="select-active">
-                                    <option>All Categories</option>
-                                    <option>Women's</option>
-                                    <option>Men's</option>
-                                    <option>Cellphones</option>
-                                    <option>Computer</option>
-                                    <option>Electronics</option>
-                                    <option> Accessories</option>
-                                    <option>Home & Garden</option>
-                                    <option>Luggage</option>
-                                    <option>Shoes</option>
-                                    <option>Mother & Kids</option>
-                                </select>
-                                <input type="text" placeholder="Search for items...">
+                            <form action="/shopProducts" method="get">
+                                <input type="text" name="search" placeholder="Search for items...">
+                                <button type="submit">Search</button>
                             </form>
+                            
                         </div>
                         <div class="header-action-right">
                             <div class="header-action-2">
@@ -283,7 +369,7 @@
                     <div class="header-nav d-none d-lg-flex">
                         <div class="main-categori-wrap d-none d-lg-block">
                             <a class="categori-button-active" href="#">
-                                <span class="fi-rs-apps"></span> Browse Categories
+                                <!-- <span class="fi-rs-apps"></span> Browse Categories -->
                             </a>
                             <div class="categori-dropdown-wrap categori-dropdown-active-large">
                                 <ul>
@@ -484,7 +570,7 @@
                         </div>
                     </div>
                     <div class="hotline d-none d-lg-block">
-                        <p><i class="fi-rs-headset"></i><span>Hotline</span> 1900 - 888 </p>
+                        <p><i class="fi-rs-headset"></i><span>Hotline</span>180019002000</p>
                     </div>
                     <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
                     <div class="header-action-right d-block d-lg-none">
@@ -730,15 +816,15 @@
                             </div>
                             <div class="sort-by-product-area">
                                 <div class="sort-by-cover mr-10">
-                                    <div class="sort-by-product-wrap">
+                                    <!-- <div class="sort-by-product-wrap">
                                         <div class="sort-by">
                                             <span><i class="fi-rs-apps"></i>Show:</span>
                                         </div>
                                         <div class="sort-by-dropdown-wrap">
                                             <span> 50 <i class="fi-rs-angle-small-down"></i></span>
                                         </div>
-                                    </div>
-                                    <div class="sort-by-dropdown">
+                                    </div> -->
+                                    <!-- <div class="sort-by-dropdown">
                                         <ul>
                                             <li><a class="active" href="#">50</a></li>
                                             <li><a href="#">100</a></li>
@@ -746,26 +832,38 @@
                                             <li><a href="#">200</a></li>
                                             <li><a href="#">All</a></li>
                                         </ul>
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="sort-by-cover">
-                                    <div class="sort-by-product-wrap">
-                                        <div class="sort-by">
+                                    <!-- <div class="sort-by-product-wrap"> -->
+                                        <!-- <div class="sort-by">
                                             <span><i class="fi-rs-apps-sort"></i>Sort by:</span>
-                                        </div>
-                                        <div class="sort-by-dropdown-wrap">
+                                        </div> -->
+                                        <!-- <div class="sort-by-dropdown-wrap">
                                             <span> Featured <i class="fi-rs-angle-small-down"></i></span>
+                                        </div> -->
+                                    <!-- </div> -->
+                                    <form id="sortForm" method="get" action="/shopProducts">
+                                        <input type="hidden" name="categoryId" value="<%= categoryId %>">
+                                        <div class="custom-dropdown">
+                                            <select name="sort" onchange="this.form.submit()">
+                                                <option value="">Sort by</option>
+                                                <option value="asc" <%= sort === 'asc' ? 'selected' : '' %>>Price: Low to High</option>
+                                                <option value="desc" <%= sort === 'desc' ? 'selected' : '' %>>Price: High to Low</option>
+                                            </select>
                                         </div>
-                                    </div>
-                                    <div class="sort-by-dropdown">
+                                    </form>
+                                    
+                                    <!-- <div class="sort-by-dropdown">
                                         <ul>
-                                            <li><a class="active" href="#">Featured</a></li>
-                                            <li><a href="#">Price: Low to High</a></li>
-                                            <li><a href="#">Price: High to Low</a></li>
-                                            <li><a href="#">Release Date</a></li>
-                                            <li><a href="#">Avg. Rating</a></li>
+                                            <input type="hidden" name="categoryId" value="<%= categoryId %>">
+                                            <li><a href="/shopproducts?sort=asc">Price: Low to High</a></li>
+                                            <li><a href="/shopProducts?sort=desc">Price: High to Low</a></li>
                                         </ul>
-                                    </div>
+                                    </div> -->
+                              
+                                    
+                                    
                                 </div>
                             </div>
                         </div>

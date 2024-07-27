@@ -109,19 +109,16 @@
                     <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-add_box"></i> 
                         <span class="text">Categories</span>
                     </a>
-                    <!-- <div class="submenu">
-                        <a href="page-transactions-1.html">Transaction 1</a>
-                        <a href="page-transactions-2.html">Transaction 2</a>
-                    </div> -->
+                    
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
-                        <span class="text">Account</span>
+                        <span class="text">Banner Management</span>
                     </a>
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
-                        <span class="text">Reviews</span>
+                        <span class="text">offers</span>
                     </a>
                 </li>
                 <li class="menu-item">
@@ -130,20 +127,16 @@
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
+                        <span class="text">Coupon</span>
                     </a>
                 </li>
             </ul>
             <hr>
             <ul class="menu-aside">
-                <li class="menu-item has-submenu">
+                <li class="menu-item">
                     <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
-                        <span class="text">Settings</span>
+                        <span class="text">Enquires</span>
                     </a>
-                    <div class="submenu">
-                        <a href="page-settings-1.html">Setting sample 1</a>
-                        <a href="page-settings-2.html">Setting sample 2</a>
-                    </div>
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
@@ -320,19 +313,32 @@
                                     <div class="error-message" id="imageError"></div>
                                 </div>
                             </div> -->
-                            <div class="card-body">
-                                <div class="input-upload">
-                                    <img src="/admin-assets/imgs/theme/upload.svg" alt="Upload Icon">
-                                    <input class="form-control" type="file" name="image" id="image" multiple>
-                                    <div class="error-message" id="imageError"></div>
-                                    <img id="imagePreview" alt="Image Preview">
-                                </div>
-                                <div>
-                                    <h2>Cropped Image Preview</h2>
-                                    <img id="croppedImagePreview" class="cropped-image-preview">
-                                </div>
-                                <!-- <button type="submit">Submit</button> -->
-                            </div>
+                     
+        <div class="input-upload">
+            <img src="/admin-assets/imgs/theme/upload.svg" alt="Upload Icon">
+            <input class="form-control" type="file" name="image1" id="image1">
+            <div class="error-message" id="imageError1"></div>
+            <img id="imagePreview1" alt="Image Preview">
+        </div>
+        <div class="input-upload">
+            <img src="/admin-assets/imgs/theme/upload.svg" alt="Upload Icon">
+            <input class="form-control" type="file" name="image2" id="image2">
+            <div class="error-message" id="imageError2"></div>
+            <img id="imagePreview2" alt="Image Preview">
+        </div>
+
+        <div>
+            <!-- <h2>Cropped Image1</h2> -->
+            <img id="croppedImagePreview1" class="cropped-image-preview">
+            <input type="hidden" name="croppedImage1" id="croppedImage1">
+        </div>
+        <div>
+            <!-- <h2>Cropped Image Pr</h2> -->
+            <img id="croppedImagePreview2" class="cropped-image-preview">
+            <input type="hidden" name="croppedImage2" id="croppedImage2">
+        </div>
+
+        <!-- <button type="submit">Submit</button> -->
                         
 
                         </div>
@@ -483,51 +489,46 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            let cropper;
-            const imageInput = document.getElementById('image');
-            const imagePreview = document.getElementById('imagePreview');
-            const croppedImagePreview = document.getElementById('croppedImagePreview');
-            const productForm = document.getElementById('productForm');
+        const cropImage = (inputId, previewId, croppedPreviewId, hiddenInputId) => {
+            const imageInput = document.getElementById(inputId);
+            const imagePreview = document.getElementById(previewId);
+            const croppedImagePreview = document.getElementById(croppedPreviewId);
+            const croppedImageInput = document.getElementById(hiddenInputId);
 
-            imageInput.addEventListener('change', function (event) {
+            let cropper;
+
+            imageInput.addEventListener('change', (event) => {
                 const files = event.target.files;
                 if (files && files.length > 0) {
-                    const file = files[0];
                     const reader = new FileReader();
-                    reader.onload = function () {
+                    reader.onload = () => {
                         imagePreview.src = reader.result;
-                        imagePreview.style.display = 'block';
                         if (cropper) {
                             cropper.destroy();
                         }
                         cropper = new Cropper(imagePreview, {
                             aspectRatio: 1,
                             viewMode: 1,
-                            crop(event) {
+                            autoCropArea: 1,
+                            ready: () => {
+                                cropper.crop();
+                            },
+                            crop: () => {
                                 const canvas = cropper.getCroppedCanvas();
-                                const dataUrl = canvas.toDataURL('image/png');
-                                croppedImagePreview.src = dataUrl;
-                                croppedImagePreview.style.display = 'block';
-
-                                // Create a hidden input to store the cropped image data
-                                let croppedImageInput = document.getElementById('croppedImage');
-                                if (!croppedImageInput) {
-                                    croppedImageInput = document.createElement('input');
-                                    croppedImageInput.type = 'hidden';
-                                    croppedImageInput.name = 'croppedImage';
-                                    croppedImageInput.id = 'croppedImage';
-                                    productForm.appendChild(croppedImageInput);
-                                }
-                                croppedImageInput.value = dataUrl;
+                                croppedImagePreview.src = canvas.toDataURL();
+                                croppedImageInput.value = canvas.toDataURL();
                             }
                         });
                     };
-                    reader.readAsDataURL(file);
+                    reader.readAsDataURL(files[0]);
                 }
             });
-        });
+        };
+
+        cropImage('image1', 'imagePreview1', 'croppedImagePreview1', 'croppedImage1');
+        cropImage('image2', 'imagePreview2', 'croppedImagePreview2', 'croppedImage2');
     </script>
 
 </body>

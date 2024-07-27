@@ -201,66 +201,29 @@ const addProductPage = async (req, res) => {
 }
 
 
-// const addProduct = async (req, res) => {
-//     try {
-//         const processedImages = req.processedImages || [];
 
-//         // Process and resize images
-//         const imagePromises = req.files.map(async (file) => {
-//             const imagePath = `uploads/${file.filename}`;
-//             const resizedImagePath = `uploads/resized_${file.filename}`;
-
-//             // Resize the image to a fixed width and height
-//             await sharp(imagePath)
-//                 .resize({ width: 500, height: 500 })
-//                 .toFile(resizedImagePath);
-
-//             // Add the resized image filename to the processedImages array
-//             processedImages.push(`resized_${file.filename}`);
-//         });
-
-//         // Wait for all images to be processed
-//         await Promise.all(imagePromises);
-
-//         // Save the product data to the database with the processed image filenames
-//         const productData = new Product({
-//             title: req.body.title,
-//             brand: req.body.brand,
-//             description: req.body.description,
-//             weight: req.body.weight,
-//             shape: req.body.shape,
-//             color: req.body.color,
-//             category: req.body.category,
-//             regularprice: req.body.regularPrice,
-//             salesprice: req.body.salesPrice,
-//             image: processedImages,
-//             quantity: req.body.quantity
-//         });
-//         await productData.save();
-
-//         res.redirect('/admin/productlist');
-
-//     } catch (error) {
-//         console.error('Error adding product:', error);
-//     }
-// };
-  
 const addProduct = async (req, res) => {
     try {
         const processedImages = [];
 
-        // If a cropped image is provided
-        if (req.body.croppedImage) {
-            const base64Data = req.body.croppedImage.replace(/^data:image\/png;base64,/, '');
-            const imageName = `cropped_${Date.now()}.png`;
-            const imagePath = path.join(__dirname, '../uploads', imageName);
-            
-            // Save the cropped image to the uploads directory
-            fs.writeFileSync(imagePath, base64Data, 'base64');
-            processedImages.push(imageName);
+        if (req.body.croppedImage1) {
+            const base64Data1 = req.body.croppedImage1.replace(/^data:image\/png;base64,/, '');
+            const imageName1 = `cropped_${Date.now()}_1.png`;
+            const imagePath1 = path.join(__dirname, '../uploads', imageName1);
+            fs.writeFileSync(imagePath1, base64Data1, 'base64');
+            processedImages.push(imageName1);
         }
 
-        // Save the product data to the database with the processed image filenames
+
+        if (req.body.croppedImage2) {
+            const base64Data2 = req.body.croppedImage2.replace(/^data:image\/png;base64,/, '');
+            const imageName2 = `cropped_${Date.now()}_2.png`;
+            const imagePath2 = path.join(__dirname, '../uploads', imageName2);
+            fs.writeFileSync(imagePath2, base64Data2, 'base64');
+            processedImages.push(imageName2);
+        }
+
+
         const productData = new Product({
             title: req.body.title,
             brand: req.body.brand,
@@ -277,12 +240,12 @@ const addProduct = async (req, res) => {
         await productData.save();
 
         res.redirect('/admin/productlist');
-
     } catch (error) {
         console.error('Error adding product:', error);
         res.status(500).send('Error adding product');
     }
 };
+
 
 
 
@@ -302,19 +265,19 @@ const editCategoryLoad = async (req, res) => {
         const categoryName = cname
 
         const existingCategory = await Category.findOne({ categoryName });
-        console.log('existign category is ',existingCategory)
+        console.log('existign category is ', existingCategory)
         if (existingCategory) {
 
-           return res.status(401).json({message:"category already exists"})
-            
+            return res.status(401).json({ message: "category already exists" })
+
         }
         const newCategory = await Category.findByIdAndUpdate(id, { $set: { categoryName: cname, description: cdescription } }, { new: true })
 
-        if(newCategory)(
-            res.status(200).json({message:'category updated successfully'})
+        if (newCategory) (
+            res.status(200).json({ message: 'category updated successfully' })
         )
 
-       
+
 
 
 
@@ -370,9 +333,9 @@ const orderDetails = async (req, res) => {
     try {
         const { orderId } = req.params
 
-        console.log("athulm",orderId);
+
         const order = await Order.findById(orderId).populate('products.productId').populate('addressId').populate('userId')
-        console.log("orderDetailsanjith", order)
+
         res.render('orderDetails', { order })
 
 
@@ -406,6 +369,6 @@ module.exports = {
     orderList,
     changeOrderStatus,
     orderDetails,
-    
+
 
 }

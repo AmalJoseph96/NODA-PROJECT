@@ -108,6 +108,51 @@
         
 </head>
 
+<style>
+    .user-auth-links {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.user-auth-links li {
+    margin-left: 20px;
+}
+
+.user-auth-links i {
+    margin-right: 8px;
+    color: #333; /* Icon color */
+}
+
+.auth-link {
+    text-decoration: none;
+    font-size: 16px;
+    color: #333; /* Text color */
+    padding: 8px 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.auth-link:hover {
+    background-color: #007bff; /* Background color on hover */
+    color: #fff; /* Text color on hover */
+}
+
+.auth-link:active {
+    background-color: #0056b3; /* Background color on active */
+    color: #fff; /* Text color on active */
+}
+
+/* Optional: Adding a bit of space around the links */
+.user-auth-links {
+    padding: 10px 0;
+}
+
+</style>
+
 <body>
     <header class="header-area header-style-5">
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
@@ -144,11 +189,14 @@
                                     </ul>
                                 </li>
                                 <!-- <li><i class="fi-rs-user"></i><a href="page-login-register.html">Log In / Sign Up</a></li> -->
-                                <%if(locals.logData){%>
-                                    <li><i class="fi-rs-user"></i><a href="/logout">Logout</a></li>
-                                    <%}else{%>
-                                        <li><i class="fi-rs-user"></i><a href="/login">Login/signup</a></li>    
-                                        <%}%>
+                                <ul class="user-auth-links">
+                                    <% if (locals.logData) { %>
+                                        <li><i class="fi-rs-user"></i><a href="/logout" class="auth-link">Logout</a></li>
+                                    <% } else { %>
+                                        <li><i class="fi-rs-user"></i><a href="/login" class="auth-link">Login/Signup</a></li>
+                                    <% } %>
+                                </ul>
+                                
                             </ul>
                         </div>
                     </div>
@@ -511,8 +559,8 @@
                                                             <tr>
                                                                 <td><%= order.orderId %></td>
                                                                 <td><%= order.orderStatus %></td>
-                                                                <td><%= order.payementStatus %></td>
-                                                                <td><%= order.payementMethod %></td>
+                                                                <td><%= order.paymentStatus %></td>
+                                                                <td><%= order.paymentMethod %></td>
                                                                 <td><%= order.orderDate.toDateString() %></td>
                                                                 <td> <%= order.totalAmount%></td>
                                                                 <td>
