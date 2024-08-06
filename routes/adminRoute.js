@@ -63,6 +63,8 @@ adminRoute.get('/orderList', adminAuth.isLogin, adminController.orderList);
 adminRoute.post('/changeOrderStatus/:orderId', adminAuth.isLogin, adminController.changeOrderStatus);
 adminRoute.get('/orderDetails/:orderId', adminAuth.isLogin, adminController.orderDetails);
 adminRoute.delete('/deleteProductImage', adminAuth.isLogin, productController.deleteProductImage);
+adminRoute.get('/coupon',adminAuth.isLogin,adminController.addCoupon);
+adminRoute.post('/createCoupon',adminAuth.isLogin,adminController.createCoupon);
 
 
 

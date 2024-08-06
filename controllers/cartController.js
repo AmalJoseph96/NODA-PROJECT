@@ -17,10 +17,20 @@ const loadCart = async (req, res) => {
 
         const cart = await Cart.findOne({ userId }).populate('products.productId')
 
-        res.render('cart', { logData, cart });
+        // console.log("cart products",cart.products);
 
-        
-
+        //check any product is out of stock
+        let outOfStock = false;
+        cart.products.forEach(item => {
+            if(item.productId.quantity<item.quantity){
+                item.outOfStock = true;
+                outOfStock = true;
+            }else{
+                item.outOfStock = false;    
+            }       
+        });
+        res.render('cart', { logData, cart ,outOfStock});
+        // console.log("outod stock is",outOfStock);
     } catch (error) {
         console.log(error.message);
 

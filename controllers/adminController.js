@@ -9,6 +9,7 @@ const sharp = require('sharp');
 const Address = require('../models/addressModel');
 const Cart = require('../models/cartModel');
 const Order = require('../models/orderModel');
+const Coupon = require('../models/couponModel');
 
 
 
@@ -345,6 +346,48 @@ const orderDetails = async (req, res) => {
     }
 }
 
+const addCoupon = async (req, res) => {
+    try {
+        const coupons = await Coupon.find({});
+        res.render('coupon', { coupons })
+
+
+    } catch (error) {
+        console.log(error.message);
+
+    }
+}
+
+const createCoupon = async (req, res) => {
+    try {
+        const { code, discount, expiresAt } = req.body;
+        //check is a coupon with same code
+        const existingCoupon = await Coupon.findOne({ code });
+        if (existingCoupon) {
+            return res.status(400).json({ success: false, message: 'Coupon code already exists' });
+        }
+        const newCoupon = new Coupon({
+            code,
+            discount,
+            expiresAt,
+            isActive: true
+        });
+
+        await newCoupon.save();
+        res.redirect('/admin/coupon');
+
+
+    } catch (error) {
+        console.log(error.message);
+
+
+    }
+}
+
+
+
+
+
 
 
 
@@ -369,6 +412,8 @@ module.exports = {
     orderList,
     changeOrderStatus,
     orderDetails,
+    addCoupon,
+    createCoupon
 
 
 }

@@ -99,7 +99,8 @@ user_route.post('/updateQuantity', cartController.updateQuantity);
 user_route.get('/checkOut',userAuth.isLogin,userController.checkOut);
 user_route.post('/placeOrder',userAuth.isLogin,userController.placeOrder);
 user_route.post('/onlinepayment', userController.onlinePayment)
-user_route.get('/onlinepayment', userController.paymentSuccess)
+user_route.get('/onlinepayment', userController.paymentSuccess);
+
 
 //.......................//DashBoard//...........................
 
@@ -117,6 +118,8 @@ user_route.delete('/deleteAddress/:addressId',userAuth.isLogin,userController.de
 user_route.get('/checkOutAddress',userAuth.isLogin,userController.checkOutAddress);
 user_route.post('/saveCheckOutAddress',userAuth.isLogin,userController.saveCheckOutAddress);
 user_route.get('/returnOrder',userController.returnOrder);
+user_route.get('/orderDetails/:orderId/invoice',userAuth.isLogin,userController.invoiceDownload);
+user_route.post('/applyCoupon',userAuth.isLogin,userController.applyCoupon);
 
 
 
