@@ -118,20 +118,22 @@ const editProduct = async (req, res) => {
 const editProductLoad = async (req, res) => {
     try {
         const productId = req.query.id;
-        console.log('product id is ', productId);
-        const { name, description, regularPrice, salesPrice, quantity, category, brand } = req.body;
-        console.log('bodydata ', req.body);
+        // console.log('product id is ', productId);
+        const { name, description, regularPrice, discountPercentage, quantity, category, brand } = req.body;
+        // console.log('bodydata ', req.body);
 
         // Find the product by ID
         const productData = await Product.findById(productId);
+        const calculatedBestDiscount = productData.bestDiscount<discountPercentage?discountPercentage:productData.bestDiscount
         if (!productData) {
             return res.status(404).json({ message: 'Product not found' });
         }
 
         // Update product fields
+        productData.bestDiscount = calculatedBestDiscount
         productData.title = name;
         productData.description = description;
-        productData.salesprice = salesPrice;
+        productData.salesprice =  productData.regularprice - (productData.regularprice * (calculatedBestDiscount / 100));
         productData.quantity = quantity;
         productData.category = category;
         productData.brand = brand;

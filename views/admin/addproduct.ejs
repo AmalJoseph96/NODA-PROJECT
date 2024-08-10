@@ -285,8 +285,8 @@
                                     </div>
                                     <div class="col-lg-4">
                                         <div class="mb-4">
-                                            <label class="form-label">Sales price</label>
-                                            <input placeholder="$" type="number" class="form-control" name="salesPrice" id="salesPrice">
+                                            <label class="form-label">DiscountPercentage</label>
+                                            <input placeholder="%" type="number" class="form-control" name="discountPercentage" id="discountPercentage">
                                             <div class="error-message" id="salesPriceError"></div>
                                         </div>
                                     </div>
@@ -375,34 +375,34 @@
                 document.addEventListener('DOMContentLoaded', function () {
                     // Form element
                     var form = document.getElementById('productForm');
-        
+            
                     // Form fields
                     var titleField = document.getElementById('product_name');
                     var descriptionField = document.getElementById('description');
                     var weightField = document.getElementById('weight');
                     var regularPriceField = document.getElementById('regularPrice');
-                    var salesPriceField = document.getElementById('salesPrice');
+                    var discountPercentageField = document.getElementById('discountPercentage');
                     var quantityField = document.getElementById('quantity');
-        
+            
                     // Error message elements
                     var titleError = document.getElementById('titleError');
                     var descriptionError = document.getElementById('descriptionError');
                     var weightError = document.getElementById('weightError');
                     var regularPriceError = document.getElementById('regularPriceError');
-                    var salesPriceError = document.getElementById('salesPriceError');
+                    var discountPercentageError = document.getElementById('salesPriceError');
                     var quantityError = document.getElementById('quantityError');
-        
+            
                     // Function to check if a field is empty
                     function isEmpty(value) {
                         return value.trim() === '';
                     }
-        
+            
                     // Function to display error message
                     function showError(element, message) {
                         element.textContent = message;
                         element.style.color = 'red';
                     }
-        
+            
                     // Function to validate the form
                     function validateForm(event) {
                         // Resetting previous error messages
@@ -410,9 +410,9 @@
                         descriptionError.textContent = '';
                         weightError.textContent = '';
                         regularPriceError.textContent = '';
-                        salesPriceError.textContent = '';
+                        discountPercentageError.textContent = '';
                         quantityError.textContent = '';
-        
+            
                         // Validating Title
                         if (isEmpty(titleField.value)) {
                             showError(titleError, 'Title is required');
@@ -421,7 +421,7 @@
                             showError(titleError, 'Title must contain only characters');
                             event.preventDefault();
                         }
-        
+            
                         // Validating Description
                         if (isEmpty(descriptionField.value)) {
                             showError(descriptionError, 'Description is required');
@@ -430,39 +430,40 @@
                             showError(descriptionError, 'Description must contain only characters');
                             event.preventDefault();
                         }
-        
+            
                         // Validating Weight
                         if (isNaN(weightField.value) || parseInt(weightField.value) <= 0) {
-                            showError(weightError, 'Weight should be a positive integer');
+                            showError(weightError, 'Weight should be a positive number');
                             event.preventDefault();
                         }
-        
+            
                         // Validating Regular Price
-                        if (isNaN(regularPriceField.value) || parseInt(regularPriceField.value) <= 0) {
+                        if (isNaN(regularPriceField.value) || parseFloat(regularPriceField.value) <= 0) {
                             showError(regularPriceError, 'Regular price should be a positive number');
                             event.preventDefault();
                         }
-        
-                        // Validating Sales Price
-                        if (isNaN(salesPriceField.value) || parseInt(salesPriceField.value) <= 0) {
-                            showError(salesPriceError, 'Sales price should be a positive number');
+            
+                        // Validating Discount Percentage
+                        if (isNaN(discountPercentageField.value) || parseFloat(discountPercentageField.value) <= 0) {
+                            showError(discountPercentageError, 'Discount percentage should be a positive number');
                             event.preventDefault();
-                        } else if (parseInt(salesPriceField.value) >= parseInt(regularPriceField.value)) {
-                            showError(salesPriceError, 'Sales price should be less than Regular price');
+                        } else if (parseFloat(discountPercentageField.value) >= 100) {
+                            showError(discountPercentageError, 'Discount percentage should be less than 100%');
                             event.preventDefault();
                         }
-        
+            
                         // Validating Quantity
                         if (isNaN(quantityField.value) || parseInt(quantityField.value) <= 0) {
                             showError(quantityError, 'Quantity should be a positive number');
                             event.preventDefault();
                         }
                     }
-        
+            
                     // Adding form submit event listener
                     form.addEventListener('submit', validateForm);
                 });
             </script>
+            
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">

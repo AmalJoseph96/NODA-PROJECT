@@ -65,6 +65,16 @@ adminRoute.get('/orderDetails/:orderId', adminAuth.isLogin, adminController.orde
 adminRoute.delete('/deleteProductImage', adminAuth.isLogin, productController.deleteProductImage);
 adminRoute.get('/coupon',adminAuth.isLogin,adminController.addCoupon);
 adminRoute.post('/createCoupon',adminAuth.isLogin,adminController.createCoupon);
+adminRoute.get('/loadOffer',adminAuth.isLogin,adminController.loadOffer);
+adminRoute.post('/addOffer',adminAuth.isLogin,adminController.addOffer);
+adminRoute.get('/sales-report',adminAuth.isLogin,adminController.salesReport);
+adminRoute.get('/salesReportFilter',adminAuth.isLogin,adminController.salesReportFilter);
+
+
+
+
+
+
 
 
 

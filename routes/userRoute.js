@@ -120,6 +120,10 @@ user_route.post('/saveCheckOutAddress',userAuth.isLogin,userController.saveCheck
 user_route.get('/returnOrder',userController.returnOrder);
 user_route.get('/orderDetails/:orderId/invoice',userAuth.isLogin,userController.invoiceDownload);
 user_route.post('/applyCoupon',userAuth.isLogin,userController.applyCoupon);
+user_route.post('/remove-coupon',userAuth.isLogin,userController.removeCoupon);
+user_route.post('/addToWishlist',userAuth.isLogin,userController.addToWishlist);
+user_route.get('/wishlist',userAuth.isLogin,userController.getWishlist);
+user_route.post('/wishlist/:userId/add-to-cart',userAuth.isLogin,userController.addToCartFromWishlist);
 
 
 

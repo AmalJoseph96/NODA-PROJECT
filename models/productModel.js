@@ -8,7 +8,7 @@ const productSchema= mongoose.Schema({
     weight:{type:Number},
     shape:{type:String},
     color:{type:String},
-    category:{type: mongoose.Schema.Types.ObjectId,ref:'category'},
+    category:{type: mongoose.Schema.Types.ObjectId,ref:'Category'},
     regularprice:{type:Number,required:true},
     salesprice:{type:Number,required:true},
     image:[{type:String}],
@@ -16,7 +16,13 @@ const productSchema= mongoose.Schema({
     is_active:{type:Boolean,default:true},
     quantity:{type:Number,default:0},
     cat_status:{type:Boolean,default:0},
-    brand_status:{type:Boolean,default:0}
+    brand_status:{type:Boolean,default:0},
+    // priceAfterDiscount: { type: Number, default: null },
+    categoryOffer: { type: Number,default: null },
+    discountPercentage:{type:Number,required:true},
+    bestDiscount:{type:Number}
+
+
    
 
 

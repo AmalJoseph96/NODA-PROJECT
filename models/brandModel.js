@@ -4,7 +4,7 @@ const brandSchema = new mongoose.Schema({
     name: { type: String, required: true },
     description: { type: String, required: true },
     image: [{ type: String, required: true }],
-    category: { type: mongoose.Schema.Types.ObjectId, ref: "categories" },
+    category: { type: mongoose.Schema.Types.ObjectId, ref: "Category" },
     is_active: { type: Boolean, default: true }
 
 },{

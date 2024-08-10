@@ -1039,14 +1039,13 @@
                                                 </tr>
                                                 <tr>
                                                     <th colspan="3">Discount</th>
-                                                    <td data-discount="0.00">0.00</td>
+                                                    <td data-discount="0.00" id="discountAmount">0.00</td>
                                                 </tr>
                                                 <tr>
                                                     <th colspan="3">Total</th>
-                                                    <td  data-total="<%= total %>" class="product-subtotal"><span class="font-xl text-brand fw-900"
-                                                            id="subTotal">
-                                                            <%=total%>
-                                                        </span></td>
+                                                    <td data-total="<%= total %>" class="product-subtotal">
+                                                        <span class="font-xl text-brand fw-900" id="totalAmount"><%= total %></span>
+                                                    </td>
                                                 </tr>
                                     </tbody>
                                 </table>
@@ -1102,9 +1101,10 @@
         </section>
         <script>
              document.getElementById('applyCouponForm').addEventListener('submit', async (event) => {
+                // log
         event.preventDefault();
         const couponCode = event.target.couponCode.value;
-        console.log("amaljo",couponCode);
+      
         
         const totalAmount = <%= total %>; // Pass the total amount dynamically
 
@@ -1150,6 +1150,83 @@
         </script>
 
 
+    <!-- Include the custom script at the bottom of the body -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const removeCouponButton = document.getElementById('removeCouponButton');
+            const totalAmountElement = document.querySelector('td[data-total]');
+            const totalAmountSpan = document.getElementById('totalAmount');
+            const discountAmountElement = document.querySelector('td[data-discount]');
+    
+            if (removeCouponButton && totalAmountElement && totalAmountSpan && discountAmountElement) {
+                console.log("Elements found:", totalAmountElement, totalAmountSpan, discountAmountElement);
+                let totalAmount = parseFloat(totalAmountElement.getAttribute('data-total'));
+                console.log("Initial totalAmount retrieved:", totalAmount);
+    
+                removeCouponButton.addEventListener('click', async () => {
+                    console.log("Remove coupon button clicked");
+    
+                    try {
+                        const response = await fetch('/remove-coupon', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ totalAmount })
+                        });
+    
+                        console.log('Response status:', response.status);
+    
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+    
+                        const result = await response.json();
+                        console.log('Result:', result);
+    
+                        if (result.success) {
+                            // Update the total amount on the frontend
+                            const updatedTotalAmount = parseFloat(result.totalAmount);
+                            console.log("Updated total amount:", updatedTotalAmount);
+                            // totalAmountSpan.innerText = updatedTotalAmount.toFixed(2);
+                            totalAmountElement.innerText = updatedTotalAmount.toFixed(2);
+                            // totalAmountElement.setAttribute('data-total', updatedTotalAmount.toFixed(2));
+    
+                            // Reset the discount amount
+                            discountAmountElement.textContent = '0.00';
+                            discountAmountElement.setAttribute('data-discount', '0.00');
+    
+                            // Show SweetAlert message
+                            Swal.fire({
+                                title: 'Coupon Removed',
+                                text: result.message,
+                                icon: 'success',
+                                confirmButtonText: 'OK'
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: 'Failed to remove coupon',
+                                icon: 'error',
+                                confirmButtonText: 'OK'
+                            });
+                        }
+                    } catch (error) {
+                        console.error('Error removing coupon:', error);
+                        Swal.fire({
+                            title: 'Error',
+                            text: `An error occurred while removing the coupon: ${error.message}`,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            } else {
+                console.error("Required elements not found");
+            }
+        });
+    </script>
+    
 
         
     </main>

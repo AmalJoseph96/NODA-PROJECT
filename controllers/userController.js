@@ -11,6 +11,7 @@ const Order = require('../models/orderModel');
 const Category = require('../models/categoryModel');
 const { promises } = require("nodemailer/lib/xoauth2");
 const Coupon   = require('../models/couponModel');
+const Wishlist = require('../models/wishlistModel');
 // require('dotenv').config();
 
 const Razorpay = require('razorpay')
@@ -343,11 +344,12 @@ const userDashBoard = async (req, res) => {
     try {
 
         const userId = req.session.user_id
+        const user = await User.findById(userId);
         const logData = await User.findById(userId);
         const addresses = await Address.find({ userId: userId })
         const orders = await Order.find({ userId }).populate('products.productId').populate('addressId').sort({ orderDate: -1 }).exec();
         // console.log("address", addresses);
-        res.render('userDashBoard', { logData, addresses, orders });
+        res.render('userDashBoard', { logData, addresses, orders,walletBalance: user.walletBalance });
 
 
     } catch (error) {
@@ -501,10 +503,14 @@ const cancelOrder = async (req, res) => {
     try {
 
         const orderId = req.query.orderId
+        const userId = req.session.user_id;
 
         const order = await Order.findById(orderId)
 
-        // Update order status to "Cancelled"
+
+        if (order.orderStatus === 'Cancelled') {
+            return res.status(400).json({ message: 'This order has already been cancelled and cannot be cancelled again.' });
+        }
 
         order.orderStatus = 'Cancelled'
         await order.save();
@@ -514,6 +520,15 @@ const cancelOrder = async (req, res) => {
         })
 
         await Promise.all(restoreProductQuantity);
+
+        const user  = await User.findById(userId);
+        if(user){
+            user.walletBalance+=order.totalAmount;
+            await user.save();
+        }else{
+            return res.status(404).json({ message: 'User not found' });
+        }
+
 
         res.redirect('/userDashBoard');
 
@@ -789,7 +804,7 @@ const onlinePayment = async (req, res) => {
 
         let totalAmount = parseFloat(req.query.totalAmount);
         const userData = await Cart.findOne({ userId: req.session.user_id }).populate('products.productId')
-        console.log('userData is ', userData)
+        // console.log('userData is ', userData)
         var flag = 0
         const userCart = userData.products
         userCart.forEach(item => {
@@ -978,11 +993,11 @@ const applyCoupon = async (req, res) => {
     try {
         const { couponCode, totalAmount } = req.body;
 
-        // const userId = req.session.user._id ;
+        const userId = req.session.user_id ;
 
-        if (existingUserCoupon) {
-            return res.json({ success: false, message: 'Coupon already applied' });
-        }
+      if (req.session.coupon && req.session.coupon.code === couponCode) {
+        return res.json({ success: false, message: 'Coupon already applied' });
+    }
         
         const coupon = await Coupon.findOne({ code: couponCode, isActive: true, expiresAt: { $gte: new Date() } });
 
@@ -1010,6 +1025,117 @@ const applyCoupon = async (req, res) => {
 
     }
 }
+
+const removeCoupon = async(req,res)=>{
+    try {
+
+        console.log('Request body:', req.body);
+         // Remove the coupon from the session
+         req.session.coupon = null;
+
+         // Return the original total amount without the discount
+         const { totalAmount } = req.body;
+         const originalTotalAmount = totalAmount;
+         res.json({ success: true, message: 'Coupon removed', totalAmount: originalTotalAmount});
+        
+    } catch (error) {
+        console.log(error.message);
+        
+        
+    }
+}
+
+
+const addToWishlist = async (req, res) => {
+    try {
+        const { productId } = req.body;
+        const userId = req.session.user_id;
+
+        if (!userId) {
+            return res.status(400).json({ message: 'User not logged in' });
+        }
+
+        if (!productId) {
+            return res.status(400).json({ message: 'Product ID is required' });
+        }
+
+        // Find or create the wishlist for the user
+        let wishlist = await Wishlist.findOne({ userId });
+        if (!wishlist) {
+            wishlist = new Wishlist({ userId, products: [] });
+        }
+
+        // Check if the product is already in the wishlist
+        const productExists = wishlist.products.some(product => product.productId.toString() === productId);
+        if (!productExists) {
+            wishlist.products.push({ productId });
+            await wishlist.save();
+        }
+
+        res.status(200).json({ message: 'Product added to wishlist' });
+    } catch (error) {
+        console.error('Error adding to wishlist:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+const getWishlist = async (req, res) => {
+    try {
+        const userId = req.session.user_id; // Get the user's ID from the session
+        const wishlist = await Wishlist.findOne({ userId }).populate('products.productId');
+        const cart = await Cart.findOne({ userId }).populate('products.productId')
+        const logData = await User.findById(userId)
+        
+        
+
+
+        let outOfStock = false;
+        cart.products.forEach(item => {
+            if(item.productId.quantity<item.quantity){
+                item.outOfStock = true;
+                outOfStock = true;
+            }else{
+                item.outOfStock = false;    
+            }       
+        });
+
+        res.render('wishlist', { wishlist,outOfStock ,userId,logData});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
+
+const addToCartFromWishlist = async (req, res) => {
+    try {
+        const { productId } = req.body;
+        const userId = req.session.user_id;
+  
+
+        // Find the user's cart or create one if it doesn't exist
+        let cart = await Cart.findOne({ userId });
+        if (!cart) {
+            cart = new Cart({ userId, products: [] });
+        }
+
+        // Check if the product is already in the cart
+        const productInCart = cart.products.find(product => product.productId.toString() === productId);
+        if (productInCart) {
+            productInCart.quantity += 1; // Increment the quantity if the product is already in the cart
+        } else {
+            cart.products.push({ productId, quantity: 1 });
+        }
+        await cart.save();
+
+        // // Remove the product from the wishlist
+        // await Wishlist.updateOne({ userId }, { $pull: { products: { productId } } });
+
+        res.status(200).json({ message: 'Product added to cart' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error' });
+    }
+};
 
 module.exports = {
     loadHome,
@@ -1046,5 +1172,9 @@ module.exports = {
     paymentSuccess,
     invoiceDownload,
     applyCoupon,
-    applyCoupon
+    applyCoupon,
+    removeCoupon,
+    addToWishlist,
+    getWishlist,
+    addToCartFromWishlist
 }
