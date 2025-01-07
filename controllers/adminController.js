@@ -8,7 +8,7 @@ const path = require('path');
 const Brand = require('../models/brandModel');
 const fs = require('fs');
 const sharp = require('sharp');
-const Address = require('../models/addressModel');      
+const Address = require('../models/addressModel');
 const Cart = require('../models/cartModel');
 const Order = require('../models/orderModel');
 const Coupon = require('../models/couponModel');
@@ -93,7 +93,28 @@ const loadDashboard = async (req, res) => {
         const user = await User.find({})
         const order = await Order.find({}).sort({ createdAt: -1 }).populate('userId')
         const product = await Product.find({})
+        const totalUsers = await User.countDocuments({});
+        const totalProducts = await Product.countDocuments({});
         let totalTransaction = 0
+        let totalDiscount = 0;
+
+        // Aggregate to calculate the total sales count
+        const totalSalesData = await Order.aggregate([
+            {
+                $unwind: '$products' // Unwind the products array
+            },
+            {
+                $group: {
+                    _id: null, // We don't need to group by any specific field, so we set _id to null
+                    totalSalesCount: { $sum: '$products.quantity' }, // Sum the quantities of all products
+                }
+            }
+        ]);
+
+        const totalSalesCount = totalSalesData.length > 0 ? totalSalesData[0].totalSalesCount : 0;
+
+
+
         const orderData = await Order.aggregate([
             {
                 $unwind: '$products' // Unwind the products array
@@ -115,7 +136,7 @@ const loadDashboard = async (req, res) => {
         // console.log('ordersdata ',orderData)
 
         const userData = await User.aggregate([
-            {$match:{is_admin:false}},
+            { $match: { is_admin: false } },
             {
                 $group: {
                     _id: { $month: '$createdAt' },
@@ -124,12 +145,12 @@ const loadDashboard = async (req, res) => {
             },
             {
                 $sort: {
-                    '_id': 1 
+                    '_id': 1
                 }
             }
         ]);
 
-        // console.log("userDataAmal",userData);
+        // console.log("userData",userData);
 
         const monthlyData = Array.from({ length: 12 }, (_, index) => {
             const monthOrderData = orderData.find(item => item._id.month === index + 1) || { totalOrders: 0, totalProducts: 0 };
@@ -142,7 +163,7 @@ const loadDashboard = async (req, res) => {
 
         });
 
-        const totalOrdersJson =monthlyData.map(item => item.totalOrders)
+        const totalOrdersJson = monthlyData.map(item => item.totalOrders)
         const totalProductsJson = monthlyData.map(item => item.totalProducts)
         const totalRegisterJson = monthlyData.map(item => item.totalRegister)
 
@@ -152,15 +173,25 @@ const loadDashboard = async (req, res) => {
             }
         });
 
+        // product.forEach((item) => {
+        //     if (item.bestDiscount !== undefined && item.bestDiscount !== null) {
+        //         const discountAmount = (item.salesprice * item.bestDiscount) / 100;
+        //         totalDiscount += discountAmount * item.quantity;
+        //     }
+        // });
+
+        console.log("bestdiscount", totalDiscount);
 
         const logData = await User.findById(req.session.admin_id)
-        console.log("naveen",totalTransaction, totalRegisterJson,
-            totalOrdersJson, totalProductsJson  );
-        res.render('dashboard', { logData, totalRegisterJson,
-            totalOrdersJson, totalProductsJson })
+        console.log("naveen", totalTransaction, totalRegisterJson,
+            totalOrdersJson, totalProductsJson);
+        res.render('dashboard', {
+            logData, totalRegisterJson,
+            totalOrdersJson, totalProductsJson, totalTransaction, totalSalesCount, totalUsers, totalProducts
+        })
 
-          
-            
+
+
 
     } catch (error) {
         console.log(error.message);
@@ -172,8 +203,8 @@ const userList = async (req, res) => {
     try {
         const userData = await User.find({ is_admin: false })
         res.render('userlist', { userData });
-        
-        
+
+
 
     } catch (error) {
         console.log(error.message);
@@ -183,7 +214,7 @@ const userList = async (req, res) => {
 
 const loadCategory = async (req, res) => {
     try {
-        const catData = await Category.find()
+
         res.render('category', { catData });
 
     } catch (error) {
@@ -305,7 +336,7 @@ const addProduct = async (req, res) => {
         // console.log("discount percentage", discountPercentage);
 
 
-        // Calculate the sales price based on the discount percentage
+
         const salesPrice = regularPrice - (regularPrice * (discountPercentage / 100));
 
 
@@ -508,30 +539,21 @@ const addOffer = async (req, res) => {
         // console.log("products all", products);
 
 
-        // Update each product's price after applying the discount
+
         for (let product of products) {
 
 
             product.categoryOffer = offer_percentage;
 
-            // Determine the best discount (either the product's discount or the category offer)
-            // if (product.discountPercentage && product.discountPercentage > offer_percentage) {
-            //     product.bestDiscount = product.discountPercentage;
-            // } else {
-            //     product.bestDiscount = offer_percentage;
-            //     product.salesprice = product.regularprice - (product.regularprice * (offer_percentage / 100));
-            // }
+            const productDiscount = product.discountPercentage || 0;
+            const bestDiscount = Math.max(productDiscount, offer_percentage);
 
-             // Determine the best discount
-             const productDiscount = product.discountPercentage || 0;
-             const bestDiscount = Math.max(productDiscount, offer_percentage);
- 
-             // Apply the best discount to the sales price
-             product.bestDiscount = bestDiscount;
-             product.salesprice = product.regularprice - (product.regularprice * (bestDiscount / 100));
- 
 
-            // Ensure that discountPercentage is always set
+            product.bestDiscount = bestDiscount;
+            product.salesprice = product.regularprice - (product.regularprice * (bestDiscount / 100));
+
+
+
             if (!product.discountPercentage) {
                 product.discountPercentage = product.bestDiscount;
             }
@@ -552,125 +574,17 @@ const addOffer = async (req, res) => {
     }
 }
 
-const loadfDashboard = async (req, res) => {
-    try {
-        const user = await User.find({})
-        const order = await Order.find({}).sort({ createdAt: -1 }).populate('userId')
-        const product = await Product.find({})
-        let totalTransaction = 0
-        const orderData = await Order.aggregate([
-            {
-                $unwind: '$products' // Unwind the products array
-            },
-            {
-                $group: {
-                    _id: { month: { $month: '$createdAt' } },
-                    totalOrders: { $sum: 1 },
-                    totalProducts: { $sum: '$products.quantity' },
-                }
-            },
-            {
-                $sort: {
-                    '_id.month': 1 // Sort by month
-                }
-            }
-        ]);
 
-        const userData = await User.aggregate([
-            {
-                $group: {
-                    _id: { $month: '$date' },
-                    totalRegister: { $sum: 1 },
-                }
-            },
-            {
-                $sort: {
-                    '_id': 1 // Sort by month
-                }
-            }
-        ]);
-
-        const orderStats = await Order.aggregate([
-            {
-                $unwind: '$products'
-            },
-            {
-                $lookup: {
-                    from: 'products',
-                    localField: 'products.productId',
-                    foreignField: '_id',
-                    as: 'productInfo'
-                }
-            },
-            {
-                $unwind: '$productInfo'
-            },
-            {
-                $lookup: {
-                    from: 'categories',
-                    localField: 'productInfo.categoryId',
-                    foreignField: '_id',
-                    as: 'categoryInfo'
-                }
-            },
-            {
-                $group: {
-                    _id: '$categoryInfo._id',
-                    categoryName: { $first: '$categoryInfo.categoryName' },
-                    orderCount: { $sum: 1 }
-                }
-            }
-        ]);
-
-        const categoryNames = JSON.stringify(orderStats.map(stat => stat.categoryName).flat());
-        const orderCounts = JSON.stringify(orderStats.map(stat => stat.orderCount));
-
-        // console.log(categoryNames)
-        // console.log(orderCounts)
-
-        const monthlyData = Array.from({ length: 12 }, (_, index) => {
-            const monthOrderData = orderData.find(item => item._id.month === index + 1) || { totalOrders: 0, totalProducts: 0 };
-            const monthUserData = userData.find(item => item._id === index + 1) || { totalRegister: 0 };
-            return {
-                totalOrders: monthOrderData.totalOrders,
-                totalProducts: monthOrderData.totalProducts,
-                totalRegister: monthUserData.totalRegister
-            };
-
-        });
-
-        const totalOrdersJson = JSON.stringify(monthlyData.map(item => item.totalOrders));
-        const totalProductsJson = JSON.stringify(monthlyData.map(item => item.totalProducts));
-        const totalRegisterJson = JSON.stringify(monthlyData.map(item => item.totalRegister));
-
-        order.forEach((item) => {
-            if (item.totalAmount !== undefined && item.totalAmount !== null) {
-                totalTransaction += parseFloat(item.totalAmount);
-            }
-        });
-
-    
-
-        // console.log(order[1].userId.name)
-        res.render('dashboard', {
-            user, order, product, totalTransaction, totalRegisterJson,
-            totalOrdersJson, totalProductsJson, categoryNames, orderCounts
-        })
-    } catch (error) {
-        console.log(error.message)
-        res.redirect('/500')
-    }
-}
 const salesReport = async (req, res) => {
     try {
         const orderData = await Order.find().sort({ orderDate: -1 }).populate('userId');
-        res.render('salesReport', { orderData,fromDate: '', toDate: '' });
+        res.render('salesReport', { orderData, fromDate: '', toDate: '' });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 };
 
-const salesReportFilter = async (req,res)=>{
+const salesReportFilter = async (req, res) => {
     try {
         const { fromDate, toDate, type } = req.query;
         let filter = {};
@@ -695,11 +609,11 @@ const salesReportFilter = async (req,res)=>{
 
         const orderData = await Order.find(filter).sort({ orderDate: -1 }).populate('userId');
         res.render('salesReport', { orderData, fromDate, toDate });
-        
+
     } catch (error) {
         console.log(error.message);
-        
-        
+
+
     }
 }
 
@@ -745,9 +659,9 @@ module.exports = {
     addOffer,
     salesReport,
     salesReportFilter,
-    
-   
-   
+
+
+
 
 
 

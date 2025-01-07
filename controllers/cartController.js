@@ -17,6 +17,8 @@ const loadCart = async (req, res) => {
 
         const cart = await Cart.findOne({ userId }).populate('products.productId')
 
+        
+
         // console.log("cart products",cart.products);
 
         //check any product is out of stock

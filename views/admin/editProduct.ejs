@@ -40,8 +40,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="/admin/productlist"> <i
-                            class="icon material-icons md-shopping_bag"></i>
+                    <a class="menu-link" href="/admin/productlist"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
                 </li>
@@ -61,8 +60,7 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="/admin/category"> <i
-                            class="icon material-icons md-monetization_on"></i>
+                    <a class="menu-link" href="/admin/category"> <i class="icon material-icons md-monetization_on"></i>
                         <span class="text">Categories</span>
                     </a>
                 </li>
@@ -180,7 +178,7 @@
                     <div class="content-header">
 
                         <h2 class="content-title">Edit Product</h2>
-                        <form action="/admin/editProduct?id=<%=productId._id%>" method="POST"
+                        <form id="editProductForm" action="/admin/editProduct?id=<%=productId._id%>" method="POST"
                             enctype="multipart/form-data">
                             <div>
                                 <!-- <button class="btn btn-light rounded font-sm mr-5 text-body hover-up">Save to draft</button> -->
@@ -214,8 +212,8 @@
                                     <div class="mb-4">
                                         <label class="form-label">RegularPrice</label>
                                         <div class="row gx-2">
-                                            <input name="regularPrice" placeholder="regularprice" type="text" class="form-control"
-                                                value="<%=productId.regularprice%>">
+                                            <input name="regularPrice" placeholder="regularprice" type="text"
+                                                class="form-control" value="<%=productId.regularprice%>">
                                         </div>
                                     </div>
                                 </div>
@@ -223,70 +221,26 @@
                                     <div class="mb-4">
                                         <label class="form-label">discountPercentage</label>
                                         <div class="row gx-2">
-                                            <input name="discountPercentage" placeholder="%" type="text" class="form-control"
-                                                value="<%=productId.discountPercentage%>">
+                                            <input name="discountPercentage" placeholder="%" type="text"
+                                                class="form-control" value="<%=productId.discountPercentage%>">
                                         </div>
                                     </div>
                                 </div>
-                                
-                            
                                 <div class="col-lg-4">
-                                    <!-- <div class="mb-4">
-                                            <label class="form-label">Promotional price</label>
-                                            <input placeholder="$" type="text" class="form-control">
-                                        </div> -->
                                 </div>
-                                <!-- <div class="col-lg-4">
-                                        <label class="form-label">Currency</label>
-                                        <select class="form-select">
-                                            <option> USD </option>
-                                            <option> EUR </option>
-                                            <option> RUBL </option>
-                                        </select>
-                                    </div> -->
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Quantity</label>
                                 <input name="quantity" type="text" placeholder="quantity" class="form-control"
                                     id="product_name" value="<%=productId.quantity%>">
                             </div>
-                            <!-- <label class="form-check mb-4">
-                                    <input class="form-check-input" type="checkbox" value="">
-                                    <span class="form-check-label"> Make a template </span>
-                                </label> -->
-
                         </div>
-                    </div> <!-- card end// -->
+                    </div>
                     <div class="card mb-4">
                         <div class="card-header">
-                            <!-- <h4>Shipping</h4> -->
+
                         </div>
-                        <!-- <div class="card-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Width</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="product_name" class="form-label">Height</label>
-                                            <input type="text" placeholder="inch" class="form-control" id="product_name">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Weight</label>
-                                    <input type="text" placeholder="gam" class="form-control" id="product_name">
-                                </div>
-                                <div class="mb-4">
-                                    <label for="product_name" class="form-label">Shipping fees</label>
-                                    <input type="text" placeholder="$" class="form-control" id="product_name">
-                                </div>
-                            </form>
-                        </div> -->
+
                     </div>
                 </div>
                 <div class="col-lg-3">
@@ -299,11 +253,12 @@
                                 <% for (let i=0; i < productId.image.length; i++) { %>
                                     <div class="input-upload">
                                         <img src="/uploads/<%= productId.image[i] %>" alt="">
-                                        <input class="form-control" type="file" name="image">
-                                      
+                                        <input class="form-control" type="file" name="image" id="image<%= i+1 %>">
+
                                     </div>
-                                    <button type="button" class="btn btn-danger" style="padding: 0.5rem 0.5rem;" onclick="deleteImage('<%= productId.image[i] %>')">Delete</button>
-                                    
+                                    <button type="button" class="btn btn-danger" style="padding: 0.5rem 0.5rem;"
+                                        onclick="deleteImage('<%= productId.image[i] %>')">Delete</button>
+
                                     <% } %>
                             </div>
                             <% } %>
@@ -351,6 +306,41 @@
                 </div>
             </div>
 
+            <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var form = document.getElementById('editProductForm');
+                
+                form.addEventListener('submit', function (event) {
+                    var existingImages = document.querySelectorAll('.input-upload img').length;
+                    var newImageInputs = document.querySelectorAll('.input-upload input[type="file"]');
+                    var newImagesCount = 0;
+                    var totalImagesAllowed = 2;
+            
+                    newImageInputs.forEach(function (input) {
+                        if (input.files.length > 0) {
+                            newImagesCount++;
+                        }
+                    });
+            
+                    var totalImages = existingImages + newImagesCount;
+            
+                    if (totalImages < 1) {
+                        alert('At least one image is required.');
+                        event.preventDefault();
+                        return;
+                    }
+            
+                    if (totalImages > totalImagesAllowed) {
+                        alert('You can only upload a maximum of two images.');
+                        event.preventDefault();
+                        return;
+                    }
+                });
+            });
+
+        </script>
+            
+
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
@@ -394,7 +384,7 @@
             }
         }
     </script>
-    
+
 </body>
 
 

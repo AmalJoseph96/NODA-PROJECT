@@ -3,6 +3,7 @@
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+
 <head>
     <meta charset="utf-8">
     <title>Evara - eCommerce HTML Template</title>
@@ -24,99 +25,112 @@
     <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
     <script src="https://kit.fontawesome.com/30459940a1.js" crossorigin="anonymous"></script>
 
-   <style>
-    /* Basic button styles */
-.qty-button {
-    display: inline-block;
-    border: none;
-    background-color:#088178; /* Green background color */
-    color: white; /* Text color */
-    padding: 5px;
-    margin: 0;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 5px; /* Rounded corners */
-}
+    <style>
+        /* Basic button styles */
+        .qty-button {
+            display: inline-block;
+            border: none;
+            background-color: #088178;
+            /* Green background color */
+            color: white;
+            /* Text color */
+            padding: 5px;
+            margin: 0;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            /* Rounded corners */
+        }
 
-/* Adjust button size */
-.qty-button {
-    width: 30px; /* Adjust width as needed */
-    height: 30px; /* Adjust height as needed */
-}
+        /* Adjust button size */
+        .qty-button {
+            width: 30px;
+            /* Adjust width as needed */
+            height: 30px;
+            /* Adjust height as needed */
+        }
 
-/* Hover effect */
-.qty-button:hover {
-    background-color: #088178; /* Darker green on hover */
-}
+        /* Hover effect */
+        .qty-button:hover {
+            background-color: #088178;
+            /* Darker green on hover */
+        }
 
-/* Font Awesome icon size and alignment */
-.qty-button i {
-    font-size: 16px; /* Adjust icon size */
-    vertical-align: middle; /* Align icon vertically */
-    margin: 0 auto; /* Center the icon horizontally */
-}
+        /* Font Awesome icon size and alignment */
+        .qty-button i {
+            font-size: 16px;
+            /* Adjust icon size */
+            vertical-align: middle;
+            /* Align icon vertically */
+            margin: 0 auto;
+            /* Center the icon horizontally */
+        }
+    </style>
+    <style>
+        .user-auth-links {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
 
-   </style>
-   <style>
-    .user-auth-links {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-}
+        .user-auth-links li {
+            margin-left: 20px;
+        }
 
-.user-auth-links li {
-    margin-left: 20px;
-}
+        .user-auth-links i {
+            margin-right: 8px;
+            color: #333;
+            /* Icon color */
+        }
 
-.user-auth-links i {
-    margin-right: 8px;
-    color: #333; /* Icon color */
-}
+        .auth-link {
+            text-decoration: none;
+            font-size: 16px;
+            color: #333;
+            /* Text color */
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-.auth-link {
-    text-decoration: none;
-    font-size: 16px;
-    color: #333; /* Text color */
-    padding: 8px 16px;
-    border-radius: 5px;
-    transition: background-color 0.3s, color 0.3s;
-}
+        .auth-link:hover {
+            background-color: #007bff;
+            /* Background color on hover */
+            color: #fff;
+            /* Text color on hover */
+        }
 
-.auth-link:hover {
-    background-color: #007bff; /* Background color on hover */
-    color: #fff; /* Text color on hover */
-}
+        .auth-link:active {
+            background-color: #0056b3;
+            /* Background color on active */
+            color: #fff;
+            /* Text color on active */
+        }
 
-.auth-link:active {
-    background-color: #0056b3; /* Background color on active */
-    color: #fff; /* Text color on active */
-}
+        /* Optional: Adding a bit of space around the links */
+        .user-auth-links {
+            padding: 10px 0;
+        }
+    </style>
 
-/* Optional: Adding a bit of space around the links */
-.user-auth-links {
-    padding: 10px 0;
-}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const isOutOfStock = <%= outOfStock %>;
+            console.log('Frontend OutOfStock:', isOutOfStock); // Debugging line
 
-   </style>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const isOutOfStock = <%= outOfStock %>;
-        console.log('Frontend OutOfStock:', isOutOfStock); // Debugging line
-
-        document.getElementById('checkoutButton').addEventListener('click', () => {
-            if (isOutOfStock) {
-                alert('Cannot proceed to checkout. Some items are out of stock.');
-            } else {
-                window.location.href = '/checkOut'; // Update this URL to your actual checkout URL
-            }
+            document.getElementById('checkoutButton').addEventListener('click', () => {
+                if (isOutOfStock) {
+                    alert('Cannot proceed to checkout. Some items are out of stock.');
+                } else {
+                    window.location.href = '/checkOut'; // Update this URL to your actual checkout URL
+                }
+            });
         });
-    });
-</script>
+    </script>
 
 </head>
 
@@ -157,12 +171,14 @@
                                 </li> -->
                                 <ul class="user-auth-links">
                                     <% if (locals.logData) { %>
-                                        <li><i class="fi-rs-user"></i><a href="/logout" class="auth-link">Logout</a></li>
-                                    <% } else { %>
-                                        <li><i class="fi-rs-user"></i><a href="/login" class="auth-link">Login/Signup</a></li>
-                                    <% } %>
+                                        <li><i class="fi-rs-user"></i><a href="/logout" class="auth-link">Logout</a>
+                                        </li>
+                                        <% } else { %>
+                                            <li><i class="fi-rs-user"></i><a href="/login"
+                                                    class="auth-link">Login/Signup</a></li>
+                                            <% } %>
                                 </ul>
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -197,14 +213,20 @@
                         </a>
                         <div class="categori-dropdown-wrap categori-dropdown-active-small">
                             <ul>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a></li>
-                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer & Office</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer Electronics</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a>
+                                </li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a>
+                                </li>
+                                <li> <a href="shop-grid-right.html"><i class="evara-font-smartphone"></i> Cellphones</a>
+                                </li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer &
+                                        Office</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer
+                                        Electronics</a></li>
                                 <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a></li>
                                 <li><a href="shop-grid-right.html"><i class="evara-font-high-heels"></i>Shoes</a></li>
-                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother & Kids</a></li>
+                                <li><a href="shop-grid-right.html"><i class="evara-font-teddy-bear"></i>Mother &
+                                        Kids</a></li>
                                 <li><a href="shop-grid-right.html"><i class="evara-font-kite"></i>Outdoor fun</a></li>
                             </ul>
                         </div>
@@ -212,7 +234,8 @@
                     <!-- mobile menu start -->
                     <nav>
                         <ul class="mobile-menu">
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="index.html">Home</a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="index.html">Home</a>
                                 <ul class="dropdown">
                                     <li><a href="index.html">Home 1</a></li>
                                     <li><a href="index-2.html">Home 2</a></li>
@@ -220,14 +243,16 @@
                                     <li><a href="index-4.html">Home 4</a></li>
                                 </ul>
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="shop-grid-right.html">shop</a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="shop-grid-right.html">shop</a>
                                 <ul class="dropdown">
                                     <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
                                     <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
                                     <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
                                     <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
                                     <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Single Product</a>
                                         <ul class="dropdown">
                                             <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
                                             <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
@@ -241,9 +266,11 @@
                                     <li><a href="shop-compare.html">Shop – Compare</a></li>
                                 </ul>
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega menu</a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Mega
+                                    menu</a>
                                 <ul class="dropdown">
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Women's Fashion</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Women's Fashion</a>
                                         <ul class="dropdown">
                                             <li><a href="shop-product-right.html">Dresses</a></li>
                                             <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
@@ -251,14 +278,16 @@
                                             <li><a href="shop-product-right.html">Women's Sets</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Men's Fashion</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Men's Fashion</a>
                                         <ul class="dropdown">
                                             <li><a href="shop-product-right.html">Jackets</a></li>
                                             <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
                                             <li><a href="shop-product-right.html">Genuine Leather</a></li>
                                         </ul>
                                     </li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Technology</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Technology</a>
                                         <ul class="dropdown">
                                             <li><a href="shop-product-right.html">Gaming Laptops</a></li>
                                             <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
@@ -269,13 +298,15 @@
                                     </li>
                                 </ul>
                             </li>
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="blog-category-fullwidth.html">Blog</a>
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                    href="blog-category-fullwidth.html">Blog</a>
                                 <ul class="dropdown">
                                     <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
                                     <li><a href="blog-category-list.html">Blog Category List</a></li>
                                     <li><a href="blog-category-big.html">Blog Category Big</a></li>
                                     <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
-                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a href="#">Single Product Layout</a>
+                                    <li class="menu-item-has-children"><span class="menu-expand"></span><a
+                                            href="#">Single Product Layout</a>
                                         <ul class="dropdown">
                                             <li><a href="blog-post-left.html">Left Sidebar</a></li>
                                             <li><a href="blog-post-right.html">Right Sidebar</a></li>
@@ -310,7 +341,7 @@
                 </div>
                 <div class="mobile-header-info-wrap mobile-header-border">
                     <div class="single-mobile-header-info mt-30">
-                        <a  href="page-contact.html"> Our location </a>
+                        <a href="page-contact.html"> Our location </a>
                     </div>
                     <div class="single-mobile-header-info">
                         <a href="page-login-register.html">Log In / Sign Up </a>
@@ -356,65 +387,114 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% if (wishlist && wishlist.products.length > 0) { %>
-                                        <% wishlist.products.forEach(product => { %>
+                                    <% if (wishlist && wishlist.products.length> 0) { %>
+                                        <% wishlist.products.forEach(product=> { %>
                                             <tr>
                                                 <td class="image product-thumbnail">
-                                                    <img style="max-width: 50px; max-height: 50px;" src="/uploads/<%= product.productId.image[0] %>" alt="image">
+                                                    <img style="max-width: 50px; max-height: 50px;"
+                                                        src="/uploads/<%= product.productId.image[0] %>" alt="image">
                                                 </td>
-                                                
+
                                                 <td class="product-des product-name">
-                                                    <p class="font-xs"><%= product.productId.title %></p>
+                                                    <p class="font-xs">
+                                                        <%= product.productId.title %>
+                                                    </p>
                                                 </td>
                                                 <td class="price" data-title="Price">
-                                                    <span id="price_<%= product.productId._id %>"><%= product.productId.salesprice %></span>
+                                                    <span id="price_<%= product.productId._id %>">
+                                                        <%= product.productId.salesprice %>
+                                                    </span>
                                                 </td>
                                                 <td class="text-center">
                                                     <button onclick="addToCartFromWishlist('<%= product.productId._id %>')" class="button button-add-to-cart">Add to Cart</button>
+
                                                 </td>
                                                 <td class="action" data-title="Remove">
-                                                    <button onclick="removeFromWishlist('<%= product.productId._id %>')" class="button button-remove">Remove</button>
+                                                    <button class="remove-product" data-product-id="<%= product.productId._id %>" style="background-color: #ff0000; color: #fff; border: none; padding: 5px 10px; cursor: pointer; font-size: 14px; border-radius: 4px;">
+                                                        Remove
+                                                    </button>
                                                 </td>
+                                                
                                             </tr>
-                                        <% }) %>
-                                    <% } else { %>
-                                        <tr>
-                                            <td colspan="5">Your wishlist is empty.</td>
-                                        </tr>
-                                    <% } %>
+                                            <% }) %>
+                                                <% } else { %>
+                                                    <tr>
+                                                        <td colspan="5">Your wishlist is empty.</td>
+                                                    </tr>
+                                                    <% } %>
                                 </tbody>
                             </table>
                             <script>
                                 async function addToCartFromWishlist(productId) {
-                                    const userId = '<%= logData %>'; // Use actual user ID
                                     try {
-                                        const response = await fetch(`/wishlist/${userId}/add-to-cart`, {
+                                        const response = await fetch('/addToCartFromWishlist', {  // Adjust the endpoint if necessary
                                             method: 'POST',
-                                            headers: { 'Content-Type': 'application/json' },
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
                                             body: JSON.stringify({ productId })
                                         });
                             
                                         if (response.ok) {
-                                            const result = await response.json();
-                                            alert(result.message); // Optional alert
-                                            window.location.href = '/cart'; // Redirect to cart page
+                                            const data = await response.json();
+                                            console.log('Product added to cart:', data);
+                            
+                                            // Use SweetAlert to display the alert with the message from the response
+                                            Swal.fire({
+                                                title: 'Success!',
+                                                text: data.message,
+                                                icon: 'success',
+                                                confirmButtonText: 'OK'
+                                            }).then(() => {
+                                                // Refresh the wishlist page to reflect changes
+                                                window.location.href = '/cart';
+                                            });
                                         } else {
                                             const errorText = await response.text();
                                             throw new Error(errorText);
                                         }
                                     } catch (error) {
                                         console.error('Error adding product to cart:', error);
-                                        alert('Failed to add product to cart');
+                                        Swal.fire({
+                                            title: 'Error!',
+                                            text: 'Failed to add product to cart',
+                                            icon: 'error',
+                                            confirmButtonText: 'OK'
+                                        });
                                     }
                                 }
                             </script>
-
-                           
-
-                          
-
+                          <script>
+                            document.querySelectorAll('.remove-product').forEach(button => {
+                                button.addEventListener('click', function(event) {
+                                    event.preventDefault();
+                                    const productId = this.dataset.productId;
+                        
+                                    console.log("Product ID to remove:", productId);
+                                    fetch('/removeFromWishlist', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ productId })
+                                    })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        console.log("Response data:", data);
+                                        if (data.success) {
+                                            // Instantly remove the product row from the table
+                                            this.closest('tr').remove();
+                                        } else {
+                                            alert('Error removing product from wishlist');
+                                        }
+                                    })
+                                    .catch(error => console.error('Error:', error));
+                                });
+                            });
+                        </script>
+                        
                         </div>
-                      
+
                         <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
                     </div>
                 </div>
@@ -432,7 +512,8 @@
                                 <h4 class="font-size-20 mb-0 ml-3">Sign up to Newsletter</h4>
                             </div>
                             <div class="col my-4 my-md-0 des">
-                                <h5 class="font-size-15 ml-4 mb-0">...and receive <strong>$25 coupon for first shopping.</strong></h5>
+                                <h5 class="font-size-15 ml-4 mb-0">...and receive <strong>$25 coupon for first
+                                        shopping.</strong></h5>
                             </div>
                         </div>
                     </div>
@@ -503,8 +584,10 @@
                             <div class="col-md-8 col-lg-12">
                                 <p class="wow fadeIn animated">From App Store or Google Play</p>
                                 <div class="download-app wow fadeIn animated">
-                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active" src="assets/imgs/theme/app-store.jpg" alt=""></a>
-                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg" alt=""></a>
+                                    <a href="#" class="hover-up mb-sm-4 mb-lg-0"><img class="active"
+                                            src="assets/imgs/theme/app-store.jpg" alt=""></a>
+                                    <a href="#" class="hover-up"><img src="assets/imgs/theme/google-play.jpg"
+                                            alt=""></a>
                                 </div>
                             </div>
                             <div class="col-md-4 col-lg-12 mt-md-3 mt-lg-0">
@@ -522,11 +605,13 @@
                     <div class="footer-bottom"></div>
                 </div>
                 <div class="col-lg-6">
-                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
+                    <p class="float-md-left font-sm text-muted mb-0">&copy; 2022, <strong
+                            class="text-brand">Evara</strong> - HTML Ecommerce Template </p>
                 </div>
                 <div class="col-lg-6">
                     <p class="text-lg-end text-start font-sm text-muted mb-0">
-                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights reserved
+                        Designed by <a href="http://alithemes.com/" target="_blank">Alithemes.com</a>. All rights
+                        reserved
                     </p>
                 </div>
             </div>
@@ -570,16 +655,16 @@
     <script src="assets/js/maind134.js?v=3.4"></script>
     <script src="assets/js/shopd134.js?v=3.4"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    
+
 
 
     <script>
         document.querySelectorAll('.remove-product').forEach(button => {
-            button.addEventListener('click', function(event) {
+            button.addEventListener('click', function (event) {
                 event.preventDefault();
                 const productId = this.dataset.productId;
 
-            console.log("kiran",{productId});
+                console.log("kiran", { productId });
                 fetch('/removeFromCart', {
                     method: 'POST',
                     headers: {
@@ -587,66 +672,67 @@
                     },
                     body: JSON.stringify({ productId })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("response amal",data)
-                    if (data.success) {
-                        this.closest('tr').remove();
-                    } else {
-                        alert('Error removing product from cart');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("response amal", data)
+                        if (data.success) {
+                            this.closest('tr').remove();
+                        } else {
+                            alert('Error removing product from cart');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             });
         });
     </script>
 
-<script>
-    function handleQuantityChange(element, action) {
-        event.preventDefault();
-        const productId = element.getAttribute('data-product-id');
+    <script>
+        function handleQuantityChange(element, action) {
+            event.preventDefault();
+            const productId = element.getAttribute('data-product-id');
 
-        fetch('/updateQuantity', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ productId, action })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const quantityElement = document.getElementById(`quantity_${productId}`);
-                const priceElement = document.getElementById(`price_${productId}`);
-                const subtotalElement = document.getElementById(`subtotal_${productId}`);
+            fetch('/updateQuantity', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId, action })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const quantityElement = document.getElementById(`quantity_${productId}`);
+                        const priceElement = document.getElementById(`price_${productId}`);
+                        const subtotalElement = document.getElementById(`subtotal_${productId}`);
 
-                const newQuantity = data.updatedQuantity;
-                const price = parseFloat(priceElement.textContent);
-                const newSubtotal = (newQuantity * price).toFixed(2);
+                        const newQuantity = data.updatedQuantity;
+                        const price = parseFloat(priceElement.textContent);
+                        const newSubtotal = (newQuantity * price).toFixed(2);
 
-                quantityElement.textContent = newQuantity;
-                subtotalElement.textContent = newSubtotal;
+                        quantityElement.textContent = newQuantity;
+                        subtotalElement.textContent = newSubtotal;
 
-                updateTotalPrice();
-            } else {
-                alert('Error updating quantity');
-            }
-        })
-        .catch(error => console.error('Error:', error));
-    }
+                        updateTotalPrice();
+                    } else {
+                        alert('Error updating quantity');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
 
-    function updateTotalPrice() {
-        let total = 0;
-        document.querySelectorAll('[id^="subtotal_"]').forEach(subtotalElement => {
-            total += parseFloat(subtotalElement.textContent);
-        });
-        document.getElementById('total_price').textContent = total.toFixed(2);
-    }
-</script>
+        function updateTotalPrice() {
+            let total = 0;
+            document.querySelectorAll('[id^="subtotal_"]').forEach(subtotalElement => {
+                total += parseFloat(subtotalElement.textContent);
+            });
+            document.getElementById('total_price').textContent = total.toFixed(2);
+        }
+    </script>
 
 
 </body>
 
 
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+
 </html>

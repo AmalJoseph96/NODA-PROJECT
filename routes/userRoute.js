@@ -113,6 +113,7 @@ user_route.post('/changePassword',userAuth.isLogin,userController.changePassword
 user_route.get('/editAddress',userController.editAddress);
 user_route.post('/updateAddress',userController.updateAddress);
 user_route.get('/cancelOrder',userController.cancelOrder);
+user_route.get('/cancelProduct',userAuth.isLogin,userController.cancelProduct);
 user_route.get('/orderDetails/:orderId',userAuth.isLogin,userController.orderDetails);
 user_route.delete('/deleteAddress/:addressId',userAuth.isLogin,userController.deleteAddress);
 user_route.get('/checkOutAddress',userAuth.isLogin,userController.checkOutAddress);
@@ -123,7 +124,10 @@ user_route.post('/applyCoupon',userAuth.isLogin,userController.applyCoupon);
 user_route.post('/remove-coupon',userAuth.isLogin,userController.removeCoupon);
 user_route.post('/addToWishlist',userAuth.isLogin,userController.addToWishlist);
 user_route.get('/wishlist',userAuth.isLogin,userController.getWishlist);
-user_route.post('/wishlist/:userId/add-to-cart',userAuth.isLogin,userController.addToCartFromWishlist);
+user_route.post('/addToCartFromWishlist', userAuth.isLogin, userController.addToCartFromWishlist);
+user_route.post('/removeFromWishlist', userAuth.isLogin, userController.removeFromWishlist);
+
+
 
 
 

@@ -606,50 +606,55 @@
             });
         });
     </script>
-
 <script>
-    function handleQuantityChange(element, action) {
-        event.preventDefault();
-        const productId = element.getAttribute('data-product-id');
+function handleQuantityChange(element, action) {
+    event.preventDefault();
+    const productId = element.getAttribute('data-product-id');
+    const quantityElement = document.getElementById(`quantity_${productId}`);
+    let currentQuantity = parseInt(quantityElement.textContent);
 
-        fetch('/updateQuantity', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ productId, action })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                const quantityElement = document.getElementById(`quantity_${productId}`);
-                const priceElement = document.getElementById(`price_${productId}`);
-                const subtotalElement = document.getElementById(`subtotal_${productId}`);
-
-                const newQuantity = data.updatedQuantity;
-                const price = parseFloat(priceElement.textContent);
-                const newSubtotal = (newQuantity * price).toFixed(2);
-
-                quantityElement.textContent = newQuantity;
-                subtotalElement.textContent = newSubtotal;
-
-                updateTotalPrice();
-            } else {
-                alert('Error updating quantity');
-            }
-        })
-        .catch(error => console.error('Error:', error));
+    if (action === 'increase' && currentQuantity >= 10) {
+        alert('You can only purchase a maximum of 10 products.');
+        return;
     }
 
-    function updateTotalPrice() {
-        let total = 0;
-        document.querySelectorAll('[id^="subtotal_"]').forEach(subtotalElement => {
-            total += parseFloat(subtotalElement.textContent);
-        });
-        document.getElementById('total_price').textContent = total.toFixed(2);
-    }
+    fetch('/updateQuantity', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productId, action })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const newQuantity = data.updatedQuantity;
+            const priceElement = document.getElementById(`price_${productId}`);
+            const subtotalElement = document.getElementById(`subtotal_${productId}`);
+
+            const price = parseFloat(priceElement.textContent);
+            const newSubtotal = (newQuantity * price).toFixed(2);
+
+            quantityElement.textContent = newQuantity;
+            subtotalElement.textContent = newSubtotal;
+
+            updateTotalPrice();
+        } else {
+            alert('Error updating quantity');
+        }
+    })
+    .catch(error => console.error('Error:', error));
+}
+
+function updateTotalPrice() {
+    let total = 0;
+    document.querySelectorAll('[id^="subtotal_"]').forEach(subtotalElement => {
+        total += parseFloat(subtotalElement.textContent);
+    });
+    document.getElementById('total_price').textContent = total.toFixed(2);
+}
+
 </script>
-
 
 </body>
 

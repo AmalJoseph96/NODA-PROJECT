@@ -13,9 +13,6 @@ const productList = async (req, res) => {
     try {
         const product = await Product.find()
         res.render('productlist', { product });
-
-
-
     } catch (error) {
         console.log(error.message);
 

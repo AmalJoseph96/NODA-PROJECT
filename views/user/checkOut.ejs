@@ -968,6 +968,17 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-25">
+                            <div class="mb-4">
+                                <label class="form-label">Active Coupons</label>
+                                <select name="coupon" class="form-select">
+                                    <option value=""></option>
+                                    <% activeCoupons.forEach(coupon => { %>
+                                        <option value="<%= coupon.code %>">
+                                            <%= coupon.code %> - <%= coupon.discount %>%
+                                        </option>
+                                    <% }); %>
+                                </select>
+                            </div>
                           
                             <h4><u>Shipping Details</u></h4>
                             <a href="/checkOutAddress">Add new Address</a>
@@ -1298,6 +1309,10 @@
                             setTimeout(function () {
                                 window.location.href = `/onlinepayment?addressId=${selectedAddress}&totalAmount=${totalAmount}`;
                             }, 1000);
+                        }else{
+                            setTimeout(function () {
+                                window.location.href = `/checkOut`;
+                            }, 1000);
                         }
                     },
                     theme: {
@@ -1502,11 +1517,20 @@
         document.getElementById('placeOrderButton').addEventListener('click', async () => {
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked').value;
             const paymentOption = document.querySelector('input[name="payment_option"]:checked').value;
+            var totalAmount = <%= total %>;
             console.log('Payment option:', paymentOption);
-    
+             // Check if the payment option is COD and the total amount exceeds ₹1000
+        if (paymentOption === 'cash_on_delivery' && totalAmount > 1000) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Payment Error',
+                text: 'Cash on Delivery is not allowed for orders above ₹1000. Please choose another payment method.',
+            });
+            return; // Stop further execution
+        }
             try {
                 if (paymentOption === 'razor_payment') {
-                    var totalAmount = <%= total %>;
+                   
                     console.log('Total Amount:', totalAmount);
     
                     const requestOptions = {
